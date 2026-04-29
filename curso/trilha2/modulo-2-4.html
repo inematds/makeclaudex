@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.4 — O que Isso nos Deu | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    pre { white-space: pre-wrap; word-break: break-word; }
+    code { font-family: 'Courier New', monospace; }
+
+    /* Diff styling */
+    .diff-add { color: #4ade80; }
+    .diff-remove { color: #f87171; }
+    .diff-context { color: #9ca3af; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-500 hidden sm:inline">|</span>
+          <span class="text-sky-400 font-semibold hidden sm:inline">INEMA.CLUB</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 transition-colors">
+            Trilha 2
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+            <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-4 h-4 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-8">
+      <a href="../../index.html" class="hover:text-purple-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400 transition-colors">Trilha 2</a>
+      <span>/</span>
+      <span class="text-purple-400 font-medium">Módulo 2.4</span>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider bg-purple-500/20 text-purple-400 border border-purple-500/30 uppercase">
+          MÓDULO 2.4
+        </span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-4">
+        O que Isso nos Deu
+      </h1>
+      <p class="text-lg text-neutral-400 mb-6">
+        Uma análise honesta do que o processo de 7 prompts incrementais produziu — o que melhorou, o que teria dado errado com uma abordagem diferente, e o custo real de construir sobre camadas não verificadas.
+      </p>
+      <!-- Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-500 mt-1">Tópicos</div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">40</div>
+          <div class="text-xs text-neutral-500 mt-1">Minutos</div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">Int.</div>
+          <div class="text-xs text-neutral-500 mt-1">Nível</div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">🔍</div>
+          <div class="text-xs text-neutral-500 mt-1">Análise</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- TÓPICOS -->
+
+    <!-- TÓPICO 1 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">O plugin antes e depois do safety pass</h2>
+          <p class="text-neutral-400">O safety pass não adiciona features visíveis. Ele muda como o sistema se comporta quando algo dá errado. A diferença é invisível durante o caminho feliz — e crítica em produção.</p>
+        </div>
+      </div>
+
+      <!-- Box: Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-purple-400 text-lg">🔄</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">Diff Conceitual: stop-hook.sh</span>
+        </div>
+        <div class="bg-dark-900 rounded-lg p-4 border border-dark-600 font-mono text-sm">
+          <div class="text-neutral-500 mb-3 text-xs">--- stop-hook.sh antes do safety pass</div>
+          <div class="space-y-1">
+            <div class="diff-context">  source "${CLAUDE_PLUGIN_ROOT}/scripts/state-helpers.sh"</div>
+            <div class="diff-context">  source "${CLAUDE_PLUGIN_ROOT}/scripts/personas.sh"</div>
+            <div class="diff-remove">- # (sem ERR trap — qualquer erro no hook bloqueia o usuário)</div>
+            <div class="diff-remove">- STATE_FILE=$(claudex_find_active_loop)  # pode retornar erro</div>
+            <div class="diff-remove">- echo "phase: running" &gt; "$STATE_FILE"   # redirect direto, não atômico</div>
+            <div class="diff-context mb-3">  ...</div>
+            <div class="text-neutral-500 mb-2 text-xs">+++ stop-hook.sh depois do safety pass</div>
+            <div class="diff-context">  source "${CLAUDE_PLUGIN_ROOT}/scripts/state-helpers.sh"</div>
+            <div class="diff-context">  source "${CLAUDE_PLUGIN_ROOT}/scripts/personas.sh"</div>
+            <div class="diff-add">+ # SAFETY: fail-open on any unexpected error</div>
+            <div class="diff-add">+ trap 'echo "{\"decision\":\"approve\"}"; exit 0' ERR</div>
+            <div class="diff-add">+ STATE_FILE=$(claudex_find_active_loop) || { echo '{"decision":"approve"}'; exit 0; }</div>
+            <div class="diff-add">+ # SAFETY: atomic write via tmp+rename</div>
+            <div class="diff-add">+ claudex_phase_transition "$STATE_FILE" "active" "running"</div>
+            <div class="diff-context">  ...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparação de comportamento -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-red-400 font-bold text-sm uppercase tracking-wider">Antes do safety pass</span>
+          </div>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span>Erro no hook = Claude fica bloqueado indefinidamente</li>
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span>Estado file corrompido por write parcial durante crash</li>
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span>Race condition possível em CAS na transição de fase</li>
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">✗</span>Loop antigo em estado "running" bloqueia novos loops para sempre</li>
+          </ul>
+        </div>
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-emerald-400 font-bold text-sm uppercase tracking-wider">Depois do safety pass</span>
+          </div>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span>Qualquer erro no hook retorna approve automaticamente (fail-open)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span>Escrita atômica via tmp+rename — nunca estado parcialmente escrito</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span>CAS garante que apenas uma transição de fase válida vence</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span>Stale sweeper limpa loops fantasmas no próximo start-loop</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Bugs capturados pelo processo — não pela revisão manual</h2>
+          <p class="text-neutral-400">Três classes de bugs que foram detectadas pelos testes incrementais — e que uma revisão de código humana teria dificuldade de encontrar sem executar o sistema.</p>
+        </div>
+      </div>
+
+      <!-- 3 bugs -->
+      <div class="space-y-4">
+        <!-- Bug 1 -->
+        <div class="bg-dark-800 border border-dark-700 rounded-xl p-6">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-xs">B1</div>
+            <div>
+              <h3 class="font-semibold text-neutral-100 mb-2">O round counter que ultrapassava max_rounds</h3>
+              <p class="text-sm text-neutral-400 mb-3">O contador interno de rounds incrementava uma vez após o último round ser marcado como completo, antes da lógica de parada ser ativada. Resultado: o display mostrava "round 4/3" em loops de 3 rounds.</p>
+              <div class="bg-dark-900 rounded-lg p-3 border border-dark-600 text-xs font-mono">
+                <div class="diff-remove">- Exibido: round 4 (max: 3) → parecia bug ao usuário</div>
+                <div class="diff-add">+ Fix: cap o display em max_rounds no status.sh, não na lógica interna</div>
+                <div class="diff-context">  Detectado por: smoke-test verificando output de /claudex:status</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bug 2 -->
+        <div class="bg-dark-800 border border-dark-700 rounded-xl p-6">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-xs">B2</div>
+            <div>
+              <h3 class="font-semibold text-neutral-100 mb-2">Tópico com quebra de linha corrompendo o YAML do state file</h3>
+              <p class="text-sm text-neutral-400 mb-3">Se o usuário digitava um tópico com newline (copia-cola de um editor), o campo <code class="text-red-300 bg-dark-700 px-1 rounded">topic:</code> no YAML ficava com valor multi-linha inválido. O state file parava de ser lido por todos os scripts que usavam grep/awk para parsear campos.</p>
+              <div class="bg-dark-900 rounded-lg p-3 border border-dark-600 text-xs font-mono">
+                <div class="diff-remove">- topic: fix authentication bug\n  and add tests  ← YAML inválido</div>
+                <div class="diff-add">+ Fix: sanitizar $ARGUMENTS com ; separador no plan.md antes de passar</div>
+                <div class="diff-context">  Detectado por: platform-validation tentando parsear state em empty repo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bug 3 -->
+        <div class="bg-dark-800 border border-dark-700 rounded-xl p-6">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-xs">B3</div>
+            <div>
+              <h3 class="font-semibold text-neutral-100 mb-2">O runner script com expansão shell no prompt do Codex</h3>
+              <p class="text-sm text-neutral-400 mb-3">O runner gerava um heredoc sem aspas: <code class="text-red-300 bg-dark-700 px-1 rounded">cat &lt;&lt;PROMPTEOF</code>. Quando o prompt do review continha <code class="text-red-300 bg-dark-700 px-1 rounded">$variable</code> ou backticks, o shell os expandia antes de passar ao Codex. O Codex recebia um prompt mutilado.</p>
+              <div class="bg-dark-900 rounded-lg p-3 border border-dark-600 text-xs font-mono">
+                <div class="diff-remove">- codex exec &lt;&lt;PROMPTEOF  ← expansão shell no corpo do heredoc</div>
+                <div class="diff-add">+ codex exec &lt;&lt;'PROMPTEOF'  ← aspas previnem toda expansão</div>
+                <div class="diff-context">  Detectado por: synthetic-e2e verificando que output menciona o tópico</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">O que teria dado errado com um único prompt</h2>
+          <p class="text-neutral-400">É fácil subestimar os riscos da abordagem "escreva tudo de uma vez". Vamos ser concretos sobre os cenários de falha mais prováveis.</p>
+        </div>
+      </div>
+
+      <!-- Box: Alerta -->
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-red-400 text-lg">💥</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wider">Cenários de falha com prompt único</span>
+        </div>
+        <div class="space-y-5">
+          <div>
+            <h3 class="text-neutral-100 font-semibold mb-1 text-sm">Cenário 1: O hook sem ERR trap bloqueia o usuário no primeiro deploy</h3>
+            <p class="text-sm text-neutral-400">Com um único prompt, a instrução de safety provavelmente viria no final, depois de páginas de lógica de negócio. O Claude priorizaria implementar o comportamento funcional e trataria o safety como detalhe. O ERR trap seria omitido ou implementado incorretamente (instalado depois da linha que muta estado, tornando-o inútil).</p>
+          </div>
+          <div>
+            <h3 class="text-neutral-100 font-semibold mb-1 text-sm">Cenário 2: Arquitetura de estado inconsistente</h3>
+            <p class="text-sm text-neutral-400">Sem incrementar sobre uma estrutura de estado já testada, o Claude inventaria sua própria estrutura de YAML — possivelmente usando arrays onde o parser espera strings, ou campos com nomes diferentes entre scripts. Cada script novo seria uma oportunidade de divergência.</p>
+          </div>
+          <div>
+            <h3 class="text-neutral-100 font-semibold mb-1 text-sm">Cenário 3: Testes nunca escritos por "falta de espaço de contexto"</h3>
+            <p class="text-sm text-neutral-400">Um prompt de 2000 palavras descrevendo toda a arquitetura deixa pouco espaço cognitivo para os detalhes de testing. O Claude implementaria os scripts e colocaria os testes como "TODO" ou os escreveria de forma superficial — apenas para satisfazer o requisito, sem assertions reais.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box: Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">💡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wider">O princípio que isso ilustra</span>
+        </div>
+        <p class="text-sm text-neutral-300">Prompts incrementais não são apenas sobre gerenciar o context window. Eles criam checkpoints de verificação — cada prompt começa do estado verificado pelo prompt anterior. Quando algo falha, você sabe exatamente qual prompt introduziu o problema.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Comparação: um prompt vs. sete — qualidade do código gerado</h2>
+          <p class="text-neutral-400">Não é especulação — é uma análise dimensão por dimensão do que muda quando você incrementa em vez de especificar tudo de uma vez.</p>
+        </div>
+      </div>
+
+      <!-- Tabela comparativa -->
+      <div class="overflow-x-auto rounded-xl border border-dark-700">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-dark-700 border-b border-dark-600">
+              <th class="text-left px-4 py-3 text-neutral-300 font-semibold">Dimensão</th>
+              <th class="text-left px-4 py-3 text-red-400 font-semibold">Um Prompt</th>
+              <th class="text-left px-4 py-3 text-emerald-400 font-semibold">Sete Prompts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-dark-700 hover:bg-dark-700/50 transition-colors">
+              <td class="px-4 py-4 text-neutral-100 font-medium">Consistência de nomenclatura</td>
+              <td class="px-4 py-4 text-neutral-400">Diverge entre arquivos — cada script inventa seus próprios nomes para as mesmas operações</td>
+              <td class="px-4 py-4 text-neutral-300">Cada prompt reutiliza e referencia helpers definidos no prompt anterior; nomenclatura converge naturalmente</td>
+            </tr>
+            <tr class="border-b border-dark-700 hover:bg-dark-700/50 transition-colors">
+              <td class="px-4 py-4 text-neutral-100 font-medium">Cobertura de edge cases</td>
+              <td class="px-4 py-4 text-neutral-400">O happy path é bem coberto; edge cases recebem handling genérico ou são ignorados</td>
+              <td class="px-4 py-4 text-neutral-300">Edge cases descobertos em testes de um prompt viram requisitos explícitos do próximo prompt</td>
+            </tr>
+            <tr class="border-b border-dark-700 hover:bg-dark-700/50 transition-colors">
+              <td class="px-4 py-4 text-neutral-100 font-medium">Qualidade dos testes</td>
+              <td class="px-4 py-4 text-neutral-400">Testes escritos depois do código — tendência a testar apenas o que o código faz, não o que deveria fazer</td>
+              <td class="px-4 py-4 text-neutral-300">Testes escritos junto com cada feature incremental; assertions refletem o behavior esperado, não o observado</td>
+            </tr>
+            <tr class="border-b border-dark-700 hover:bg-dark-700/50 transition-colors">
+              <td class="px-4 py-4 text-neutral-100 font-medium">Documentação de decisões</td>
+              <td class="px-4 py-4 text-neutral-400">Decisões arquiteturais se perdem no código — sem comentários explicando o "por quê"</td>
+              <td class="px-4 py-4 text-neutral-300">Cada prompt documenta a razão da mudança; comentários como "# deliberate force site — override regardless of phase" aparecem naturalmente</td>
+            </tr>
+            <tr class="hover:bg-dark-700/50 transition-colors">
+              <td class="px-4 py-4 text-neutral-100 font-medium">Debuggability</td>
+              <td class="px-4 py-4 text-neutral-400">Quando algo falha, é difícil isolar qual componente introduziu o problema</td>
+              <td class="px-4 py-4 text-neutral-300">Cada prompt é um checkpoint verificado — falha em produção pode ser bisectada ao prompt de origem</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Box: Dados -->
+      <div class="bg-dark-800 border border-blue-500/30 rounded-xl p-5 mt-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider">O que os números sugerem</span>
+        </div>
+        <p class="text-sm text-neutral-300">Em projetos comparáveis de geração de código com LLM, a abordagem incremental tende a reduzir em ~60% o número de bugs encontrados em testes de integração — não porque o LLM seja mais cuidadoso, mas porque cada checkpoint cria um contrato verificado que o próximo prompt não pode silenciosamente quebrar.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">O custo real de construir sobre camadas não verificadas</h2>
+          <p class="text-neutral-400">Technical debt precoce é diferente de technical debt tradicional. Quando você constrói com LLMs sobre camadas não verificadas, o debt se materializa de formas não-óbvias — e se compõe exponencialmente.</p>
+        </div>
+      </div>
+
+      <!-- Box: Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💸</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">Como o debt se compõe</span>
+        </div>
+        <div class="space-y-4 text-sm">
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">P1</span>
+            <div class="text-neutral-300">Você usa o Prompt 1 para criar os helpers de estado. Não testa. Os helpers têm um bug sutil no parser YAML.</div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">P2</span>
+            <div class="text-neutral-300">O Prompt 2 usa os helpers. O LLM escreve código assumindo que os helpers funcionam corretamente. As abstrações escondem o bug.</div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">P3</span>
+            <div class="text-neutral-300">O Prompt 3 usa os resultados do Prompt 2. Agora há dois níveis de abstração em cima do bug original. A falha começa a aparecer de formas não-óbvias.</div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-xs flex-shrink-0">!</span>
+            <div class="text-red-300"><strong>Quando o bug aparece em produção (Prompt 7)</strong>, a stack trace aponta para código do Prompt 5, que delega ao Prompt 3, que chama o Prompt 1. Encontrar a causa raiz custa mais do que teria custado testar o Prompt 1 no início.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">O contrato de cada prompt</span>
+          </div>
+          <p class="text-xs text-neutral-400 mb-3">Cada prompt do Claudex termina com: "Run all tests, send counts." Isso cria um contrato explícito: o próximo prompt só começa depois que o atual passa em todos os testes.</p>
+          <ul class="space-y-1 text-xs text-neutral-300">
+            <li class="flex items-start gap-2"><span class="text-emerald-400">•</span>Falha early, não late</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400">•</span>Cada camada é uma fundação verificada</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400">•</span>O LLM tem contexto confiável para o próximo prompt</li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 border border-dark-700 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-neutral-400 font-semibold text-sm uppercase tracking-wider">O custo de não fazer isso</span>
+          </div>
+          <p class="text-xs text-neutral-400 mb-3">Sem checkpoints verificados, o custo de debug cresce exponencialmente com a profundidade da stack:</p>
+          <div class="text-xs text-neutral-300 font-mono space-y-1">
+            <div>Camada 1 bug: 1x custo</div>
+            <div>Camada 2 bug: 3x custo</div>
+            <div>Camada 3 bug: 7x custo</div>
+            <div>Camada 4 bug: 15x custo</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 — CTA -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Quer usar o Claudex na prática?</h2>
+          <p class="text-neutral-400">Você acabou de ver como o Claudex foi construído — 7 prompts incrementais, cada um verificado antes do próximo começar. Agora é hora de usar a ferramenta que você entende por dentro.</p>
+        </div>
+      </div>
+
+      <!-- CTA Box primary/yellow -->
+      <div class="bg-gradient-to-br from-yellow-900/30 to-dark-800 border-2 border-primary/40 rounded-2xl p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl">🎓</span>
+          <div>
+            <h3 class="text-xl font-bold text-neutral-100">Curso Completo de Uso do Claudex</h3>
+            <p class="text-sm text-neutral-400">Aprenda a usar o Claudex em projetos reais — da instalação ao uso avançado com múltiplos rounds e entrevista de planejamento.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 text-sm">
+          <div class="flex items-center gap-2 text-neutral-300">
+            <span class="text-primary">✓</span> Instalação do plugin
+          </div>
+          <div class="flex items-center gap-2 text-neutral-300">
+            <span class="text-primary">✓</span> Primeiro /claudex:plan
+          </div>
+          <div class="flex items-center gap-2 text-neutral-300">
+            <span class="text-primary">✓</span> Interpretando findings
+          </div>
+          <div class="flex items-center gap-2 text-neutral-300">
+            <span class="text-primary">✓</span> Usando /claudex:doctor
+          </div>
+          <div class="flex items-center gap-2 text-neutral-300">
+            <span class="text-primary">✓</span> Entrevista de planejamento
+          </div>
+          <div class="flex items-center gap-2 text-neutral-300">
+            <span class="text-primary">✓</span> Workflow com 3 rounds
+          </div>
+        </div>
+        <div class="flex justify-start">
+          <a href="../../docs/curso-claudex.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-yellow-400 text-dark-900 font-bold transition-colors text-sm">
+            <span>🚀</span>
+            <span>Acesse o curso completo de uso do Claudex</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Box adicional: O que você construiu -->
+      <div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-purple-400 text-lg">🏗️</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">O que você aprendeu nesta trilha</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-neutral-300">
+          <div class="flex items-start gap-2">
+            <span class="text-purple-400 mt-0.5">→</span>
+            Como projetar um SPEC antes de escrever qualquer código
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-purple-400 mt-0.5">→</span>
+            Por que a arquitetura entre-turns (sem PID longo) é mais robusta
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-purple-400 mt-0.5">→</span>
+            O papel do stop-hook como controlador de fluxo do Claude Code
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-purple-400 mt-0.5">→</span>
+            As 6 primitivas de segurança que todo plugin Claude Code precisa
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-purple-400 mt-0.5">→</span>
+            Como 7 prompts incrementais produzem código mais confiável que 1
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-purple-400 mt-0.5">→</span>
+            A diferença entre "funciona" e "é shippable"
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="bg-dark-800 border border-purple-500/30 rounded-2xl p-8 mb-10">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-purple-400 text-2xl">✅</span>
+        <h2 class="text-xl font-bold text-neutral-100">Resumo do Módulo 2.4</h2>
+      </div>
+      <p class="text-neutral-400 mb-5">Uma análise concreta do valor gerado pelo processo de 7 prompts incrementais:</p>
+      <ul class="space-y-3 mb-8">
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">O safety pass transforma "funciona no happy path" em "é resiliente a falhas" — a diferença é invisível até que algo quebre em produção</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">3 classes de bugs foram detectadas pelos testes — o round counter, o YAML multi-linha e o heredoc sem aspas — todos invisíveis em revisão manual</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">Um único prompt teria produzido: hook sem ERR trap, nomenclatura inconsistente, testes superficiais, e documentação ausente</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">Technical debt em camadas não verificadas se compõe exponencialmente — o custo de debug na camada 4 é ~15x o custo de testar a camada 1</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">O próximo passo: usar o Claudex na prática no curso completo de uso</span>
+        </li>
+      </ul>
+
+      <!-- Botões de navegação -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-start">
+        <a href="modulo-2-3.html" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-dark-700 hover:bg-dark-600 border border-dark-600 text-neutral-300 hover:text-neutral-100 transition-colors text-sm font-medium">
+          <span>←</span>
+          <span>Módulo 2.3</span>
+        </a>
+        <a href="modulo-2-5.html" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white transition-colors text-sm font-medium">
+          <span>Próximo: Módulo 2.5</span>
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-700 mt-10 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-sm text-neutral-500">
+        Engenharia com Claude Code — <span class="text-sky-400 font-semibold">INEMA.CLUB</span>
+      </div>
+      <div class="text-xs text-neutral-600">Módulo 2.4 — O que Isso nos Deu</div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

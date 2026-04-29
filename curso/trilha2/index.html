@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 2 — Construindo | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    .modal { display: none; }
+    .modal.active { display: flex; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - cores de acento (Purple T3) */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
+
+    /* Light mode - remove gradientes */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-neutral-300 transition-colors opacity-50 cursor-not-allowed">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-neutral-300 transition-colors opacity-50 cursor-not-allowed">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        TRILHA 2
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏗️ Construindo com Claude Code</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Como o Claudex foi construído do zero — usando 7 prompts incrementais, cada um verificado antes do próximo. Do scaffold ao safety pass.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Módulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">38</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">~5h</div>
+          <div class="text-xs text-neutral-400">Duração</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Interm.</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <div class="flex items-center space-x-3 mb-8">
+      <div class="h-px flex-1 bg-dark-600"></div>
+      <span class="text-neutral-500 text-sm font-medium">Conteúdo Detalhado</span>
+      <div class="h-px flex-1 bg-dark-600"></div>
+    </div>
+
+    <!-- MODULO 2.1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">2.1</span>
+          <span class="text-xs text-neutral-500">~50 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📐 O Blueprint</h3>
+        <p class="text-neutral-400 text-sm">Como especificar antes de codificar — o papel do README, SPEC e os dois primeiros prompts que definem a estrutura.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🧠</span>
+            <div><span class="font-medium">A filosofia do build incremental</span><span class="text-neutral-500 text-sm ml-2">— por que um prompt de cada vez</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A abordagem de dividir a construção de um sistema em prompts atômicos, cada um verificado antes do próximo ser executado.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Evita o acúmulo de bugs não detectados que tornam refatoração impossível. Cada camada fica sólida antes de receber peso.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Build incremental, verificação por camada, prompts atômicos, fail-fast por design.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📋</span>
+            <div><span class="font-medium">O SPEC.md: o blueprint antes do código</span><span class="text-neutral-500 text-sm ml-2">— arquitetura em texto</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um documento de especificação que define componentes, responsabilidades, invariantes e contratos antes de qualquer linha de código.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O SPEC força decisões difíceis cedo, quando mudar é barato. Sem ele, cada prompt reimagina a arquitetura do zero.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Componentes e responsabilidades, invariantes de segurança, contratos de interface, decisões de design explícitas.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔒</span>
+            <div><span class="font-medium">As 6 garantias de segurança do sistema</span><span class="text-neutral-500 text-sm ml-2">— invariantes inegociáveis</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As seis propriedades que o sistema nunca pode violar: fail-open, escrita atômica, CAS, idempotência, timeouts e limpeza garantida.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem invariantes explícitos, cada prompt pode inadvertidamente quebrar uma garantia que outro prompt estabeleceu.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fail-open, atomic writes, compare-and-swap, idempotência, timeout handling, cleanup guarantees.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">⚡</span>
+            <div><span class="font-medium">Prompt 01 — Esqueleto do plugin</span><span class="text-neutral-500 text-sm ml-2">— estrutura e fail-open hook</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O primeiro prompt que cria o esqueleto do plugin: estrutura de arquivos, hook de PreToolUse com fail-open, e integração básica com Claude Code.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O esqueleto define o contrato externo do sistema. Acertar aqui evita reescritas completas nos prompts seguintes.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Plugin scaffold, PreToolUse hook, fail-open por padrão, estrutura de arquivos do plugin.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🚪</span>
+            <div><span class="font-medium">Por que "falhar aberto" é inegociável</span><span class="text-neutral-500 text-sm ml-2">— hooks nunca podem bloquear o trabalho</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A propriedade de segurança que garante: se o plugin falhar por qualquer motivo, Claude Code continua funcionando normalmente.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um hook que bloqueia o trabalho do desenvolvedor quando falha é pior que não existir. Fail-open é a primeira linha de defesa.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fail-open vs fail-closed, try/catch em hooks, exit codes, degradação graciosa.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔄</span>
+            <div><span class="font-medium">Prompt 02 — A máquina de estados</span><span class="text-neutral-500 text-sm ml-2">— gerenciando sessões do loop</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O segundo prompt adiciona a máquina de estados que controla as transições entre fases: idle → planning → running → summarizing → done.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem estado explícito, o sistema não sabe em qual fase está e pode executar ações fora de ordem ou duplicar trabalho.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State machine, transições de estado, estado persistido em arquivo, fases do loop de revisão.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">7</span>
+            <span class="text-lg">💾</span>
+            <div><span class="font-medium">Escrita atômica e CAS</span><span class="text-neutral-500 text-sm ml-2">— estado que nunca corrompe</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Técnicas para garantir que o arquivo de estado nunca fica corrompido: escrever em arquivo temporário e renomear atomicamente, verificar versão antes de modificar.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Claude Code pode ser interrompido a qualquer momento. Estado corrompido transforma um erro recuperável em perda permanente de sessão.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Atomic write via rename, compare-and-swap, versioning de estado, recuperação de falha.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">2.2</span>
+          <span class="text-xs text-neutral-500">~60 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🧠 O Cérebro do Loop</h3>
+        <p class="text-neutral-400 text-sm">Os três prompts que implementam a lógica central: Stop Hook lifecycle, extração de findings com personas e a fase de sumarização.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🛑</span>
+            <div><span class="font-medium">Prompt 03 — Stop Hook lifecycle</span><span class="text-neutral-500 text-sm ml-2">— BLOCK vs APPROVE</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O Stop Hook que intercepta o fim de cada turno de Claude e decide: bloquear (continuar o loop) ou aprovar (encerrar a sessão).</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Este hook é o coração do loop. Sem ele, o Claudex seria apenas um script que roda uma vez — não um loop de revisão contínua.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Stop Hook, exit code 2 (bloquear), exit code 0 (aprovar), lifecycle do hook, controle de fluxo.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🎭</span>
+            <div><span class="font-medium">Como o hook controla cada fase</span><span class="text-neutral-500 text-sm ml-2">— lógica de transição</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A lógica dentro do Stop Hook que lê o estado atual e decide qual ação tomar: iniciar rodada de revisão, acumular findings, ou ativar sumarização.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O hook precisa de visão completa do estado para tomar decisões corretas. Um switch incorreto pode pular fases ou criar loops infinitos.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Leitura de estado, switch por fase, injeção de instrução no próximo turno, transição de fases.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🤖</span>
+            <div><span class="font-medium">O runner script</span><span class="text-neutral-500 text-sm ml-2">— como Claude delega para o Codex</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O script que invoca `claude --print` com o prompt de revisão correto para cada rodada, capturando o output para processamento posterior.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O runner é o ponto de integração entre o hook e o modelo. Problemas aqui se propagam para todas as rodadas de revisão.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">claude --print, subprocess invocation, output capture, error handling no runner.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🔍</span>
+            <div><span class="font-medium">Prompt 04 — Extração de findings</span><span class="text-neutral-500 text-sm ml-2">— economizando tokens</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O sistema que extrai findings estruturados (arquivo, linha, severidade, descrição) das respostas do modelo, ao invés de acumular o texto bruto completo.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Acumular respostas completas consome o contexto rapidamente. Findings estruturados permitem múltiplas rodadas sem explodir o token budget.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Structured extraction, findings schema, token efficiency, JSON output parsing.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🎪</span>
+            <div><span class="font-medium">Rotação de personas por rodada</span><span class="text-neutral-500 text-sm ml-2">— engenheiro, segurança, SRE</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O mecanismo que instrui o modelo a revisar com perspectiva diferente em cada rodada: engenheiro de software, especialista em segurança, ou SRE de produção.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um único ponto de vista encontra um subconjunto dos problemas. Personas diferentes ativam diferentes heurísticas e encontram bugs distintos.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Persona rotation, system prompt por rodada, bias de revisão, cobertura multi-perspectiva.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">📝</span>
+            <div><span class="font-medium">Prompt 05 — A fase de sumarização</span><span class="text-neutral-500 text-sm ml-2">— consolidando findings</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A fase final do loop que agrega todos os findings das rodadas em um relatório estruturado com priorização por severidade.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Raw findings de múltiplas rodadas são barulhentos. A sumarização torna o output acionável para o desenvolvedor.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Findings aggregation, deduplicação, priorização por severidade, formato do relatório final.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">7</span>
+            <span class="text-lg">🔔</span>
+            <div><span class="font-medium">Por que o loop não pode terminar em silêncio</span><span class="text-neutral-500 text-sm ml-2">— saídas explícitas</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A regra que toda saída do loop deve produzir output visível para o usuário: seja um relatório completo, uma mensagem de erro, ou confirmação explícita de "nenhum problema encontrado".</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Silêncio é ambíguo. O usuário não sabe se o loop terminou com sucesso ou falhou silenciosamente. Saídas explícitas constroem confiança.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Saídas explícitas, never-silent failure, feedback ao usuário, zero findings report.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-2.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">2.3</span>
+          <span class="text-xs text-neutral-500">~50 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🛡️ Acabamento e Segurança</h3>
+        <p class="text-neutral-400 text-sm">Os prompts finais de implementação: comandos utilitários, diagnóstico completo e o safety pass que audita cada caminho de erro.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🔧</span>
+            <div><span class="font-medium">Prompt 06 — Os quatro comandos utilitários</span><span class="text-neutral-500 text-sm ml-2">— ferramentas de operação</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Quatro slash commands adicionados no sexto prompt: start (iniciar sessão), stop (encerrar), status (estado atual) e doctor (diagnóstico).</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um plugin sem ferramentas de operação é uma caixa preta. Os comandos tornam o sistema inspecionável e controlável pelo usuário.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Slash commands, operabilidade, /claudex:start, /claudex:stop, /claudex:status, /claudex:doctor.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🩺</span>
+            <div><span class="font-medium">O /claudex:doctor</span><span class="text-neutral-500 text-sm ml-2">— diagnóstico completo do plugin</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O comando de diagnóstico que verifica a saúde completa do plugin: arquivos presentes, permissões corretas, estado consistente, dependências disponíveis.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Problemas de instalação e configuração são a causa mais comum de "não funciona". O doctor elimina o debug manual linha por linha.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Health check, verificação de dependências, validação de configuração, output estruturado de diagnóstico.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🗣️</span>
+            <div><span class="font-medium">A entrevista de planejamento</span><span class="text-neutral-500 text-sm ml-2">— antes de iniciar o loop</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A fase de planning que ocorre antes do primeiro loop: Claude entrevista o usuário sobre o escopo, arquivos relevantes e critérios de qualidade antes de iniciar as rodadas.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem planejamento, o loop revisa tudo com a mesma granularidade. A entrevista foca o esforço nos arquivos e preocupações que realmente importam.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Planning phase, scoping interview, context gathering, focused review.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🔐</span>
+            <div><span class="font-medium">Prompt 07 — O safety pass</span><span class="text-neutral-500 text-sm ml-2">— auditando cada caminho de erro</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O último prompt que percorre sistematicamente cada caminho de falha do sistema, adicionando guardrails, validações e mensagens de erro claras onde estavam faltando.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Caminhos de erro são onde os sistemas falham em produção. O safety pass força uma revisão estruturada de todos os "e se der errado".</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Error path audit, guardrails, defensive programming, error message quality, failure mode coverage.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🧪</span>
+            <div><span class="font-medium">Os três níveis de teste</span><span class="text-neutral-500 text-sm ml-2">— platform, smoke, e2e sintético</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A estratégia de teste em três camadas: testes de plataforma (o hook registra corretamente?), smoke tests (o plugin inicia?) e e2e sintético (uma sessão completa funciona?).</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cada camada testa diferentes garantias. Pular camadas deixa classes inteiras de bugs sem cobertura.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Platform tests, smoke tests, e2e sintético, test pyramid para plugins Claude Code.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🚀</span>
+            <div><span class="font-medium">Como shipar o plugin e o que vem na v2</span><span class="text-neutral-500 text-sm ml-2">— publicação e evolução</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O processo de empacotar, documentar e publicar o plugin — mais o roadmap do que a v2 adiciona: configuração por projeto, integração com CI e novas personas.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Shipar é diferente de "funciona na minha máquina". O processo de publicação revela problemas de documentação e configuração que o desenvolvimento não revela.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Plugin packaging, documentação de instalação, changelog, v2 roadmap.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-3.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">2.4</span>
+          <span class="text-xs text-neutral-500">~40 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📊 O que Isso nos Deu</h3>
+        <p class="text-neutral-400 text-sm">Antes e depois do processo incremental — bugs capturados, qualidade comparada e o custo real de construir sobre camadas não verificadas.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🔄</span>
+            <div><span class="font-medium">O plugin antes e depois do safety pass</span><span class="text-neutral-500 text-sm ml-2">— comparação concreta</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Comparação direta do código antes e depois do Prompt 07: o que mudou, quais caminhos de erro foram adicionados, quais validações faltavam.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Ver o delta concreto torna o valor do safety pass tangível. Abstrações sobre "qualidade" não convencem — diffs convencem.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Diff analysis, before/after comparison, safety pass delta, code quality metrics.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🐛</span>
+            <div><span class="font-medium">Bugs capturados pelo processo</span><span class="text-neutral-500 text-sm ml-2">— não pela revisão manual</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Bugs reais encontrados durante a construção incremental que não teriam sido encontrados com um único prompt: race conditions, edge cases de estado e falhas de timeout.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cada bug tem um "quando foi introduzido" e um "quando foi encontrado". O processo incremental comprime essa janela para zero.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Bug detection timing, race conditions, state corruption bugs, early detection value.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">💥</span>
+            <div><span class="font-medium">O que teria dado errado com um único prompt</span><span class="text-neutral-500 text-sm ml-2">— cenários de falha</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Análise dos problemas que surgiriam se todo o Claudex fosse solicitado em um único prompt gigante: inconsistências de arquitetura, falta de verificação entre componentes e bugs não detectados.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Entender os riscos do "one-shot" é o que motiva a disciplina incremental. Sem isso, o processo parece burocracia desnecessária.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">One-shot risks, context collapse, unverified assumptions, architectural drift.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">⚖️</span>
+            <div><span class="font-medium">Comparação: um prompt vs. sete</span><span class="text-neutral-500 text-sm ml-2">— qualidade do código gerado</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Comparação lado a lado de código gerado por um único prompt versus código gerado por sete prompts incrementais — em termos de consistência, edge case coverage e manutenibilidade.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Dados concretos importam mais que argumentos teóricos. Ver o código gerado lado a lado elimina a dúvida sobre se o processo adiciona valor real.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Code quality comparison, incremental vs one-shot, consistency metrics, maintainability score.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">💸</span>
+            <div><span class="font-medium">O custo real de construir sobre camadas não verificadas</span><span class="text-neutral-500 text-sm ml-2">— technical debt precoce</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O custo de detectar um bug nas camadas superiores (que depende de uma camada incorreta) versus detectá-lo na própria camada: reescrita em cascata, risco de regressão e tempo perdido.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O custo de correção cresce exponencialmente com a distância entre introdução e detecção. Verificar cada camada é uma decisão econômica, não uma preferência estética.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Cascade rewrite cost, detection distance, technical debt accumulation, cost of late detection.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">➡️</span>
+            <div><span class="font-medium">CTA: Quer usar o Claudex na prática?</span><span class="text-neutral-500 text-sm ml-2">— do builder ao usuário</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A ponte entre o curso de construção e o curso de uso: quem entendeu como o Claudex foi construído está pronto para operar ele com muito mais consciência.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Usar uma ferramenta que você construiu (ou entende em profundidade) é fundamentalmente diferente de usar uma caixa preta. Você sabe o que fazer quando algo dá errado.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Builder's advantage, deep usage, debugging with internals knowledge, curso-claudex.html.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-4.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">2.5</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🗺️ A Metodologia</h3>
+        <p class="text-neutral-400 text-sm">Os padrões extraídos da construção do Claudex — como pensar qualquer build incremental com Claude Code.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">📋</span>
+            <div><span class="font-medium">Sempre especificar antes de codificar</span><span class="text-neutral-500 text-sm ml-2">— o papel do SPEC</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O padrão de escrever um documento de especificação antes de qualquer prompt de código — definindo componentes, responsabilidades e invariantes explicitamente.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem SPEC, o modelo improvisa arquitetura em cada prompt. Com SPEC, cada prompt é uma implementação de uma decisão já tomada.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">SPEC-first, architecture before code, explicit invariants, design document como primeiro artefato.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🚪</span>
+            <div><span class="font-medium">Fail-open primeiro, lógica depois</span><span class="text-neutral-500 text-sm ml-2">— segurança antes de funcionalidade</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O princípio de implementar a propriedade de fail-open no primeiro prompt, antes de qualquer lógica de negócio, garantindo que falhas nunca bloqueiam o trabalho.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Adicionar fail-open retroativamente é muito mais arriscado — você precisa auditar cada caminho de erro novo. Começa com fail-open é uma decisão de arquitetura.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Safety-first architecture, fail-open como invariante, defensive by default, graceful degradation.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🧱</span>
+            <div><span class="font-medium">Verificar camada por camada antes de subir</span><span class="text-neutral-500 text-sm ml-2">— o princípio da solidez</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A disciplina de testar e verificar cada camada antes de iniciar o prompt seguinte — nunca construir sobre fundação não verificada.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Bugs se multiplicam quando camadas incorretas recebem camadas adicionais. A verificação por camada mantém o custo de correção constante.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Layer verification, test before next prompt, solid foundation principle, incremental validation.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📂</span>
+            <div><span class="font-medium">Estado explícito, nunca implícito</span><span class="text-neutral-500 text-sm ml-2">— visibilidade do sistema</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O padrão de persistir todo estado relevante em arquivo, nunca em variáveis de processo ou memória — tornando o estado inspecionável e recuperável.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Estado implícito é invisível para debug e desaparece em crashes. Estado explícito em arquivo sobrevive a reinicializações e pode ser inspecionado com qualquer editor.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Explicit state, file-based persistence, observable state, crash recovery.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🔬</span>
+            <div><span class="font-medium">Testar cada primitivo isolado antes de compor</span><span class="text-neutral-500 text-sm ml-2">— composição confiável</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A prática de verificar cada função primitiva (escrita atômica, leitura de estado, CAS) de forma isolada antes de compor o sistema completo.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Falhas em composições são difíceis de atribuir. Primitivos verificados individualmente tornam falhas de composição isoláveis imediatamente.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Unit isolation, primitive testing, bottom-up verification, composition safety.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🗂️</span>
+            <div><span class="font-medium">Como sequenciar qualquer projeto em prompts</span><span class="text-neutral-500 text-sm ml-2">— a receita universal</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A sequência universal: SPEC → Scaffold → Estado → Lógica principal → Utilitários → Safety pass — aplicável a qualquer projeto, não apenas ao Claudex.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Esta sequência não é específica do Claudex — é um framework reutilizável para qualquer sistema que precisa ser confiável em produção.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Universal build sequence, SPEC→Scaffold→State→Logic→Utils→Safety, reusable framework.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-5.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">2.6</span>
+          <span class="text-xs text-neutral-500">~60 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🚀 Seu Próximo Projeto</h3>
+        <p class="text-neutral-400 text-sm">Projeto guiado: construa seu próprio hook de linting aplicando a metodologia incremental — do SPEC ao safety pass.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">📝</span>
+            <div><span class="font-medium">Como escrever o SPEC do seu projeto</span><span class="text-neutral-500 text-sm ml-2">— template e exemplos</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Template completo de SPEC com todas as seções obrigatórias, aplicado ao hook de linting como exemplo concreto.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um SPEC ruim leva a prompts que reimaginam a arquitetura. Um bom SPEC torna cada prompt uma implementação mecânica de uma decisão já tomada.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">SPEC template, seções obrigatórias, exemplo de linting hook, decisões de design explícitas.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">✂️</span>
+            <div><span class="font-medium">Como quebrar em prompts incrementais</span><span class="text-neutral-500 text-sm ml-2">— granularidade certa</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A heurística para decidir a granularidade de cada prompt: um prompt por camada verificável, sem misturar concerns que precisam de verificação independente.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts grandes demais perdem a vantagem incremental. Prompts pequenos demais criam fricção sem benefício. A granularidade certa é uma skill que se aprende na prática.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt granularity, one concern per prompt, verification boundary, decomposition heuristics.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🏗️</span>
+            <div><span class="font-medium">Scaffold → Estado → Lógica → Segurança</span><span class="text-neutral-500 text-sm ml-2">— sequência obrigatória</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A sequência obrigatória de construção: (1) scaffold com fail-open, (2) máquina de estados, (3) lógica principal, (4) safety pass — nesta ordem, sempre.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Inverter a ordem cria problemas: estado adicionado depois quebra a lógica existente, safety pass no início não tem o que auditar. A ordem não é arbitrária.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Build order dependency, scaffold-first, state before logic, safety as final pass.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">✅</span>
+            <div><span class="font-medium">Como validar cada etapa antes de avançar</span><span class="text-neutral-500 text-sm ml-2">— critérios de pronto</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Critérios explícitos de "pronto para o próximo prompt" — o que testar, o que verificar manualmente e quais propriedades confirmar antes de avançar.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem critérios explícitos, "funciona" é subjetivo. Critérios explícitos tornam a verificação sistemática e reproduzível.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Definition of done, layer acceptance criteria, verification checklist, gate conditions.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🎭</span>
+            <div><span class="font-medium">Aplicando as personas do Claudex no seu contexto</span><span class="text-neutral-500 text-sm ml-2">— adaptação das perspectivas</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Como adaptar o conceito de personas de revisão (engenheiro, segurança, SRE) para outros domínios: frontend, data pipeline, CLI tool ou API.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">As personas do Claudex são específicas para um plugin de revisão de código. Outros sistemas precisam de perspectivas diferentes — mas o mecanismo é o mesmo.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Domain-specific personas, perspective mapping, review coverage, multi-angle analysis.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🏁</span>
+            <div><span class="font-medium">Checklist de segurança antes de shipar</span><span class="text-neutral-500 text-sm ml-2">— o safety pass universal</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-purple-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Checklist universal de segurança para qualquer plugin Claude Code: fail-open verificado, estado atômico, todos os exit codes testados, mensagens de erro claras, documentação de instalação completa.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um checklist transforma o safety pass de exercício subjetivo em processo auditável. Cada item tem um teste concreto associado.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pre-ship checklist, safety audit, exit code coverage, documentation completeness.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-6.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- NAVEGACAO -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+        ← Voltar ao Início
+      </a>
+      <a href="modulo-2-1.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+        Começar pelo Módulo 2.1 →
+      </a>
+    </div>
+  </main>
+
+  <!-- MODALS -->
+  <div id="modal-2-1" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">2.1</span>
+          <span class="font-semibold">📐 O Blueprint</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-2" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">2.2</span>
+          <span class="font-semibold">🧠 O Cérebro do Loop</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-3" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">2.3</span>
+          <span class="font-semibold">🛡️ Acabamento e Segurança</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-4" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">2.4</span>
+          <span class="font-semibold">📊 O que Isso nos Deu</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-5" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">2.5</span>
+          <span class="font-semibold">🗺️ A Metodologia</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-6" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">2.6</span>
+          <span class="font-semibold">🚀 Seu Próximo Projeto</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia com Claude Code — 2026 · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

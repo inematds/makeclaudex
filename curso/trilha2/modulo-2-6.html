@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.6 — Seu Próximo Projeto | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Construindo</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400 transition-colors">Trilha 2</a>
+      <span>/</span>
+      <span class="text-neutral-300">Módulo 2.6</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
+    <div class="flex items-center space-x-3 mb-4">
+      <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30 uppercase tracking-wider">MÓDULO 2.6</span>
+      <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">Último Módulo</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-4">Seu Próximo Projeto</h1>
+    <p class="text-lg text-neutral-400 max-w-2xl mb-8">Projeto guiado: construa um PreToolUse hook de linting aplicando exatamente a metodologia que você acabou de aprender. Do SPEC ao safety pass, passo a passo.</p>
+
+    <!-- STATS GRID -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-purple-400">6</div>
+        <div class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">Tópicos</div>
+      </div>
+      <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-purple-400">60</div>
+        <div class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">Minutos</div>
+      </div>
+      <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-purple-400">Inter</div>
+        <div class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">Nível</div>
+      </div>
+      <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-purple-400">Proj.</div>
+        <div class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">Tipo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-700 rounded-2xl p-8">
+      <div class="flex items-start space-x-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Como escrever o SPEC do seu projeto</h2>
+          <p class="text-neutral-400 mt-1">Template e exemplo real do linting hook</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">Antes de escrever o primeiro prompt de código do seu linting hook, você precisa de um SPEC. Não uma descrição informal — um documento com as cinco seções que forçam decisões de design. Abaixo está um SPEC plausível para o hook que vamos construir: um PreToolUse hook que intercede em operações de escrita de arquivo e bloqueia saves quando o linter reporta erros.</p>
+
+      <!-- BLOCO DE CÓDIGO COM SPEC -->
+      <div class="rounded-xl overflow-hidden border border-dark-600 mb-6">
+        <div class="flex items-center justify-between px-4 py-2 bg-dark-700 border-b border-dark-600">
+          <span class="text-xs font-mono text-neutral-400">lint-hook/SPEC.md</span>
+          <span class="text-xs text-purple-400 font-medium">SPEC do Linting Hook</span>
+        </div>
+        <pre class="bg-dark-900 p-5 text-sm font-mono text-neutral-300 overflow-x-auto leading-relaxed"><code><span class="text-purple-400"># Lint Hook — SPEC</span>
+
+<span class="text-neutral-500">## 1. Propósito</span>
+PreToolUse hook para Claude Code que intercepta operações Write
+e Edit, roda o linter configurado no projeto e bloqueia a
+operação se o linter reportar erros com exit code não-zero.
+
+<span class="text-neutral-500">NÃO faz:</span> auto-fix, formatação, type-checking, ou qualquer
+modificação nos arquivos.
+
+<span class="text-neutral-500">## 2. Componentes</span>
+lint-hook.sh   — o hook principal (registrado em hooks.json)
+lint-config.json — qual linter rodar e em qual diretório
+state/         — diretório de estado de sessão (opcional)
+
+<span class="text-neutral-500">## 3. Interfaces</span>
+Entrada: stdin JSON do Claude Code com tool_name e tool_input
+Linter:  chamado via shell com o caminho do arquivo extraído
+Saída:   exit 0 (permitir) ou exit 1 + JSON com decision/reason
+
+<span class="text-neutral-500">## 4. Invariantes</span>
+- Qualquer falha interna → exit 0 (fail-open obrigatório)
+- Nunca modificar o arquivo sendo avaliado
+- Nunca bloquear se o linter não estiver instalado
+- Mensagem de bloqueio deve incluir o output do linter
+
+<span class="text-neutral-500">## 5. Sequência de Build</span>
+Prompt 1: Scaffold + fail-open (hook existe, registra, exit 0)
+Prompt 2: Linter integration (extrai path, chama linter, parseia)
+Prompt 3: State (log de runs, métricas simples por sessão)
+Prompt 4: Safety pass (ERR trap, timeouts, edge cases)</code></pre>
+      </div>
+
+      <!-- DICA PRÁTICA -->
+      <div class="rounded-xl p-6 bg-primary/10 border border-primary/40">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="text-primary font-bold text-sm uppercase tracking-wider">Dica Prática</span>
+        </div>
+        <h3 class="text-lg font-bold text-neutral-100 mb-3">As 5 perguntas que todo SPEC deve responder</h3>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 text-primary font-bold text-sm mt-0.5">Q1</span>
+            <span class="text-neutral-300 text-sm"><span class="font-semibold text-neutral-200">O que este sistema faz em uma frase?</span> Se você não consegue responder em uma frase, o escopo está indefinido.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 text-primary font-bold text-sm mt-0.5">Q2</span>
+            <span class="text-neutral-300 text-sm"><span class="font-semibold text-neutral-200">O que ele deliberadamente não faz?</span> Limites de responsabilidade são tão importantes quanto a responsabilidade em si.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 text-primary font-bold text-sm mt-0.5">Q3</span>
+            <span class="text-neutral-300 text-sm"><span class="font-semibold text-neutral-200">Quais são as interfaces com o mundo externo?</span> O que entra, o que sai, quais sistemas externos são chamados.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 text-primary font-bold text-sm mt-0.5">Q4</span>
+            <span class="text-neutral-300 text-sm"><span class="font-semibold text-neutral-200">O que deve ser sempre verdade?</span> As invariantes que nenhum estado do sistema pode violar.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 text-primary font-bold text-sm mt-0.5">Q5</span>
+            <span class="text-neutral-300 text-sm"><span class="font-semibold text-neutral-200">Em qual ordem os componentes vão ser construídos?</span> A sequência que garante que cada camada pode ser verificada antes da próxima.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-700 rounded-2xl p-8">
+      <div class="flex items-start space-x-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Como quebrar em prompts incrementais</h2>
+          <p class="text-neutral-400 mt-1">Granularidade certa para o linting hook</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">O linting hook pode ser construído em 4 prompts. Cada prompt adiciona exatamente uma responsabilidade e produz algo verificável antes do próximo começar. A tentação é juntar tudo em um prompt grande — resistir a isso é a disciplina central da metodologia.</p>
+
+      <!-- DECOMPOSIÇÃO EM 4 PROMPTS -->
+      <div class="rounded-xl p-6 bg-dark-700 border border-dark-600 mb-6">
+        <div class="text-purple-400 font-bold text-sm uppercase tracking-wider mb-5">Decomposição do Linting Hook em 4 Prompts</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <div class="flex items-center space-x-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-sm">1</span>
+              <span class="font-semibold text-neutral-200">Scaffold</span>
+            </div>
+            <p class="text-neutral-400 text-sm">Hook shell criado, registrado em <code class="bg-dark-700 px-1 py-0.5 rounded text-purple-400 text-xs">hooks.json</code>, retorna exit 0 incondicionalmente, loga no stderr que foi chamado.</p>
+            <div class="mt-3 text-xs text-emerald-400 font-medium">Verificação: Claude Code chama o hook e não quebra</div>
+          </div>
+          <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <div class="flex items-center space-x-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-sm">2</span>
+              <span class="font-semibold text-neutral-200">Linter Integration</span>
+            </div>
+            <p class="text-neutral-400 text-sm">Extrai o path do arquivo do JSON de entrada, chama o linter configurado, parseia o exit code e retorna exit 1 com reason quando há erros.</p>
+            <div class="mt-3 text-xs text-emerald-400 font-medium">Verificação: hook bloqueia arquivo com erros, permite arquivo limpo</div>
+          </div>
+          <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <div class="flex items-center space-x-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-sm">3</span>
+              <span class="font-semibold text-neutral-200">State</span>
+            </div>
+            <p class="text-neutral-400 text-sm">Log de runs em <code class="bg-dark-700 px-1 py-0.5 rounded text-purple-400 text-xs">state/runs.json</code> com timestamp, arquivo avaliado e resultado. Escrita atômica.</p>
+            <div class="mt-3 text-xs text-emerald-400 font-medium">Verificação: runs.json existe e é JSON válido após cada execução</div>
+          </div>
+          <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <div class="flex items-center space-x-3 mb-3">
+              <span class="w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-sm">4</span>
+              <span class="font-semibold text-neutral-200">Safety</span>
+            </div>
+            <p class="text-neutral-400 text-sm">ERR trap, timeout no linter (não travar se linter pendurar), validação de path, fail-open explícito em todos os branches de erro.</p>
+            <div class="mt-3 text-xs text-emerald-400 font-medium">Verificação: hook fail-open em crash simulado, linter timeout</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAZER vs EVITAR -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="rounded-xl p-5 bg-emerald-900/20 border border-emerald-500/30">
+          <div class="text-emerald-400 font-bold text-sm uppercase tracking-wider mb-3">Granularidade Certa</div>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Um prompt por camada verificável independentemente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Cada prompt tem critério de "pronto" explícito</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>O output de cada prompt cabe em uma revisão de código razoável</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Você consegue explicar o que cada prompt adiciona em uma frase</span></li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5 bg-red-900/20 border border-red-500/30">
+          <div class="text-red-400 font-bold text-sm uppercase tracking-wider mb-3">Granularidade Errada</div>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Prompt tão grande que produz código difícil de revisar de uma vez</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Prompt tão pequeno que o output não é verificável isoladamente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Linter integration + safety no mesmo prompt (caminhos de erro não testados antes)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>"Cria o hook completo com logging, linting, timeouts e safety" em um prompt</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- DICA PRÁTICA -->
+      <div class="rounded-xl p-6 bg-primary/10 border border-primary/40">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="text-primary font-bold text-sm uppercase tracking-wider">Dica Prática</span>
+        </div>
+        <h3 class="text-lg font-bold text-neutral-100 mb-2">Regra prática: um prompt por camada verificável</h3>
+        <p class="text-neutral-300 text-sm leading-relaxed">Antes de escrever um prompt, pergunte: "Se o Claude entregar exatamente isso e nada mais, consigo verificar que está correto sem executar o sistema inteiro?" Se a resposta for não, o prompt está grande demais ou as responsabilidades estão misturadas.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-700 rounded-2xl p-8">
+      <div class="flex items-start space-x-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Scaffold → Estado → Lógica → Segurança</h2>
+          <p class="text-neutral-400 mt-1">A sequência obrigatória em ação</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">Cada prompt do linting hook segue a sequência da metodologia. O scaffold existe para carregar. O estado existe para persistir. A lógica existe para decidir. A segurança existe para garantir que tudo isso funciona mesmo quando algo dá errado. Aqui está o Prompt 1 completo que você vai enviar para o Claude.</p>
+
+      <!-- TIMELINE -->
+      <div class="rounded-xl p-6 bg-dark-700 border border-dark-600 mb-6">
+        <div class="text-purple-400 font-bold text-sm uppercase tracking-wider mb-5">Timeline dos 4 Prompts — O que cada um adiciona</div>
+        <div class="space-y-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+              <span class="text-purple-400 font-bold text-sm">1</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <div class="font-semibold text-neutral-200 mb-1">Scaffold — Hook existe e não quebra nada</div>
+              <div class="text-neutral-400 text-sm">Cria <code class="bg-dark-800 px-1 rounded text-purple-400">lint-hook.sh</code>, registra em <code class="bg-dark-800 px-1 rounded text-purple-400">hooks.json</code> como PreToolUse para Write/Edit, loga no stderr, retorna exit 0 sempre. Sistema operacional do Claude Code não muda.</div>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+              <span class="text-blue-400 font-bold text-sm">2</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <div class="font-semibold text-neutral-200 mb-1">Linter Integration — Hook sabe o que bloquear</div>
+              <div class="text-neutral-400 text-sm">Parseia stdin JSON para extrair o path do arquivo, chama linter com timeout básico, retorna exit 1 + JSON <code class="bg-dark-800 px-1 rounded text-purple-400">&#123;"decision":"block","reason":"..."&#125;</code> quando linter falha.</div>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+              <span class="text-emerald-400 font-bold text-sm">3</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <div class="font-semibold text-neutral-200 mb-1">State — Hook lembra o que aconteceu</div>
+              <div class="text-neutral-400 text-sm">Adiciona log atômico em <code class="bg-dark-800 px-1 rounded text-purple-400">state/runs.json</code> com timestamp, arquivo e resultado. Falha de I/O no log não bloqueia a execução principal.</div>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center">
+              <span class="text-red-400 font-bold text-sm">4</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <div class="font-semibold text-neutral-200 mb-1">Safety — Hook não trava quando algo falha</div>
+              <div class="text-neutral-400 text-sm">ERR trap global → exit 0, timeout no linter via <code class="bg-dark-800 px-1 rounded text-purple-400">timeout 10s</code>, validação de path (não vazio, não relativo perigoso), fail-open explícito em todos os branches.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOX DE ALERTA -->
+      <div class="rounded-xl p-6 bg-red-900/20 border border-red-500/30 mb-6">
+        <div class="flex items-start space-x-3">
+          <span class="text-red-400 text-xl flex-shrink-0">⚠</span>
+          <div>
+            <h3 class="text-lg font-bold text-red-300 mb-2">O que quebra quando a ordem é invertida</h3>
+            <p class="text-neutral-300 text-sm leading-relaxed">Se você adicionar o linter integration antes de verificar o scaffold, um bug de registro no <code class="bg-dark-800 px-1 rounded text-purple-400">hooks.json</code> vai parecer um bug de parsing de JSON. Se você adicionar o state antes de verificar a linter integration, um bug de escrita atômica vai parecer um bug de bloqueio. A ordem importa porque cada camada adiciona variáveis de debug — e você só quer uma variável nova por vez.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROMPT 1 COMO EXEMPLO -->
+      <div class="rounded-xl overflow-hidden border border-dark-600">
+        <div class="flex items-center justify-between px-4 py-2 bg-dark-700 border-b border-dark-600">
+          <span class="text-xs font-mono text-neutral-400">Prompt 1 — Scaffold com fail-open</span>
+          <span class="text-xs text-purple-400 font-medium">Envie exatamente isso</span>
+        </div>
+        <pre class="bg-dark-900 p-5 text-sm font-mono text-neutral-300 overflow-x-auto leading-relaxed"><code>Leia o SPEC.md neste diretório antes de começar.
+
+Crie um PreToolUse hook chamado lint-hook.sh que intercepta
+operações Write e Edit do Claude Code.
+
+Por agora, o hook deve apenas:
+1. Existir como shell script executável
+2. Ser registrado em .claude/hooks.json para os tool names
+   "write_file" e "str_replace_editor"
+3. Logar no stderr que foi chamado, com timestamp e o
+   tool_name recebido no stdin
+4. Retornar exit 0 sempre, sem nenhuma lógica adicional
+
+Fail-open é obrigatório: nenhum caminho de erro deve
+retornar exit 1 ou deixar o processo travado.
+
+Ao terminar, mostre como verificar que o hook está sendo
+chamado corretamente pelo Claude Code.</code></pre>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-700 rounded-2xl p-8">
+      <div class="flex items-start space-x-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Como validar cada etapa antes de avançar</h2>
+          <p class="text-neutral-400 mt-1">Critérios de pronto para cada prompt do linting hook</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">Critérios de "pronto" precisam ser definidos antes de executar o prompt, não depois. Se você define depois, você vai racionalizá-los para aceitar o que foi entregue. Abaixo estão os critérios para cada um dos 4 prompts do linting hook.</p>
+
+      <!-- CRITÉRIOS POR PROMPT -->
+      <div class="space-y-4 mb-6">
+        <div class="rounded-xl p-5 bg-dark-700 border border-dark-600">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">1</span>
+            <span class="font-semibold text-neutral-200">Scaffold — Critérios de Pronto</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">lint-hook.sh existe e é executável (<code class="text-purple-400 text-xs">chmod +x</code> verificado)</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">hooks.json registra o hook para Write e Edit</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Claude Code não quebrou — operações de escrita funcionam</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Log no stderr aparece quando Claude escreve um arquivo</span></label>
+          </div>
+        </div>
+
+        <div class="rounded-xl p-5 bg-dark-700 border border-dark-600">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-xs">2</span>
+            <span class="font-semibold text-neutral-200">Linter Integration — Critérios de Pronto</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Arquivo com erros de lint → Claude recebe bloqueio com mensagem clara</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Arquivo sem erros → operação permitida, exit 0</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Linter não instalado → exit 0 (fail-open), não bloqueio</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">JSON de resposta válido quando há bloqueio (decision + reason)</span></label>
+          </div>
+        </div>
+
+        <div class="rounded-xl p-5 bg-dark-700 border border-dark-600">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs">3</span>
+            <span class="font-semibold text-neutral-200">State — Critérios de Pronto</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">state/runs.json existe após a primeira execução</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">runs.json é JSON válido (verificar com jq)</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Falha de escrita no log não afeta o resultado da operação</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Runs acumulam corretamente entre execuções (append, não overwrite)</span></label>
+          </div>
+        </div>
+
+        <div class="rounded-xl p-5 bg-dark-700 border border-dark-600">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="w-6 h-6 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-xs">4</span>
+            <span class="font-semibold text-neutral-200">Safety — Critérios de Pronto</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Kill -9 no hook mid-execution → Claude Code não fica bloqueado</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">Linter que demora >10s → timeout, fail-open, não trava</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">stdin JSON malformado → fail-open, mensagem no stderr</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 flex-shrink-0 rounded"><span class="text-neutral-400 text-sm">ERR trap verificado: erro não tratado → exit 0</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAZER vs EVITAR -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="rounded-xl p-5 bg-emerald-900/20 border border-emerald-500/30">
+          <div class="text-emerald-400 font-bold text-sm uppercase tracking-wider mb-3">Critérios Explícitos</div>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Critérios definidos antes do prompt ser enviado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Critérios testáveis: sim/não, não "parece funcionar"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Caminho de erro explicitamente coberto em cada critério</span></li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5 bg-red-900/20 border border-red-500/30">
+          <div class="text-red-400 font-bold text-sm uppercase tracking-wider mb-3">"Parece funcionar"</div>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Avançar porque o Claude disse que funcionou</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Testar só com o arquivo que você sabe que vai funcionar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">✗</span><span>Deixar o safety pass "pra depois que tudo estiver pronto"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-700 rounded-2xl p-8">
+      <div class="flex items-start space-x-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Aplicando as personas do Claudex no seu contexto</h2>
+          <p class="text-neutral-400 mt-1">Adaptando as perspectivas para o linting hook e outros projetos</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">O Claudex usa personas para diversificar a perspectiva durante as revisões — cada persona traz um conjunto diferente de preocupações. Para o linting hook, as personas relevantes não são as mesmas do Claudex. A adaptação é parte do processo.</p>
+
+      <!-- TABELA DE PERSONAS -->
+      <div class="rounded-xl overflow-hidden border border-dark-700 mb-6">
+        <div class="bg-dark-700 px-4 py-3 border-b border-dark-600">
+          <span class="text-purple-400 font-bold text-sm uppercase tracking-wider">Personas do Claudex vs. Adaptadas para o Linting Hook</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-dark-700">
+              <tr>
+                <th class="text-left px-4 py-3 text-neutral-400 font-medium">Persona no Claudex</th>
+                <th class="text-left px-4 py-3 text-neutral-400 font-medium">Preocupação</th>
+                <th class="text-left px-4 py-3 text-neutral-400 font-medium">Adaptação para Linting Hook</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-dark-700">
+              <tr class="bg-dark-800">
+                <td class="px-4 py-3 text-purple-400 font-medium">Codex AI reviewer</td>
+                <td class="px-4 py-3 text-neutral-400">Qualidade do código gerado</td>
+                <td class="px-4 py-3 text-neutral-300">Developer experience — o hook é chato de usar? Mensagens de erro são claras?</td>
+              </tr>
+              <tr class="bg-dark-800/50">
+                <td class="px-4 py-3 text-purple-400 font-medium">Loop orchestrator</td>
+                <td class="px-4 py-3 text-neutral-400">Continuidade e progresso</td>
+                <td class="px-4 py-3 text-neutral-300">CI/CD operator — o hook funciona em pipelines automatizados, não só localmente?</td>
+              </tr>
+              <tr class="bg-dark-800">
+                <td class="px-4 py-3 text-purple-400 font-medium">Safety guardian</td>
+                <td class="px-4 py-3 text-neutral-400">Não travar o usuário</td>
+                <td class="px-4 py-3 text-neutral-300">Security reviewer — o hook pode ser enganado por paths maliciosos?</td>
+              </tr>
+              <tr class="bg-dark-800/50">
+                <td class="px-4 py-3 text-purple-400 font-medium">Token economist</td>
+                <td class="px-4 py-3 text-neutral-400">Eficiência do contexto</td>
+                <td class="px-4 py-3 text-neutral-300">Performance — o linter roda em milissegundos ou segundos? Afeta o flow do usuário?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DICA PRÁTICA -->
+      <div class="rounded-xl p-6 bg-primary/10 border border-primary/40">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="text-primary font-bold text-sm uppercase tracking-wider">Dica Prática</span>
+        </div>
+        <h3 class="text-lg font-bold text-neutral-100 mb-3">Como escrever system prompts de persona para seu domínio</h3>
+        <p class="text-neutral-400 text-sm mb-4">Para cada persona, escreva um system prompt que responda: quem é essa persona, o que ela mais teme, o que ela mais valoriza, e quais perguntas ela sempre faz. Exemplo para "Developer Experience" no contexto do linting hook:</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <div class="text-neutral-500 mb-2"># system prompt da persona Developer Experience</div>
+          <div class="leading-relaxed">Você é um desenvolvedor sênior que usa este hook todos os dias.<br>
+Você teme: mensagens de erro crípticas, falsos positivos, latência.<br>
+Você valoriza: clareza, velocidade, previsibilidade.<br>
+Você sempre pergunta: "Se eu não soubesse nada sobre linting, <br>
+conseguiria entender esta mensagem e corrigir o problema?"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-700 rounded-2xl p-8">
+      <div class="flex items-start space-x-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Checklist de segurança antes de shipar</h2>
+          <p class="text-neutral-400 mt-1">O safety pass universal — aplica a qualquer hook</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">Antes de colocar qualquer hook em uso real — seja o linting hook, seja o seu próximo projeto — passe por este checklist sistematicamente. Não como formalidade, mas como verificação real. Cada item representa uma categoria de bug que já foi encontrada em hooks em produção.</p>
+
+      <!-- CHECKLIST COMPLETO -->
+      <div class="rounded-xl p-6 bg-dark-700 border border-dark-600 mb-6">
+        <div class="text-purple-400 font-bold text-sm uppercase tracking-wider mb-5">Safety Pass — 12 Itens Obrigatórios</div>
+
+        <div class="space-y-2">
+          <!-- Fail-open -->
+          <div class="text-xs font-bold text-neutral-500 uppercase tracking-wider pt-2 pb-1">Fail-open</div>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Todos os caminhos de erro explicitamente terminam em exit 0 ou estão documentados como exit 1 intencional</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">ERR trap global configurado: qualquer erro não tratado → exit 0 com mensagem no stderr</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Crash recovery testado: kill -9 durante execução não deixa Claude Code bloqueado</span>
+          </label>
+
+          <!-- Exit codes -->
+          <div class="text-xs font-bold text-neutral-500 uppercase tracking-wider pt-3 pb-1">Exit Codes</div>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Todos os exit codes possíveis testados manualmente: 0 (permitir), 1 (bloquear), crash</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Exit 1 sempre acompanhado de JSON válido com decision + reason (Claude precisa do reason)</span>
+          </label>
+
+          <!-- Estado -->
+          <div class="text-xs font-bold text-neutral-500 uppercase tracking-wider pt-3 pb-1">Estado e I/O</div>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Escritas de estado são atômicas (tmp + mv) — crash durante escrita não corrompe estado anterior</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Falha de I/O (disco cheio, permissão negada) → fail-open, não crash ou bloqueio</span>
+          </label>
+
+          <!-- Mensagens -->
+          <div class="text-xs font-bold text-neutral-500 uppercase tracking-wider pt-3 pb-1">Mensagens de Erro</div>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Mensagens de bloqueio são claras e acionáveis — o usuário sabe o que fazer para corrigir</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Output do sistema externo (linter, script) incluído no reason quando relevante</span>
+          </label>
+
+          <!-- Operacional -->
+          <div class="text-xs font-bold text-neutral-500 uppercase tracking-wider pt-3 pb-1">Operacional</div>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Documentação de instalação: requisitos, como registrar, como desinstalar</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Dependências externas verificadas graciosamente — não instalado → fail-open com aviso</span>
+          </label>
+          <label class="flex items-start space-x-3 cursor-pointer group p-2 rounded-lg hover:bg-dark-600 transition-colors">
+            <input type="checkbox" class="mt-0.5 flex-shrink-0 rounded border-dark-500 bg-dark-800 text-purple-500 focus:ring-purple-500">
+            <span class="text-neutral-300 text-sm group-hover:text-neutral-200">Timeout em todas as chamadas externas — nenhum processo externo pode travar o hook indefinidamente</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- BOX DE CONCLUSÃO DA TRILHA -->
+      <div class="rounded-xl p-8 bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 border border-purple-500/40">
+        <div class="text-center mb-6">
+          <div class="text-4xl mb-4">🏗️</div>
+          <h3 class="text-2xl font-bold text-neutral-100 mb-2">Você terminou a Trilha 2</h3>
+          <p class="text-neutral-400 text-lg">Agora você sabe como construir.</p>
+        </div>
+
+        <div class="max-w-lg mx-auto text-neutral-300 text-sm leading-relaxed mb-6 text-center">
+          Você viu os 7 prompts que construíram o Claudex, extraiu os princípios que tornam esse tipo de construção confiável, e aplicou a metodologia a um projeto novo. Essa sequência — SPEC, scaffold, estado, lógica, utils, safety — é um framework que funciona para qualquer sistema com estado persistente e caminhos de erro.
+        </div>
+
+        <div class="bg-dark-800 rounded-xl p-5 border border-purple-500/20 mb-6">
+          <div class="text-purple-400 font-bold text-sm uppercase tracking-wider mb-3">Explore os build_prompts completos</div>
+          <p class="text-neutral-400 text-sm leading-relaxed mb-3">Os 7 prompts reais que construíram o Claudex estão no repositório. Não são rascunhos — são os prompts que produziram o código que você usou. Leia-os em ordem, compare com o que foi construído, e use como referência para seus próximos projetos.</p>
+          <div class="bg-dark-900 rounded-lg p-3 font-mono text-sm text-neutral-300">
+            <span class="text-neutral-500"># no repositório makeclaudex:</span><br>
+            ls build_prompts/<br>
+            <span class="text-neutral-500"># 01_scaffold.md → 07_safety_pass.md</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="https://github.com" target="_blank" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-colors text-sm">
+            Ver build_prompts no repositório
+          </a>
+          <a href="index.html" class="px-5 py-2.5 rounded-xl bg-dark-700 hover:bg-dark-600 text-neutral-300 hover:text-neutral-100 font-semibold transition-colors border border-dark-600 text-sm">
+            Revisitar a Trilha 2
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="bg-gradient-to-br from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-2xl p-8">
+      <h2 class="text-2xl font-bold text-neutral-100 mb-6">Resumo do Módulo 2.6</h2>
+      <p class="text-neutral-400 mb-6">O que você aplicou neste projeto guiado:</p>
+
+      <div class="space-y-3 mb-8">
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 rounded border-dark-600 bg-dark-700 text-purple-500 focus:ring-purple-500 flex-shrink-0">
+          <span class="text-neutral-300 group-hover:text-neutral-200 transition-colors">SPEC escrito antes do código — 5 seções, decisões de design registradas</span>
+        </label>
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 rounded border-dark-600 bg-dark-700 text-purple-500 focus:ring-purple-500 flex-shrink-0">
+          <span class="text-neutral-300 group-hover:text-neutral-200 transition-colors">4 prompts com granularidade certa — cada um verificável independentemente</span>
+        </label>
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 rounded border-dark-600 bg-dark-700 text-purple-500 focus:ring-purple-500 flex-shrink-0">
+          <span class="text-neutral-300 group-hover:text-neutral-200 transition-colors">Sequência Scaffold→Integration→State→Safety respeitada</span>
+        </label>
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 rounded border-dark-600 bg-dark-700 text-purple-500 focus:ring-purple-500 flex-shrink-0">
+          <span class="text-neutral-300 group-hover:text-neutral-200 transition-colors">Critérios de pronto definidos antes de cada prompt</span>
+        </label>
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 rounded border-dark-600 bg-dark-700 text-purple-500 focus:ring-purple-500 flex-shrink-0">
+          <span class="text-neutral-300 group-hover:text-neutral-200 transition-colors">Personas adaptadas para o domínio do projeto</span>
+        </label>
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <input type="checkbox" class="mt-1 rounded border-dark-600 bg-dark-700 text-purple-500 focus:ring-purple-500 flex-shrink-0">
+          <span class="text-neutral-300 group-hover:text-neutral-200 transition-colors">Safety pass completo — 12 itens verificados antes de shipar</span>
+        </label>
+      </div>
+
+      <!-- NAVEGAÇÃO -->
+      <div class="flex flex-wrap items-center gap-3 justify-start">
+        <a href="modulo-2-5.html" class="px-5 py-2.5 rounded-xl bg-dark-700 hover:bg-dark-600 text-neutral-300 hover:text-neutral-100 font-semibold transition-colors border border-dark-600 text-sm">
+          ← Módulo 2.5
+        </a>
+        <a href="index.html" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-colors text-sm">
+          ← Voltar à Trilha
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-700 bg-dark-800 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-neutral-400 text-sm">
+          <span class="font-semibold text-neutral-300">Engenharia com Claude Code</span> — Curso prático
+        </div>
+        <div class="flex items-center space-x-4 text-sm">
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 font-medium transition-colors">INEMA.CLUB</a>
+          <span class="text-neutral-600">·</span>
+          <a href="index.html" class="text-neutral-400 hover:text-purple-400 transition-colors">Trilha 2</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

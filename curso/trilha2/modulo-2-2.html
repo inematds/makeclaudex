@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.2 — O Cérebro do Loop | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode - Base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - Purple T3 */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
+
+    /* Light mode - Remover gradientes */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - Cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - Nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Code block */
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Construindo</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-purple-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400 transition-colors">Trilha 2</a>
+      <span>/</span>
+      <span class="text-purple-400 font-medium">Módulo 2.2</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-purple-500/20 text-purple-400 border border-purple-500/30">
+        MÓDULO 2.2
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      O Cérebro do Loop: <span class="text-purple-400">Lifecycle, Findings e Sumarização</span>
+    </h1>
+    <!-- Stats -->
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">📚</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p>
+          <p class="text-sm font-bold text-neutral-100">7</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">⏱️</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p>
+          <p class="text-sm font-bold text-neutral-100">60</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">🎯</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p>
+          <p class="text-sm font-bold text-neutral-100">Intermediário</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">🔧</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p>
+          <p class="text-sm font-bold text-neutral-100">Prático</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Prompt 03 — Stop Hook Lifecycle: BLOCK vs APPROVE</h2>
+          <p class="text-neutral-400 text-sm mt-1">Substituindo o stub pelo cérebro real do sistema</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Prompt 03 é o maior salto do projeto: o hook sai de stub incondicional para o engine que orquestra todo o ciclo de vida do Claudex. Cada fase produz uma decisão diferente — algumas aprovam silenciosamente, outras bloqueiam com instruções detalhadas para Claude. A máquina de estados testada no Prompt 02 finalmente ganha um cérebro.
+      </p>
+
+      <!-- O que muda -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal: BLOCK como instrução</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          O Stop hook não é apenas um porteiro (deixa passar / não deixa). Quando retorna BLOCK, ele entrega um <code class="bg-dark-700 px-1 py-0.5 rounded">reason</code> que o Claude Code mostra a Claude como instrução. É um canal de comunicação unidirecional do hook para Claude, com conteúdo Markdown estruturado.
+        </p>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># Approve: turno termina normalmente
+{"decision": "approve"}
+
+# Block: Claude precisa agir antes de encerrar
+{"decision": "block", "reason": "### Claudex round 1 of 3\n\nRun the reviewer:\n\`\`\`bash\nbash .claude/claudex/20240101-120000-abc123-runner.sh\n\`\`\`\n\nThen read findings from: ..."}</code></pre>
+      </div>
+
+      <!-- O Prompt Real -->
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">O Prompt Real (Cole no Claude Code)</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">03_stop_hook_lifecycle.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Replace the fail-open stub in `plugins/claudex/hooks/stop-hook.sh`
+with the real lifecycle engine. Read `SPEC.md` for the phase table.
+
+Build:
+
+1. **Helpers at the top.** `log()` appends to `.claude/claudex/log`
+   with UTC timestamp. `approve(reason)` logs and prints
+   `{"decision":"approve"}`. `block(reason)` logs the first 80 chars,
+   JSON-escapes the reason via `python3 -c 'import sys, json;
+   print(json.dumps(sys.stdin.read()))'` with a sed-based fallback if
+   python3 is missing, then prints `{"decision":"block","reason":...}`.
+
+2. **ERR trap unconditional.** First active line of the script.
+   Catches anything not explicitly handled and fails open.
+
+3. **Source state-helpers.sh** (or fail-open if it's missing).
+
+4. **Find the active loop.** If none, approve. If the review_id format
+   is invalid, remove the bad state file and approve.
+
+5. **Read state fields.** mode, phase, round, max_rounds,
+   decision_signal, topic, repo_root, started_at_epoch.
+
+6. **cwd validation.** If `repo_root` differs from current `pwd`,
+   fail open with a log line.
+
+7. **Validate numerics.** Garbage `round` or `max_rounds` falls back
+   to 1 / max-default.
+
+8. **`write_runner_script` helper.** Builds a self-contained bash script
+   at `.claude/claudex/&lt;id&gt;-runner.sh`. The script writes the prompt to
+   a heredoc with `&lt;&lt;'PROMPTEOF'` (single quotes — critical: prevents
+   shell expansion) then runs
+   `codex exec --dangerously-bypass-approvals-and-sandbox &lt; $PROMPT_FILE`.
+
+9. **Plan mode case statement.**
+   - `drafting`: if PLAN.md missing → BLOCK. If present → CAS to
+     `reviewing`, build round-1 Codex prompt, write runner. BLOCK with
+     instructions to run the runner, read findings, and either revise
+     PLAN.md or call `mark-done.sh`.
+   - `reviewing`: if `decision_signal=no-material-findings` → CAS to
+     `done`, cleanup, approve. Otherwise increment round; if new round
+     &gt; max_rounds, set `decision_signal=max-reached`, CAS to `done`,
+     cleanup, approve. Otherwise: write next-round runner, BLOCK.
+   - `done`: cleanup, approve.
+   - any other phase: log unknown phase, approve.
+
+10. **Review mode case statement.**
+    - `reviewing`: write runner for diff review. CAS to `done`. BLOCK.
+    - `done`: cleanup, approve.
+
+11. **`plugins/claudex/scripts/mark-done.sh`.** Takes review_id arg.
+    Sets `decision_signal=no-material-findings` and `phase=done`.
+
+12. **Smoke test** at `plugins/claudex/tests/smoke-test.sh`. Spins up
+    temp git repo. Fires hook, asserts BLOCK. Asserts state=reviewing.
+    Asserts runner written. Fires again, asserts round increment. Asserts
+    mark-done + hook fire = approve. Asserts concurrent-loop refusal.
+
+Run both test scripts. Tell me the counts.
+
+**Do NOT actually call Codex in any test.**</code></pre>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <p class="text-emerald-400 font-semibold text-sm uppercase tracking-wide mb-3">Fazer</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>JSON-escapar o reason do BLOCK via python3 (fallback sed)</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>ERR trap na primeira linha ativa, antes de qualquer import</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Usar <code>&lt;&lt;'PROMPTEOF'</code> com aspas simples no heredoc</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Validar numerics com fallback antes de usar em aritmética</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <p class="text-red-400 font-semibold text-sm uppercase tracking-wide mb-3">Evitar</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Interpolação de variáveis dentro do heredoc do prompt</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Testar com Codex real no smoke-test (lento e flaky)</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Continuar sem verificar que o runner foi criado</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Usar echo sem -n para JSON (newlines quebram o parse)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Como o Hook Controla Cada Fase</h2>
+          <p class="text-neutral-400 text-sm mt-1">Lógica de transição e decisões por estado</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O hook é acionado no mesmo evento — Stop (fim de turno de Claude) — mas o que ele faz depende completamente da fase atual registrada no state file. Cada fase tem uma decisão principal e uma condição de transição diferente.
+      </p>
+
+      <!-- Tabela de fases -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl overflow-hidden mb-6">
+        <div class="grid grid-cols-3 gap-0 text-xs font-semibold uppercase tracking-wide text-neutral-500 bg-dark-600 px-4 py-2">
+          <span>Fase</span>
+          <span>Quem Age</span>
+          <span>Hook Faz</span>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-purple-400 font-mono">drafting</span>
+            <span class="text-neutral-300">Claude escreve PLAN.md</span>
+            <span class="text-neutral-400 text-xs">Verifica arquivo → CAS para reviewing → escreve runner → BLOCK com instruções</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-purple-400 font-mono">reviewing</span>
+            <span class="text-neutral-300">Claude roda runner e lê findings</span>
+            <span class="text-neutral-400 text-xs">Se no-material-findings → summarizing. Se max → summarizing. Else → incrementa round, novo runner, BLOCK</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-purple-400 font-mono">summarizing</span>
+            <span class="text-neutral-300">Claude imprime o resumo</span>
+            <span class="text-neutral-400 text-xs">CAS para done → limpa runner/lock → APPROVE silencioso</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-purple-400 font-mono">done</span>
+            <span class="text-neutral-300">Terminal</span>
+            <span class="text-neutral-400 text-xs">Limpa artefatos restantes → APPROVE</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-purple-400 font-mono">cancelled / errored</span>
+            <span class="text-neutral-300">Terminal</span>
+            <span class="text-neutral-400 text-xs">APPROVE imediato</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados: canais de comunicação -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔍</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Os 4 Canais de Comunicação</span>
+        </div>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <div class="flex gap-3">
+            <span class="text-blue-400 font-semibold flex-shrink-0">Hook → Claude</span>
+            <span class="text-neutral-400">stdout JSON: <code class="bg-dark-700 px-1 py-0.5 rounded">{"decision":"block","reason":"..."}</code></span>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-blue-400 font-semibold flex-shrink-0">Claude → Codex</span>
+            <span class="text-neutral-400">runner script com prompt via heredoc; <code class="bg-dark-700 px-1 py-0.5 rounded">codex exec --dangerously-bypass-approvals-and-sandbox</code></span>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-blue-400 font-semibold flex-shrink-0">Codex → Claude</span>
+            <span class="text-neutral-400">stdout do runner (transcript completo) + <code class="bg-dark-700 px-1 py-0.5 rounded">findings-round-N.md</code> (bullets limpos)</span>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-blue-400 font-semibold flex-shrink-0">Claude → Hook</span>
+            <span class="text-neutral-400">mutações no state file (<code class="bg-dark-700 px-1 py-0.5 rounded">mark-done.sh</code> seta <code class="bg-dark-700 px-1 py-0.5 rounded">decision_signal=no-material-findings</code>)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Claude nunca sabe diretamente qual fase está ativa — ele só vê o que o hook diz. O hook lê o state file e decide o que instrucionar Claude a fazer. Isso é intencional: o hook é o único agente que tem visão completa do estado. Claude age como executor das instruções do hook.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Runner Script: Como Claude Delega para o Codex</h2>
+          <p class="text-neutral-400 text-sm mt-1">Geração dinâmica de scripts para invocação do Codex</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O runner script é um dos mecanismos mais elegantes do Claudex. Em vez de Claude chamar o Codex diretamente (o que criaria problemas de permissão e rastreabilidade), o hook gera um shell script autocontido que Claude pode inspecionar e executar. O script encapsula o prompt como heredoc com aspas simples — proteção crítica contra expansão de variáveis.
+      </p>
+
+      <!-- Como funciona -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">Estrutura do Runner Script</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code>#!/usr/bin/env bash
+# Claudex runner — Round 1 of 3 (Senior-engineer review)
+# Generated: 2024-01-15T12:00:00Z
+
+set -euo pipefail
+
+PROMPT_FILE=".claude/claudex/20240115-120000-abc123-prompt.txt"
+
+# ASPAS SIMPLES: impede expansão de $variáveis dentro do heredoc
+cat &gt; "$PROMPT_FILE" &lt;&lt;'PROMPTEOF'
+You are a skeptical senior engineer reviewing PLAN.md.
+
+[PERSONA STANZA]
+
+Review PLAN.md in the current directory. Focus on:
+- Design flaws and broken assumptions
+- Missing edge cases
+...
+
+Write findings to .claude/claudex/20240115-120000-abc123/findings-round-1.md
+PROMPTEOF
+
+codex exec --dangerously-bypass-approvals-and-sandbox &lt; "$PROMPT_FILE"</code></pre>
+      </div>
+
+      <!-- Por que heredoc com aspas simples é crítico -->
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-400 text-lg">⚠️</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Detalhe Crítico: Aspas Simples no Heredoc</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          A diferença entre <code class="bg-dark-700 px-1.5 py-0.5 rounded">&lt;&lt;PROMPTEOF</code> e <code class="bg-dark-700 px-1.5 py-0.5 rounded">&lt;&lt;'PROMPTEOF'</code> é enorme. Sem aspas, o shell expande <code class="bg-dark-700 px-1.5 py-0.5 rounded">$variáveis</code>, backticks e <code class="bg-dark-700 px-1.5 py-0.5 rounded">\n</code> dentro do prompt. Com aspas simples, o conteúdo é literal.
+        </p>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O prompt do Codex pode conter coisas como <code class="bg-dark-700 px-1.5 py-0.5 rounded">$PATH</code>, <code class="bg-dark-700 px-1.5 py-0.5 rounded">${variable}</code> ou expressões com backticks como exemplos de código. Sem aspas simples, o shell tentaria expandir tudo isso ao gerar o arquivo, corrompendo o prompt.
+        </p>
+      </div>
+
+      <!-- Dados sobre a arquitetura -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Por Que Não Chamar Codex Diretamente</span>
+        </div>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Rastreabilidade:</strong> o runner script fica em disco — Claude (e o usuário) pode inspecioná-lo antes de executar</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Isolamento:</strong> o hook não precisa ser um processo pai do Codex — Claude executa o script em seu próprio contexto</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Depurabilidade:</strong> em caso de falha, Claude pode re-executar o runner manualmente ou inspecionar o arquivo de prompt</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Permissões:</strong> Claude já tem permissão para rodar bash; não precisa de permissão especial para subprocessos do hook</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Prompt 04 — Extração de Findings para Economizar Tokens</h2>
+          <p class="text-neutral-400 text-sm mt-1">Por que Claude não deve ler o transcript completo do Codex</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Field testing revelou um problema severo: o Codex gerava transcrições de 30.000+ tokens por rodada. Claude tentando ler esse output completo a cada rodada esgotava a janela de contexto rapidamente. O Prompt 04 resolve isso adicionando um segundo artefato de output: um arquivo de findings compacto com bullets estruturados que Claude lê ao invés do transcript.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">O Formato dos Findings</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># Round 1 findings
+
+## High
+- Falta validação de entrada no endpoint /api/plan (adicionar schema)
+- Race condition em concurrent writes do PLAN.md (usar file lock)
+
+## Medium
+- Sem tratamento de timeout no Codex runner (adicionar timeout 300s)
+- CHANGELOG section não tem formato padronizado (definir template)
+
+## Low
+- Comentários desatualizados em state-helpers.sh (atualizar inline)</code></pre>
+        <p class="text-neutral-300 text-sm mt-3">
+          Se não há findings materiais, o arquivo contém exatamente: <code class="bg-dark-700 px-1.5 py-0.5 rounded">No substantive findings.</code> — sinal explícito para o hook.
+        </p>
+      </div>
+
+      <!-- O Prompt Real -->
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">O Prompt Real (Cole no Claude Code)</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">04_findings_and_personas.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Two changes, both additive:
+
+## A. Findings file extraction
+
+Field testing showed Claude was burning context reading 30k+ token
+Codex transcripts every round. Have Codex also write a clean small
+bullet summary that Claude reads instead.
+
+1. Update the round-N Codex prompt in `stop-hook.sh` to include:
+
+   &gt; CRITICAL OUTPUT REQUIREMENT: After your full analysis, write a
+   clean summary of just the findings (severity + one-line description
+   + recommendation) to the file `&lt;findings_path&gt;`. Use this exact
+   format: `# Round N findings\n\n## High\n- &lt;description&gt;
+   (&lt;recommendation&gt;)\n...`. If no material findings, write exactly
+   `# Round N findings\n\nNo substantive findings.`
+
+2. The hook constructs the findings path as
+   `.claude/claudex/&lt;review_id&gt;/findings-round-&lt;round&gt;.md`.
+   Pre-create the per-review subfolder.
+
+3. The BLOCK message tells Claude: "When Codex finishes, read the
+   clean findings summary from `&lt;path&gt;`. Skip the full transcript
+   unless you need extra context."
+
+4. Add `claudex_findings_severity_counts &lt;file&gt;` to `state-helpers.sh`.
+   Returns `high=N medium=N low=N` by counting bullet lines under each
+   `## Severity` header. Return `high=0 medium=0 low=0` if missing.
+
+5. On round 2+, prepend a "**Previous round:** high=N medium=N low=N"
+   line to the BLOCK so Claude sees the trajectory.
+
+## B. Persona rotation
+
+1. Create `plugins/claudex/scripts/personas.sh`. Two functions:
+   - `claudex_persona_for_round &lt;N&gt;` — multi-paragraph stanza.
+     Round 1: skeptical senior engineer.
+     Round 2: security and data-integrity reviewer.
+     Round 3+: ops / SRE reviewer (round 4+ deepens prior angles).
+   - `claudex_persona_label_for_round &lt;N&gt;` — one-line label.
+
+2. In `write_runner_script`, source personas.sh and prepend the persona
+   stanza to the Codex prompt. Pass the round number through.
+
+3. Update BLOCK headers to: `### Claudex round N of M, &lt;persona-label&gt;`.
+
+## Tests
+
+Update tests to assert persona stanzas differ per round, severity
+counts work correctly, and round-2 BLOCK contains "Previous round" line.
+
+Run both test scripts. Send the counts.</code></pre>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          A instrução no BLOCK não proíbe Claude de ler o transcript — "Skip the full transcript unless you need extra context." Claude é instruído a começar pelo arquivo compacto, mas pode ir ao transcript se precisar de detalhes. O sistema confia no julgamento de Claude, mas fornece o caminho mais econômico como padrão.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Rotação de Personas por Rodada</h2>
+          <p class="text-neutral-400 text-sm mt-1">Engenheiro, segurança e SRE — cada rodada ataca de um ângulo diferente</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Um dos insights mais valiosos do Claudex é que revisões repetidas pelo mesmo "reviewer" ficam redundantes rapidamente. A rotação de personas força cada rodada a atacar o PLAN.md a partir de uma perspectiva fundamentalmente diferente, cobrindo blind spots que um único revisor nunca encontraria.
+      </p>
+
+      <!-- As três personas -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-sm">1</div>
+            <div>
+              <p class="text-neutral-100 font-semibold">Rodada 1 — Engenheiro Sênior Cético</p>
+              <p class="text-blue-400 text-xs font-mono">claudex_persona_label_for_round 1 → "Senior-engineer review"</p>
+            </div>
+          </div>
+          <p class="text-neutral-400 text-sm leading-relaxed">
+            Caça falhas de design e suposições quebradas. "Essa arquitetura vai escalar para 10x o volume? Esse fluxo tem um happy path mas o que acontece quando o third-party falha no meio?" Foco em design-level, não em implementação.
+          </p>
+        </div>
+
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-sm">2</div>
+            <div>
+              <p class="text-neutral-100 font-semibold">Rodada 2 — Revisor de Segurança e Integridade de Dados</p>
+              <p class="text-red-400 text-xs font-mono">claudex_persona_label_for_round 2 → "Security and data-integrity review"</p>
+            </div>
+          </div>
+          <p class="text-neutral-400 text-sm leading-relaxed">
+            Foca em auth, validação, race conditions, recuperação de falha parcial, secrets, audit trails, perda de dados. "Esse endpoint está autenticado? O que acontece se o banco falhar no meio de uma transação de duas tabelas?"
+          </p>
+        </div>
+
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm">3+</div>
+            <div>
+              <p class="text-neutral-100 font-semibold">Rodada 3+ — Ops e SRE</p>
+              <p class="text-emerald-400 text-xs font-mono">claudex_persona_label_for_round 3 → "Ops and SRE review"</p>
+            </div>
+          </div>
+          <p class="text-neutral-400 text-sm leading-relaxed">
+            Rollback safety, observabilidade, rollout gradual, version skew, ergonomia on-call. Rodada 4+ aprofunda os ângulos anteriores em vez de repetir o mesmo checklist.
+          </p>
+        </div>
+      </div>
+
+      <!-- O efeito cumulativo -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">O Efeito Cumulativo</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          O header do BLOCK na rodada 2 mostra o resultado da rodada anterior: <strong class="text-neutral-200">"Previous round: high=2 medium=4 low=1"</strong>. Claude e o usuário acompanham a trajetória — se a contagem de high vai de 2 para 0, o plano melhorou. Se ficou estável, o plano pode estar chegando em seu teto.
+        </p>
+        <p class="text-neutral-400 text-sm">
+          Personas ficam em <code class="bg-dark-700 px-1.5 py-0.5 rounded">scripts/personas.sh</code> como um arquivo sourceável separado. Isso permite testar as personas em isolamento e facilita customização futura sem tocar na lógica do hook.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Prompt 05 — A Fase de Sumarização</h2>
+          <p class="text-neutral-400 text-sm mt-1">O loop não pode terminar em silêncio</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Sem a fase <code class="bg-dark-700 px-1.5 py-0.5 rounded text-purple-400">summarizing</code>, o loop terminaria com um silêncio desconcertante: o turno de Claude simplesmente para e o usuário fica sem saber se o loop terminou, se algo deu errado, ou quantas rodadas rodaram. O Prompt 05 adiciona uma fase de output explícito que garante que o usuário vê um resumo antes do approve final.
+      </p>
+
+      <!-- Mudança de lifecycle -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Mudança de Ciclo de Vida</p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-red-400 text-xs font-mono bg-red-900/20 px-2 py-1 rounded">ANTES</span>
+            <span class="text-sm text-neutral-300 font-mono">drafting → reviewing → <span class="text-red-400">done</span></span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-emerald-400 text-xs font-mono bg-emerald-900/20 px-2 py-1 rounded">DEPOIS</span>
+            <span class="text-sm text-neutral-300 font-mono">drafting → reviewing → <span class="text-purple-400">summarizing</span> → done</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- O Prompt Real -->
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">O Prompt Real (Cole no Claude Code)</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">05_summary_phase.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Add a new phase between `reviewing` and `done` called `summarizing`.
+The job of this phase is to BLOCK once with a final summary so Claude
+prints it to the user, then approve on the next fire.
+
+## Hook changes (`stop-hook.sh`)
+
+1. Add a `build_rounds_table &lt;final_round&gt;` helper. Iterates 1..N,
+   reads each findings file, calls `claudex_findings_severity_counts`,
+   pairs with persona label. Returns lines like:
+   - Round 1 (Senior-engineer review): high=2 medium=4 low=1
+   - Round 2 (Security and data-integrity review): high=2 medium=2 low=0
+
+2. In the `reviewing` case, when `decision_signal=no-material-findings`:
+   - CAS `reviewing → summarizing` (NOT to `done`).
+   - Build the summary using `build_rounds_table` and `format_elapsed`.
+   - BLOCK with `### Claudex plan loop complete ✓`. Body: rounds run,
+     total time, findings table, then "**Print this summary to the user
+     so they see the loop landed.** Then end your turn. The Stop hook
+     will allow exit cleanly."
+
+3. When round overflow:
+   - Set `decision_signal=max-reached`.
+   - CAS `reviewing → summarizing`.
+   - BLOCK with `### Claudex plan loop stopped at max rounds (round N
+     of M)`. Include rounds table and three options: revise manually,
+     re-run with `--rounds N` larger, accept as known-incomplete.
+
+4. Add a `summarizing` case:
+   - CAS `summarizing → done`.
+   - Cleanup runner, prompt file, lockfile.
+   - Log elapsed time.
+   - Approve.
+
+## `mark-done.sh` change
+
+Change to **only** set `decision_signal=no-material-findings` and
+**leave `phase=reviewing`**. The next hook fire will see the signal
+and drive the summarizing path.
+
+## Format gotcha
+
+Bash double-quoted heredoc strings interpret backticks as command
+substitution. Escape every backtick in the summary BLOCK: `\``.
+Test that the JSON output parses cleanly with python3.
+
+Run all tests, send counts.</code></pre>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          A fase <code class="bg-dark-700 px-1.5 py-0.5 rounded">summarizing</code> é considerada "ativa" pelo <code class="bg-dark-700 px-1.5 py-0.5 rounded">start-loop.sh</code> — você não pode iniciar um novo loop enquanto ela está em andamento. Isso é correto: o loop ainda não terminou do ponto de vista do usuário, mesmo que o trabalho principal tenha sido concluído.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 7 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">7</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Por Que o Loop Não Pode Terminar em Silêncio</h2>
+          <p class="text-neutral-400 text-sm mt-1">Saídas explícitas como princípio de design de sistemas autônomos</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Sistemas autônomos que terminam em silêncio são sistemas que os usuários param de confiar. Quando um processo que deveria levar 5-15 minutos simplesmente para sem nenhum output visível, o usuário naturalmente assume que algo deu errado — mesmo que tudo tenha funcionado perfeitamente. A fase de sumarização não é um enfeite: é um contrato de confiança com o usuário.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">O Que o Resumo Final Contém</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code>### Claudex plan loop complete ✓
+
+**Rounds completed:** 3 of 3
+**Total time:** 4m 32s
+
+**Findings by round:**
+- Round 1 (Senior-engineer review): high=2 medium=4 low=1
+- Round 2 (Security and data-integrity review): high=1 medium=2 low=0
+- Round 3 (Ops and SRE review): high=0 medium=1 low=2
+
+**Print this summary to the user so they see the loop landed.**
+Then end your turn. The Stop hook will allow exit cleanly.</code></pre>
+      </div>
+
+      <!-- Os dois caminhos para summarizing -->
+      <div class="grid sm:grid-cols-2 gap-4 mb-5">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <p class="text-emerald-400 font-semibold text-sm mb-2">Caminho Happy: No-findings</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Claude chama <code class="bg-dark-700 px-1 py-0.5 rounded">mark-done.sh</code> quando não há findings materiais. O hook na próxima invocação CAS para <code class="bg-dark-700 px-1 py-0.5 rounded">summarizing</code> e bloqueia com o resumo completo.</p>
+        </div>
+        <div class="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-5">
+          <p class="text-yellow-400 font-semibold text-sm mb-2">Caminho de Overflow: Max Rounds</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">O hook detecta que <code class="bg-dark-700 px-1 py-0.5 rounded">round + 1 &gt; max_rounds</code>. CAS para <code class="bg-dark-700 px-1 py-0.5 rounded">summarizing</code> com <code class="bg-dark-700 px-1 py-0.5 rounded">decision_signal=max-reached</code>. O resumo mostra 3 opções ao usuário.</p>
+        </div>
+      </div>
+
+      <!-- O gotcha dos backticks -->
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-400 text-lg">⚠️</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Gotcha: Backticks em Heredocs Double-Quoted</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O BLOCK do resumo usa triple-backticks para fencing de código Markdown. Mas o heredoc que gera o JSON do BLOCK usa aspas duplas, então o bash interpreta backticks como command substitution. Cada backtick no conteúdo do BLOCK precisa ser escapado: <code class="bg-dark-700 px-1.5 py-0.5 rounded">\`\`\`</code> em vez de <code class="bg-dark-700 px-1.5 py-0.5 rounded">```</code>.
+        </p>
+      </div>
+
+      <!-- Dados: princípios de design de sistemas autônomos -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Princípios de Sistemas Autônomos com Output Explícito</span>
+        </div>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Progresso visível:</strong> o usuário deve saber que o sistema está trabalhando, não apenas que está rodando</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Completion explícita:</strong> um sistema que terminou deve dizer que terminou, não apenas parar de responder</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Outcomes mensuráveis:</strong> o resumo mostra high/medium/low por rodada — o usuário pode avaliar o valor entregue</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span><strong class="text-neutral-200">Próximos passos:</strong> quando o loop para no max, o resumo já fornece as 3 opções de ação — o usuário não precisa adivinhar</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-2xl p-8">
+      <h2 class="text-2xl font-bold text-neutral-100 mb-6">Resumo do Módulo 2.2</h2>
+
+      <div class="grid sm:grid-cols-2 gap-6 mb-8">
+        <div>
+          <p class="text-purple-400 font-semibold text-sm uppercase tracking-wide mb-3">O que você aprendeu</p>
+          <ul class="space-y-2">
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Como o Prompt 03 transforma o stub em lifecycle engine real com BLOCK/APPROVE por fase</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>A tabela completa de fases e o que o hook faz em cada uma</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Como o runner script funciona e por que heredoc com aspas simples é crítico</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>O Prompt 04: findings compactos para economizar contexto e rotação de personas</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>As 3 personas (engenheiro, segurança, SRE) e como elas cobrem ângulos diferentes</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>O Prompt 05: fase de sumarização como contrato de confiança com o usuário</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Por que sistemas autônomos precisam de saídas explícitas, não silenciosas</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-purple-400 font-semibold text-sm uppercase tracking-wide mb-3">Próximos passos</p>
+          <p class="text-neutral-300 text-sm leading-relaxed mb-4">
+            No Módulo 2.3, você vai ver os Prompts 06 e 07 — os comandos utilitários (<code class="bg-dark-700 px-1.5 py-0.5 rounded">/claudex:status</code>, <code class="bg-dark-700 px-1.5 py-0.5 rounded">/claudex:doctor</code>, <code class="bg-dark-700 px-1.5 py-0.5 rounded">/claudex:cancel</code>, <code class="bg-dark-700 px-1.5 py-0.5 rounded">/claudex:rollback</code>) e o safety pass final que torna cada error path fail-open.
+          </p>
+          <p class="text-neutral-400 text-xs">
+            Nesse ponto, os 5 prompts que você viu (01–05) já constroem um Claudex completamente funcional. Os prompts 06 e 07 adicionam ergonomia e robustez de produção.
+          </p>
+        </div>
+      </div>
+
+      <!-- Botões de navegação -->
+      <div class="flex flex-wrap gap-3 justify-start">
+        <a href="modulo-2-1.html" class="flex items-center gap-2 px-5 py-2.5 bg-dark-700 hover:bg-dark-600 border border-dark-600 rounded-xl text-sm font-semibold text-neutral-300 transition-colors">
+          <span>←</span>
+          <span>Módulo 2.1</span>
+        </a>
+        <a href="modulo-2-3.html" class="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-500 rounded-xl text-sm font-semibold text-white transition-colors">
+          <span>Próximo Módulo</span>
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl">🏗️</span>
+          <div>
+            <p class="font-bold text-neutral-100 text-sm">Engenharia com Claude Code</p>
+            <p class="text-neutral-500 text-xs">Trilha 2 — Construindo o Claudex</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 text-sm text-neutral-500">
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 transition-colors font-medium">INEMA.CLUB</a>
+          <span>•</span>
+          <span>Módulo 2.2 de 6</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

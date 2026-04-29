@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.3 — Acabamento e Segurança | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    pre { white-space: pre-wrap; word-break: break-word; }
+    code { font-family: 'Courier New', monospace; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-500 hidden sm:inline">|</span>
+          <span class="text-sky-400 font-semibold hidden sm:inline">INEMA.CLUB</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 transition-colors">
+            Trilha 2
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+            <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-4 h-4 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-8">
+      <a href="../../index.html" class="hover:text-purple-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400 transition-colors">Trilha 2</a>
+      <span>/</span>
+      <span class="text-purple-400 font-medium">Módulo 2.3</span>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider bg-purple-500/20 text-purple-400 border border-purple-500/30 uppercase">
+          MÓDULO 2.3
+        </span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-4">
+        Acabamento e Segurança
+      </h1>
+      <p class="text-lg text-neutral-400 mb-6">
+        Os quatro comandos utilitários que tornam o plugin usável no dia a dia — e o safety pass que garante que nenhum erro vai travar o usuário.
+      </p>
+      <!-- Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-500 mt-1">Tópicos</div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">50</div>
+          <div class="text-xs text-neutral-500 mt-1">Minutos</div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">Int.</div>
+          <div class="text-xs text-neutral-500 mt-1">Nível</div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+          <div class="text-2xl font-bold text-purple-400">🔧</div>
+          <div class="text-xs text-neutral-500 mt-1">Prático</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- TÓPICOS -->
+
+    <!-- TÓPICO 1 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Prompt 06 — Os quatro comandos utilitários</h2>
+          <p class="text-neutral-400">O sexto prompt marca a transição do plugin funcional para o plugin usável. O loop já funciona de ponta a ponta — agora é hora de adicionar os quatro comandos que qualquer pessoa vai chamar no terminal real: <code class="text-purple-400 bg-purple-500/10 px-1 rounded">/claudex:status</code>, <code class="text-purple-400 bg-purple-500/10 px-1 rounded">/claudex:doctor</code>, <code class="text-purple-400 bg-purple-500/10 px-1 rounded">/claudex:cancel</code> e <code class="text-purple-400 bg-purple-500/10 px-1 rounded">/claudex:rollback</code>.</p>
+        </div>
+      </div>
+
+      <!-- Box: Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">Conceito Principal</span>
+        </div>
+        <h3 class="text-neutral-100 font-bold mb-2">O prompt real (Prompt 06)</h3>
+        <div class="bg-dark-900 rounded-lg p-4 border border-dark-600">
+          <pre class="text-sm text-neutral-300 leading-relaxed"><code># Prompt 06 — Utility commands
+
+&gt; Loop works end-to-end. Now add the four utility commands
+  that make it usable in real life.
+
+---
+
+Build:
+
+## `/claudex:status`
+plugins/claudex/commands/status.md is a one-liner that runs
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/status.sh". Read-only.
+
+scripts/status.sh:
+- Find the most recent state file (claudex_find_active_loop).
+- Print mode, phase (color-coded: yellow=active, green=done,
+  red=cancelled/errored), round, topic, started_at, elapsed,
+  decision_signal, interview_used, from_draft.
+- Replace lockfile-aliveness check with an "activity" line
+  derived from phase.
+- For each round's findings file, print a line like:
+  round 1   high=2 medium=4 low=1
+- Always exit 0. Do not install an ERR trap.
+
+## `/claudex:doctor`
+One-liner → doctor.sh. Sections with ✓/✗ checks:
+- Shell: bash present, bash 4+ (warn on 3.x)
+- Codex CLI: in PATH + codex --version
+- Optional: python3 (warn-only)
+- State dir: .claude/claudex exists and writable
+- Plugin files: collapse 15 files into 1 line on success
+- Hook fail-open sanity: hook executable, returns approve on empty state
+- Helpers smoke: state-helpers + personas source cleanly
+- Loop hygiene: print whether there's a loop on disk and its phase
+
+## `/claudex:cancel` and `/claudex:rollback`
+cancel-loop.sh: find active loop, set phase=cancelled, remove
+runner/prompt/lock files. Keep state file for audit.
+
+rollback-loop.sh: nuke every state file, lock, runner, prompt,
+and findings folder under .claude/claudex/. Keep .claude/claudex/log.
+Print count of files removed.
+
+## Interview offer in `/claudex:plan`
+Extend plan.md procedure:
+- If $ARGUMENTS is empty, ask user for topic, do NOT run start-loop yet
+- Without --skip-interview, use AskUserQuestion with two options:
+  "Interview me first (Recommended)" / "Just launch the loop"
+- On opt-in, ask three questions (scope, constraints, worry list)
+- Compose enriched topic with ; separators. Pass with --interviewed.
+
+## Tests
+Update smoke-test.sh with sections for started_at_epoch,
+interview_used, --skip-interview, --interviewed flags,
+/claudex:status output, and "no loops" empty-state path.</code></pre>
+        </div>
+      </div>
+
+      <!-- Box: Fazer vs Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Fazer</span>
+          </div>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Manter status.sh read-only (nunca muta estado)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Usar exit 0 sempre em status e doctor</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Manter state file após cancel (para auditoria)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Colapsar 15 arquivos em 1 linha no doctor (sucesso)</li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-red-400 text-lg">✗</span>
+            <span class="text-red-400 font-semibold text-sm uppercase tracking-wider">Evitar</span>
+          </div>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Instalar ERR trap em status.sh ou doctor.sh</li>
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar lockfile para controle de concorrência (a fase faz isso)</li>
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tópico multi-linha no estado YAML (quebra o parser)</li>
+            <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Deletar o log em rollback (manter para debug)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">O /claudex:doctor — diagnóstico completo do plugin</h2>
+          <p class="text-neutral-400">Todo sistema de produção precisa de um comando de diagnóstico. O <code class="text-purple-400 bg-purple-500/10 px-1 rounded">/claudex:doctor</code> não é uma novidade — é uma prática estabelecida (pense em <em>rails doctor</em>, <em>brew doctor</em>). Mas a forma como ele é construído aqui revela muito sobre a filosofia do projeto.</p>
+        </div>
+      </div>
+
+      <!-- Box: Dados/Pesquisa (blue) -->
+      <div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider">Anatomia do doctor.sh</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-neutral-300">
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">01</span>
+              <div><strong class="text-neutral-100">Shell check</strong> — bash presente, versão 4+. Warn em 3.x (macOS default).</div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">02</span>
+              <div><strong class="text-neutral-100">Codex CLI</strong> — está no PATH? Se sim, imprime <code class="text-blue-300 bg-dark-700 px-1 rounded">codex --version</code>.</div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">03</span>
+              <div><strong class="text-neutral-100">Dependências opcionais</strong> — python3 é warn-only, não falha.</div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">04</span>
+              <div><strong class="text-neutral-100">State dir</strong> — <code class="text-blue-300 bg-dark-700 px-1 rounded">.claude/claudex</code> existe e tem permissão de escrita.</div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">05</span>
+              <div><strong class="text-neutral-100">Plugin files</strong> — 15 arquivos esperados. Em sucesso: 1 linha só. Em falha: lista cada um.</div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">06</span>
+              <div><strong class="text-neutral-100">Hook fail-open sanity</strong> — hook é executável e retorna approve em estado vazio.</div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">07</span>
+              <div><strong class="text-neutral-100">Helpers smoke</strong> — state-helpers e personas carregam limpos; personas são distintas.</div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-blue-400 font-bold mt-0.5">08</span>
+              <div><strong class="text-neutral-100">Loop hygiene</strong> — há loop em disco? Em que fase está?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box: Dica Prática (yellow) -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5 mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">💡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wider">Dica Prática</span>
+        </div>
+        <p class="text-sm text-neutral-300">Rode <code class="text-primary bg-dark-700 px-1 rounded">bash plugins/claudex/scripts/doctor.sh</code> dentro de um repositório vazio antes de qualquer deploy. Se o doctor sai 0, o plugin não depende de estado residual da máquina de desenvolvimento — ele é genuinamente portável.</p>
+      </div>
+
+      <!-- Box: Alerta (red) -->
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-400 text-lg">⚠️</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wider">Atenção</span>
+        </div>
+        <p class="text-sm text-neutral-300">Assim como o status.sh, o doctor.sh não instala ERR trap. A função <code class="text-red-300 bg-dark-700 px-1 rounded">claudex_find_active_loop</code> retorna não-zero legitimamente quando não há loops — e um ERR trap transformaria isso num erro assustador na tela do usuário.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">A entrevista de planejamento antes do loop</h2>
+          <p class="text-neutral-400">Uma das adições mais sutis do Prompt 06 é a entrevista interativa no <code class="text-purple-400 bg-purple-500/10 px-1 rounded">/claudex:plan</code>. Em vez de aceitar um tópico cru e disparar o loop imediatamente, o Claude pode primeiro fazer três perguntas estruturadas para enriquecer o contexto de revisão.</p>
+        </div>
+      </div>
+
+      <!-- Box: Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">Como funciona a entrevista</span>
+        </div>
+        <div class="space-y-4 text-sm text-neutral-300">
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">1</span>
+            <div>Se <code class="text-purple-300 bg-dark-700 px-1 rounded">$ARGUMENTS</code> está vazio, o Claude pede o tópico. Ainda não inicia o loop.</div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">2</span>
+            <div>Sem a flag <code class="text-purple-300 bg-dark-700 px-1 rounded">--skip-interview</code>, usa <code class="text-purple-300 bg-dark-700 px-1 rounded">AskUserQuestion</code> com duas opções: <em>"Interview me first (Recommended)"</em> vs. <em>"Just launch the loop"</em>.</div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">3</span>
+            <div>No opt-in, mais três perguntas: escopo, restrições e lista de preocupações — com opções contextualizadas ao tópico.</div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs flex-shrink-0">4</span>
+            <div>As respostas são compostas em um único tópico enriquecido com separadores <code class="text-purple-300 bg-dark-700 px-1 rounded">; </code> (tópicos multi-linha quebram o YAML do state file). O start-loop recebe a flag <code class="text-purple-300 bg-dark-700 px-1 rounded">--interviewed</code> e registra <code class="text-purple-300 bg-dark-700 px-1 rounded">interview_used: true</code>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box: Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">🎯</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wider">Por que isso importa</span>
+        </div>
+        <p class="text-sm text-neutral-300">A entrevista resolve um problema real: quando você diz <em>"revise meu auth module"</em>, o Claude não sabe se você quer focar em performance, segurança ou legibilidade. Três perguntas estruturadas antes do loop produzem resultados muito mais úteis — e o campo <code class="text-primary bg-dark-700 px-1 rounded">interview_used: true</code> no estado permite auditar depois se a entrevista foi feita.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Prompt 07 — O safety pass: auditando cada caminho de erro</h2>
+          <p class="text-neutral-400">O sétimo e último prompt não adiciona novas features. Ele stess-testa cada caminho de erro e garante que o usuário nunca vai ficar preso. Este é o safety pass — a auditoria sistemática das seis primitivas de segurança definidas no SPEC.</p>
+        </div>
+      </div>
+
+      <!-- Box: Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">O prompt real (Prompt 07)</span>
+        </div>
+        <div class="bg-dark-900 rounded-lg p-4 border border-dark-600">
+          <pre class="text-sm text-neutral-300 leading-relaxed"><code># Prompt 07 — Safety pass
+
+&gt; Last prompt. Stress-test every error path and make sure
+  the user is never trapped.
+
+---
+
+Read SPEC.md's "Six safety primitives" section. The hook should
+already have most of these. This pass verifies them and adds
+the missing ones.
+
+## Audit checklist
+
+Walk every code path and confirm:
+
+1. ERR trap. First line of stop-hook.sh after helper definitions
+   installs a trap that returns approve on any error and exits 0.
+   Confirm no path that mutates state runs before the trap.
+
+2. Atomic writes. Every state mutation goes through
+   claudex_state_write or claudex_state_set_field (tmp + rename).
+   No direct &gt; redirects to state files anywhere. Grep to confirm.
+
+3. CAS phase transitions. Every phase field write uses
+   claudex_phase_transition, NOT claudex_state_set_field "phase".
+   Exception: deliberate "force" sites like cancel-loop.sh.
+   Document which sites are which in code comments.
+
+4. Lockfile + PID liveness. claudex_lock_is_active does kill -0.
+   The lockfile is informational only — it doesn't gate concurrency
+   (phase does). Don't load-bear the lock for anything important.
+
+5. Stale loop sweeper. Runs on every start-loop.sh invocation
+   BEFORE the concurrency check. Old completed loops kept on disk
+   for audit are not swept; only files older than CLAUDEX_STALE_MINUTES.
+
+6. cwd validation. Hook reads repo_root from state and fails open
+   if pwd != repo_root.
+
+## New tests
+tests/synthetic-e2e.sh — Real Codex calls. Spins up a throwaway
+repo at /tmp/claudex_synthetic, runs through one full plan-mode
+round end-to-end. Asserts: start-loop produces valid review_id,
+hook BLOCKs with run-runner instructions when PLAN.md is present,
+runner exits 0 with non-empty output, mark-done.sh + final hook
+produces approve and cleans up lockfile, back-to-back loops work.
+
+## README and SAFETY docs
+README.md at repo root + plugins/claudex/docs/SAFETY.md.
+docs/ARCHITECTURE.md (loop lifecycle deep dive).
+docs/V2_DESIGN.md (auto-apply-with-branch-isolation, deferred to v2).
+
+## Final test sweep
+bash plugins/claudex/tests/platform-validation.sh
+bash plugins/claudex/tests/smoke-test.sh
+bash plugins/claudex/tests/synthetic-e2e.sh   # se Codex configurado
+
+If platform + smoke pass, the plugin is shippable.</code></pre>
+        </div>
+      </div>
+
+      <!-- Grid das 6 primitivas -->
+      <div class="bg-dark-800 border border-dark-700 rounded-xl p-6">
+        <h3 class="text-neutral-100 font-bold mb-4 text-lg">As seis primitivas de segurança</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="bg-dark-700 rounded-lg p-4 border border-purple-500/20">
+            <div class="text-purple-400 font-bold text-sm mb-1">1 — ERR trap</div>
+            <p class="text-xs text-neutral-400">Primeira linha do stop-hook.sh instala trap que retorna approve em qualquer erro. Nenhum usuário fica bloqueado por crash do hook.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 border border-purple-500/20">
+            <div class="text-purple-400 font-bold text-sm mb-1">2 — Atomic writes</div>
+            <p class="text-xs text-neutral-400">Toda mutação de estado usa tmp + rename. Zero redirects diretos <code class="text-purple-300">&gt;</code> em arquivos de estado.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 border border-purple-500/20">
+            <div class="text-purple-400 font-bold text-sm mb-1">3 — CAS phase transitions</div>
+            <p class="text-xs text-neutral-400">Compare-And-Swap em toda transição de fase. Exceção documentada: cancel-loop.sh força override deliberadamente.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 border border-purple-500/20">
+            <div class="text-purple-400 font-bold text-sm mb-1">4 — Lockfile + PID liveness</div>
+            <p class="text-xs text-neutral-400">Lock é informacional. A fase controla concorrência. <code class="text-purple-300">kill -0</code> verifica liveness do PID.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 border border-purple-500/20">
+            <div class="text-purple-400 font-bold text-sm mb-1">5 — Stale loop sweeper</div>
+            <p class="text-xs text-neutral-400">Roda no início de cada start-loop.sh. Remove apenas loops mais velhos que CLAUDEX_STALE_MINUTES — loops completos ficam para auditoria.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 border border-purple-500/20">
+            <div class="text-purple-400 font-bold text-sm mb-1">6 — cwd validation</div>
+            <p class="text-xs text-neutral-400">Hook lê repo_root do estado e falha aberto (approve) se o diretório atual não bater. Previne revisão do repositório errado.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Os três níveis de teste: platform, smoke e e2e sintético</h2>
+          <p class="text-neutral-400">O Claudex não tem testes de unidade clássicos — tem três scripts de shell que verificam o sistema em camadas crescentes de integração. Essa é uma escolha deliberada: cada camada pode ser executada independentemente, e a última (synthetic e2e) é opcional porque custa tokens reais.</p>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="bg-dark-800 border border-dark-700 rounded-xl p-6 mb-4">
+        <h3 class="text-neutral-100 font-bold mb-5 text-base">Pirâmide de testes do Claudex</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="flex flex-col items-center">
+              <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">L1</div>
+              <div class="w-px h-8 bg-dark-600 mt-1"></div>
+            </div>
+            <div class="pt-1">
+              <div class="font-semibold text-neutral-100 mb-1">platform-validation.sh</div>
+              <p class="text-sm text-neutral-400">Verifica que o ambiente tem o que o plugin precisa: bash 4+, Codex no PATH, status.sh e doctor.sh rodam sem crash em estado vazio. Zero dependências de estado.</p>
+              <div class="mt-2 inline-block px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Custo: zero tokens</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex flex-col items-center">
+              <div class="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-sm flex-shrink-0">L2</div>
+              <div class="w-px h-8 bg-dark-600 mt-1"></div>
+            </div>
+            <div class="pt-1">
+              <div class="font-semibold text-neutral-100 mb-1">smoke-test.sh</div>
+              <p class="text-sm text-neutral-400">Verifica o estado produzido por start-loop: campos started_at_epoch e interview_used presentes, flags --skip-interview e --interviewed funcionando, /claudex:status imprimindo review_id e fase corretamente.</p>
+              <div class="mt-2 inline-block px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-400 border border-blue-500/30">Custo: zero tokens (mock Codex)</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex flex-col items-center">
+              <div class="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-sm flex-shrink-0">L3</div>
+            </div>
+            <div class="pt-1">
+              <div class="font-semibold text-neutral-100 mb-1">synthetic-e2e.sh</div>
+              <p class="text-sm text-neutral-400">Cria um repositório throwaway em <code class="text-purple-300 bg-dark-700 px-1 rounded">/tmp/claudex_synthetic</code>, roda um ciclo completo com <code class="text-purple-300 bg-dark-700 px-1 rounded">codex exec</code> real, e verifica todas as asserções do fluxo fim-a-fim.</p>
+              <div class="mt-2 inline-block px-2 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400 border border-purple-500/30">Custo: ~25-30k tokens (opcional)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box: Dados -->
+      <div class="bg-dark-800 border border-blue-500/30 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📋</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider">O que o synthetic-e2e verifica</span>
+        </div>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>start-loop produz output e cria um review_id válido</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>O hook BLOQUEIA com instruções run-runner quando PLAN.md está presente</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>O runner script tem o heredoc PROMPTEOF com aspas (previne expansão shell)</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>O runner sai 0, produz output não-vazio, não bate em erros de terminal ou auth</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>mark-done.sh + hook final produzem approve e limpam o lockfile</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>Um segundo start-loop aceita novo loop (back-to-back funciona)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="mb-14">
+      <div class="flex items-start gap-4 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100 mb-2">Como shipar o plugin e o que vem na v2</h2>
+          <p class="text-neutral-400">Com platform + smoke passando, o plugin é shippable. O synthetic e2e confirma integração com o Codex real — mas não é pré-requisito para o sign-off de nível de unidade. E já há um design documentado para a v2.</p>
+        </div>
+      </div>
+
+      <!-- Box: Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">🚀</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wider">Documentação gerada no Prompt 07</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div class="bg-dark-700 rounded-lg p-4">
+            <div class="text-purple-400 font-semibold mb-1">README.md</div>
+            <p class="text-neutral-400">O que o loop faz em inglês simples, quem é o público-alvo, exemplo de terminal.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4">
+            <div class="text-purple-400 font-semibold mb-1">SAFETY.md</div>
+            <p class="text-neutral-400">O que o Claudex faz e NÃO faz, arquivos que toca, expectativa de custo (~25-30k tokens/round, ~75-90k para 3 rounds padrão).</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4">
+            <div class="text-purple-400 font-semibold mb-1">ARCHITECTURE.md</div>
+            <p class="text-neutral-400">Deep dive no ciclo de vida do loop — como as fases se encadeiam, quando o hook intervém.</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4">
+            <div class="text-purple-400 font-semibold mb-1">V2_DESIGN.md</div>
+            <p class="text-neutral-400">Auto-apply com branch isolation — o design que foi deliberadamente adiado para a v2. Documentado, não implementado.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box: Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5 mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">🎯</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wider">O critério de shippable</span>
+        </div>
+        <p class="text-sm text-neutral-300">O SPEC define "shippable" como: platform-validation passa <strong class="text-neutral-100">E</strong> smoke-test passa. O synthetic e2e confirma integração real com o Codex (e custa tokens), mas não é required para o sign-off. Isso é uma decisão de produto — separa o "funciona tecnicamente" do "funciona no mundo real".</p>
+      </div>
+
+      <!-- Box: V2 -->
+      <div class="bg-dark-800 border border-blue-500/30 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔮</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider">O que vem na v2</span>
+        </div>
+        <p class="text-sm text-neutral-400 mb-3">A v1 é read-only por design — o Claudex revisa e sugere, mas nunca aplica automaticamente. A v2 documenta o design de auto-apply com branch isolation:</p>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>Cada round cria uma branch isolada automaticamente</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>O Codex aplica as sugestões de alta severidade sem intervenção manual</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>A branch é aberta como PR para revisão humana — o plugin nunca merge sozinho</li>
+          <li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">→</span>Rollback automático se qualquer teste falhar após aplicação</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="bg-dark-800 border border-purple-500/30 rounded-2xl p-8 mb-10">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-purple-400 text-2xl">✅</span>
+        <h2 class="text-xl font-bold text-neutral-100">Resumo do Módulo 2.3</h2>
+      </div>
+      <p class="text-neutral-400 mb-5">Os dois últimos prompts transformam o plugin funcional em produto shippable:</p>
+      <ul class="space-y-3 mb-8">
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">O Prompt 06 adiciona os 4 comandos utilitários (<code class="text-purple-400">status</code>, <code class="text-purple-400">doctor</code>, <code class="text-purple-400">cancel</code>, <code class="text-purple-400">rollback</code>) e a entrevista interativa de planejamento</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">A regra de ouro: status e doctor nunca instalam ERR trap — <code class="text-purple-400">claudex_find_active_loop</code> retorna não-zero legitimamente</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">O Prompt 07 audita as 6 primitivas de segurança do SPEC: ERR trap, atomic writes, CAS, lockfile, stale sweeper e cwd validation</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">3 níveis de teste: platform (zero tokens) → smoke (zero tokens) → synthetic e2e (~25-30k tokens, opcional)</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+          <span class="text-sm text-neutral-300">Critério de shippable: platform + smoke passando. V2 design documentado em V2_DESIGN.md mas não implementado</span>
+        </li>
+      </ul>
+
+      <!-- Botões de navegação -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-start">
+        <a href="modulo-2-2.html" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-dark-700 hover:bg-dark-600 border border-dark-600 text-neutral-300 hover:text-neutral-100 transition-colors text-sm font-medium">
+          <span>←</span>
+          <span>Módulo 2.2</span>
+        </a>
+        <a href="modulo-2-4.html" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white transition-colors text-sm font-medium">
+          <span>Próximo: Módulo 2.4</span>
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-700 mt-10 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-sm text-neutral-500">
+        Engenharia com Claude Code — <span class="text-sky-400 font-semibold">INEMA.CLUB</span>
+      </div>
+      <div class="text-xs text-neutral-600">Módulo 2.3 — Acabamento e Segurança</div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.1 — O Blueprint | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode - Base */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - Purple T3 */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
+
+    /* Light mode - Remover gradientes */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - Cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - Nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Code block */
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Construindo</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-purple-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400 transition-colors">Trilha 2</a>
+      <span>/</span>
+      <span class="text-purple-400 font-medium">Módulo 2.1</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-purple-500/20 text-purple-400 border border-purple-500/30">
+        MÓDULO 2.1
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      O Blueprint: <span class="text-purple-400">Arquitetura Antes do Código</span>
+    </h1>
+    <!-- Stats -->
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">📚</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p>
+          <p class="text-sm font-bold text-neutral-100">7</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">⏱️</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p>
+          <p class="text-sm font-bold text-neutral-100">50</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">🎯</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p>
+          <p class="text-sm font-bold text-neutral-100">Intermediário</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-purple-400 text-lg">🧠</span>
+        <div>
+          <p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p>
+          <p class="text-sm font-bold text-neutral-100">Conceitual</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">A Filosofia do Build Incremental</h2>
+          <p class="text-neutral-400 text-sm mt-1">Por que um prompt de cada vez muda tudo</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        A abordagem mais comum para construir sistemas complexos com Claude é despejar uma especificação enorme em um único prompt e torcer para que tudo funcione. O Claudex foi construído de forma radicalmente diferente: sete prompts incrementais, cada um verificado antes do próximo. Essa não é uma escolha de estilo — é uma exigência das garantias de sistema que o Claudex precisa oferecer.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal</span>
+        </div>
+        <p class="text-neutral-200 font-semibold mb-2">Cada layer não verificada é onde um bug se esconde</p>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Quando você empilha código não testado sobre código não testado, a falha final pode ter origem em qualquer camada. Builds incrementais criam "fronteiras de verificação" — você só avança quando a camada atual está funcionando. No Claudex: os state files precisam funcionar antes de você ligar o hook neles. O hook precisa falhar aberto antes de escrever mensagens de BLOCK para o usuário.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">A Sequência dos 7 Prompts</span>
+        </div>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">01</span><span>Esqueleto do plugin + slash commands + hook fail-open</span></div>
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">02</span><span>Máquina de estados — state files atômicos, CAS, helpers</span></div>
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">03</span><span>Stop hook lifecycle real — BLOCK/APPROVE por fase</span></div>
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">04</span><span>Extração de findings + rotação de personas por rodada</span></div>
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">05</span><span>Fase de sumarização — o loop não termina em silêncio</span></div>
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">06</span><span>Comandos utilitários: status, doctor, cancel, rollback</span></div>
+          <div class="flex gap-3"><span class="text-purple-400 font-mono font-bold">07</span><span>Safety pass — ERR trap, lockfile, sweeper, validação de cwd</span></div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <p class="text-emerald-400 font-semibold text-sm uppercase tracking-wide mb-3">Fazer</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Verificar cada prompt antes de continuar</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Ter o SPEC.md aberto como referência constante</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Testar isoladamente cada nova camada</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Construir o estado antes de construir o comportamento</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <p class="text-red-400 font-semibold text-sm uppercase tracking-wide mb-3">Evitar</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Passar toda a spec em um único prompt gigante</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Avançar sem confirmar que o passo anterior funciona</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Misturar responsabilidades em um único passo</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Depurar múltiplas camadas simultaneamente</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O SPEC.md: O Blueprint Antes do Código</h2>
+          <p class="text-neutral-400 text-sm mt-1">Arquitetura em texto como referência viva</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Antes de um único arquivo de código ser escrito, o Claudex tinha um <code class="bg-dark-700 px-1.5 py-0.5 rounded text-purple-400">SPEC.md</code> completo. Não um documento de requisitos corporativo — um blueprint técnico de página única que Claude pode consultar a qualquer momento durante o build. É a diferença entre construir com um mapa e construir com esperança.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal</span>
+        </div>
+        <p class="text-neutral-200 font-semibold mb-2">O SPEC.md é a fonte de verdade, não o código</p>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O SPEC define: o que o sistema faz, as garantias hard que nunca podem ser violadas, os ciclos de vida completos de cada modo, a estrutura dos state files com cada campo e tipo, os canais de comunicação entre componentes, as primitivas de segurança e as variáveis de ambiente configuráveis. Tudo em uma página que cabe na janela de contexto.
+        </p>
+      </div>
+
+      <!-- O que o SPEC cobre -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-purple-400 font-semibold text-sm mb-2">Ciclo de Vida</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">drafting → reviewing → summarizing → done, com tabela por fase indicando quem age e o que o hook faz</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-purple-400 font-semibold text-sm mb-2">State File</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Cada campo definido: tipo, notas, valores possíveis. review_id com regex. review_id como padrão YYYYMMDD-HHMMSS-xxxxxx</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-purple-400 font-semibold text-sm mb-2">File Tree</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Estrutura completa de diretórios com cada arquivo nomeado e sua responsabilidade</p>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Mantenha o SPEC.md aberto em outra aba enquanto faz o build. Cada prompt de construção começa com "Read SPEC.md if it's in this folder; that's the source of truth." Isso ancora Claude no blueprint mesmo quando o contexto da conversa cresce.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">As 6 Garantias de Segurança do Sistema</h2>
+          <p class="text-neutral-400 text-sm mt-1">Invariantes inegociáveis que o sistema nunca viola</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O SPEC.md define seis primitivas de segurança que precisam ser verdadeiras em todo momento do ciclo de vida do Claudex. Elas não são features — são restrições do design. Violá-las significa que o sistema pode travar o usuário, corromper estado ou criar loops infinitos silenciosos.
+      </p>
+
+      <!-- As 6 primitivas -->
+      <div class="space-y-3 mb-6">
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">1</div>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">ERR Trap Fail-Open</p>
+            <p class="text-neutral-400 text-xs mt-1">A primeira linha ativa do hook instala <code class="bg-dark-600 px-1 py-0.5 rounded">trap '... approve; exit 0' ERR</code>. Qualquer erro não tratado retorna approve. O usuário NUNCA fica preso.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">2</div>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Escritas Atômicas de Estado</p>
+            <p class="text-neutral-400 text-xs mt-1">Toda mutação vai via <code class="bg-dark-600 px-1 py-0.5 rounded">tmp + rename</code>. Arquivos nunca ficam parcialmente escritos. Um crash no meio de uma escrita não corrompe o estado.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">3</div>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">CAS em Transições de Fase</p>
+            <p class="text-neutral-400 text-xs mt-1">Compare-And-Swap: <code class="bg-dark-600 px-1 py-0.5 rounded">claudex_phase_transition</code> só escreve se a fase atual corresponde ao <code class="bg-dark-600 px-1 py-0.5 rounded">from</code> esperado. Impede duas paths de avançar o mesmo loop simultaneamente.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">4</div>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Lockfile + Liveness de PID</p>
+            <p class="text-neutral-400 text-xs mt-1">O PID armazenado pode ser testado com <code class="bg-dark-600 px-1 py-0.5 rounded">kill -0</code>. Detecta se o processo pai ainda está vivo.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">5</div>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Sweeper de Loops Stale</p>
+            <p class="text-neutral-400 text-xs mt-1"><code class="bg-dark-600 px-1 py-0.5 rounded">find -mmin +15</code> remove loops abandonados em cada invocação de <code class="bg-dark-600 px-1 py-0.5 rounded">start-loop.sh</code>. Configurável via <code class="bg-dark-600 px-1 py-0.5 rounded">CLAUDEX_STALE_MINUTES</code>.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">6</div>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Validação de cwd</p>
+            <p class="text-neutral-400 text-xs mt-1">O estado armazena <code class="bg-dark-600 px-1 py-0.5 rounded">repo_root</code>. O hook falha aberto se <code class="bg-dark-600 px-1 py-0.5 rounded">pwd != repo_root</code>. O hook pode ter sido disparado em um projeto diferente do onde o loop começou.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerta -->
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-400 text-lg">⚠️</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Atenção</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Essas seis garantias foram identificadas no SPEC antes do primeiro prompt ser escrito. Não foram descobertas durante o desenvolvimento. Sistemas de segurança precisam ser planejados como restrições, não adicionados como features posteriores.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Prompt 01 — Esqueleto do Plugin</h2>
+          <p class="text-neutral-400 text-sm mt-1">Estrutura e fail-open hook — o primeiro passo verificável</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O primeiro prompt não constrói lógica real. Ele constrói o esqueleto: os manifestos, os comandos placeholder e, mais importante, um hook que falha aberto por padrão. A meta é verificar que o plugin carrega no Claude Code antes de adicionar qualquer lógica substantiva.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">O Que o Prompt 01 Constrói</span>
+        </div>
+        <ul class="text-sm text-neutral-300 space-y-1.5">
+          <li class="flex gap-2"><span class="text-purple-400">•</span><span>Manifesto do marketplace em <code class="bg-dark-700 px-1 py-0.5 rounded">.claude-plugin/marketplace.json</code></span></li>
+          <li class="flex gap-2"><span class="text-purple-400">•</span><span>Manifesto do plugin em <code class="bg-dark-700 px-1 py-0.5 rounded">plugins/claudex/.claude-plugin/plugin.json</code></span></li>
+          <li class="flex gap-2"><span class="text-purple-400">•</span><span>6 arquivos de slash command com frontmatter YAML (placeholder)</span></li>
+          <li class="flex gap-2"><span class="text-purple-400">•</span><span><code class="bg-dark-700 px-1 py-0.5 rounded">hooks.json</code> registrando o Stop hook com timeout 60s</span></li>
+          <li class="flex gap-2"><span class="text-purple-400">•</span><span><code class="bg-dark-700 px-1 py-0.5 rounded">stop-hook.sh</code> com ERR trap fail-open e stub incondicional</span></li>
+          <li class="flex gap-2"><span class="text-purple-400">•</span><span><code class="bg-dark-700 px-1 py-0.5 rounded">tests/platform-validation.sh</code> com assertions coloridas</span></li>
+        </ul>
+      </div>
+
+      <!-- Prompt real -->
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">O Prompt Real (Cole no Claude Code)</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">01_scaffold.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>I want to build a Claude Code plugin called `claudex`. Read `SPEC.md`
+if it's in this folder; that's the source of truth.
+
+For this first pass, just scaffold the layout. No real logic yet.
+I want to verify the plugin loads in Claude Code before we wire up
+anything substantive.
+
+Build:
+
+1. The marketplace manifest at `.claude-plugin/marketplace.json` and
+   the plugin manifest at `plugins/claudex/.claude-plugin/plugin.json`.
+   Author name `promptadvisers`. Description matches the spec.
+
+2. Six slash command files under `plugins/claudex/commands/`:
+   `plan.md`, `review.md`, `status.md`, `doctor.md`, `cancel.md`,
+   `rollback.md`. Each one for now is a placeholder that just `echo`s
+   "TODO" so I can confirm the commands surface in Claude Code's
+   slash-command list. Use proper YAML frontmatter (`description`,
+   `allowed-tools: Bash`).
+
+3. `plugins/claudex/hooks/hooks.json` registering a `Stop` hook that
+   calls `${CLAUDE_PLUGIN_ROOT}/hooks/stop-hook.sh` with a 60s timeout
+   and a `statusMessage`.
+
+4. `plugins/claudex/hooks/stop-hook.sh`. **Critical**: this is
+   fail-open everywhere from day one. Install an `ERR` trap that prints
+   `{"decision":"approve"}` on any unhandled error and exits 0. The
+   default body for now: read stdin, log "no logic yet", print approve.
+   The user must NEVER get trapped because the hook crashed.
+
+5. `plugins/claudex/tests/platform-validation.sh`. A simple bash test
+   that asserts the hook is executable, returns valid JSON when fed `{}`
+   on stdin, and fail-opens on garbage input. Print colored ✓/✗ per
+   check. Exit non-zero on any failure.
+
+Don't write any state-machine code yet. That's the next prompt. Just
+the skeleton + the unconditional fail-open hook.
+
+Once you're done, run `bash plugins/claudex/tests/platform-validation.sh`
+and tell me what it says.</code></pre>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O teste de plataforma no final não é opcional. Antes de avançar para o Prompt 02, você precisa ver todas as assertions passando. "Parece certo" não é uma fronteira de verificação válida.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Por Que "Falhar Aberto" é Inegociável</h2>
+          <p class="text-neutral-400 text-sm mt-1">Hooks nunca podem bloquear o trabalho do usuário</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Um Stop hook que retorna BLOCK diz ao Claude Code: "não deixe o usuário encerrar este turno ainda". Se esse hook crashar silenciosamente, sem retornar nada, o Claude Code pode ficar esperando indefinidamente. A filosofia fail-open significa: em caso de dúvida, deixar passar. Um loop que termina cedo demais é ruim. Um usuário preso em um loop que nunca termina é inaceitável.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-purple-900/30 to-purple-800/10 border border-purple-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-purple-400 text-lg">💡</span>
+          <span class="text-purple-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal</span>
+        </div>
+        <p class="text-neutral-200 font-semibold mb-2">O ERR trap como primeira linha ativa</p>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          A primeira coisa que o <code class="bg-dark-700 px-1.5 py-0.5 rounded text-purple-400">stop-hook.sh</code> faz é instalar um trap global de erro. Não na segunda linha. Não depois das importações. A primeira linha.
+        </p>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code>trap 'echo "{\"decision\":\"approve\"}" ; exit 0' ERR</code></pre>
+      </div>
+
+      <!-- Por que isso importa -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔍</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Por Que Isso Importa na Prática</span>
+        </div>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>O hook roda em cada fim de turno do Claude. Uma falha de script em qualquer sessão de trabalho normal travaria o usuário.</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>Dependências externas podem estar ausentes (<code class="bg-dark-700 px-1 py-0.5 rounded">python3</code>, um arquivo de estado corrompido). O fail-open absorve esses casos.</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>Durante o desenvolvimento, bugs no hook são inevitáveis. Sem fail-open, cada bug bloquearia a sessão do desenvolvedor.</span></li>
+        </ul>
+      </div>
+
+      <!-- Timeline -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-6">
+        <p class="text-neutral-400 font-semibold text-sm uppercase tracking-wide mb-4">O que acontece quando o hook recebe entrada inesperada</p>
+        <div class="space-y-3">
+          <div class="flex gap-3 items-start">
+            <div class="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+            <p class="text-sm text-neutral-300">Hook recebe JSON malformado no stdin</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+            <p class="text-sm text-neutral-300">Qualquer comando shell falha → ERR trap dispara automaticamente</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+            <p class="text-sm text-neutral-300">Trap imprime <code class="bg-dark-600 px-1 py-0.5 rounded">{"decision":"approve"}</code> no stdout</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold flex-shrink-0 mt-0.5">4</div>
+            <p class="text-sm text-neutral-300">Claude Code recebe approve, usuário nunca percebe o problema</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Prompt 02 — A Máquina de Estados</h2>
+          <p class="text-neutral-400 text-sm mt-1">Gerenciando sessões do loop com state files atômicos</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O segundo prompt introduz o coração do Claudex: a máquina de estados. Cada loop de planejamento é rastreado em um arquivo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-purple-400">.state</code> YAML-ish isolado. O prompt constrói os helpers de baixo nível que todo o resto do sistema usa — e os testa em isolamento completo antes de qualquer hook lifecycle ser escrito.
+      </p>
+
+      <!-- O que o Prompt 02 constrói -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔍</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O Que o Prompt 02 Constrói</span>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm text-neutral-300">
+          <div><span class="text-purple-400 font-mono">claudex_new_review_id</span> — gera IDs únicos <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">YYYYMMDD-HHMMSS-xxxxxx</code></div>
+          <div><span class="text-purple-400 font-mono">claudex_validate_review_id</span> — regex estrito, rejeita path traversal</div>
+          <div><span class="text-purple-400 font-mono">claudex_state_write</span> — escrita atômica via tmp + rename</div>
+          <div><span class="text-purple-400 font-mono">claudex_state_read_field</span> — grep do valor YAML-ish</div>
+          <div><span class="text-purple-400 font-mono">claudex_state_set_field</span> — sed in-place + bumpa last_updated_at</div>
+          <div><span class="text-purple-400 font-mono">claudex_phase_transition</span> — CAS: só escreve se fase atual bate</div>
+          <div><span class="text-purple-400 font-mono">claudex_sweep_stale</span> — remove loops com +15min sem atividade</div>
+          <div><span class="text-purple-400 font-mono">claudex_find_active_loop</span> — retorna o loop mais recente por mtime</div>
+        </div>
+      </div>
+
+      <!-- Prompt real -->
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">O Prompt Real (Cole no Claude Code)</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">02_state_machine.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>We need the state machine before we wire the hook lifecycle. Claudex
+tracks each loop in a YAML-ish file under
+`.claude/claudex/&lt;review_id&gt;.state`. Per-loop, never shared. See
+`SPEC.md` for the full field list.
+
+Build:
+
+1. `plugins/claudex/scripts/state-helpers.sh`. Sourceable. Exposes:
+   - `claudex_new_review_id` — generates `YYYYMMDD-HHMMSS-XXXXXX`
+     (six lowercase hex chars at the end).
+   - `claudex_validate_review_id &lt;id&gt;` — strict regex check; returns 0/1.
+   - `claudex_state_write &lt;file&gt; &lt;content&gt;` — atomic. Write to
+     `${file}.tmp.$$` then `mv -f`. Never partial files.
+   - `claudex_state_read_field &lt;file&gt; &lt;field&gt;` — grep the YAML-ish value.
+   - `claudex_state_set_field &lt;file&gt; &lt;field&gt; &lt;value&gt;` — sed in place via
+     tmp + rename. Also bumps `last_updated_at` to now (UTC ISO 8601).
+     Don't recursively bump itself when you ARE setting `last_updated_at`.
+   - `claudex_phase_transition &lt;file&gt; &lt;from_phase&gt; &lt;to_phase&gt;` —
+     compare-and-swap. Only writes if current phase matches `from`.
+     Updates `last_updated_at` in the same write. Returns 0/1.
+   - `claudex_lock_write &lt;file&gt;` — writes `$$`.
+   - `claudex_lock_is_active &lt;file&gt;` — `kill -0` on the stored PID.
+   - `claudex_sweep_stale` — `find -mmin +$CLAUDEX_STALE_MINUTES`
+     (default 15) on `*.state` files; remove the state file plus its
+     `.lock`, `-runner.sh`, `-prompt.txt`, and per-review subfolder.
+   - `claudex_find_active_loop` — print path to the most-recent state
+     file (by mtime) or return 1 if none.
+
+2. `plugins/claudex/scripts/start-loop.sh`. Called by `/claudex:plan`
+   and `/claudex:review`. Behavior:
+   - Parse flags before the topic: `--rounds N`, `--from-draft`,
+     `--skip-interview`, `--interviewed`. Reject `--rounds 0` and
+     non-integers with a clear error. Reject `--from-draft` if `PLAN.md`
+     is missing.
+   - Refuse to start if any existing state file has phase NOT in
+     `{done, cancelled, errored}`. Phase-based concurrency, NOT
+     file-presence.
+   - Sweep stale loops first (`claudex_sweep_stale`).
+   - Generate a `review_id`, write the initial state file atomically,
+     write a lockfile.
+   - Print initial instructions to stdout.
+
+3. Extend `plugins/claudex/tests/platform-validation.sh` with sections
+   that exercise every helper: id generation, validation rejecting bad
+   formats including `../../../etc/passwd`, atomic write round-trip,
+   CAS valid + stale, sweeper, lockfile alive vs dead PID,
+   active-loop finder.
+
+Hook lifecycle stays a fail-open stub for now. We're just verifying
+the state machine in isolation.
+
+Run `bash plugins/claudex/tests/platform-validation.sh` and tell me
+what passes.</code></pre>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Note que o Prompt 02 explicitamente diz "Hook lifecycle stays a fail-open stub for now". A máquina de estados é testada completamente em isolamento. Isso é intencional: você não pode testar corretamente o lifecycle do hook se os helpers que ele usa ainda não foram verificados.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 7 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+          <span class="text-purple-400 font-bold text-lg">7</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Escrita Atômica e CAS: Estado que Nunca Corrompe</h2>
+          <p class="text-neutral-400 text-sm mt-1">Os dois padrões que tornam o estado confiável em qualquer condição</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Dois padrões de engenharia clássicos aparecem repetidamente no Claudex: escrita atômica via <code class="bg-dark-700 px-1.5 py-0.5 rounded text-purple-400">tmp + rename</code> e transições de fase via Compare-And-Swap. Juntos, eles garantem que o estado nunca fica em um estado intermediário inconsistente, mesmo que o processo seja interrompido no meio de uma operação.
+      </p>
+
+      <!-- Dois conceitos lado a lado -->
+      <div class="grid sm:grid-cols-2 gap-5 mb-6">
+        <div class="bg-gradient-to-b from-purple-900/20 to-dark-700 border border-purple-500/30 rounded-xl p-5">
+          <p class="text-purple-400 font-semibold mb-3">Escrita Atômica (tmp + rename)</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-xs text-neutral-300 overflow-x-auto mb-3"><code># Errado: escrita direta pode ser parcial
+echo "$content" > "$state_file"
+
+# Certo: tmp + rename é atômico no mesmo fs
+tmp="${state_file}.tmp.$$"
+echo "$content" > "$tmp"
+mv -f "$tmp" "$state_file"</code></pre>
+          <p class="text-neutral-400 text-xs">O <code>mv</code> no mesmo filesystem é uma operação atômica do kernel. Ou o arquivo antigo existe, ou o novo existe. Nunca um arquivo vazio ou parcialmente escrito.</p>
+        </div>
+        <div class="bg-gradient-to-b from-purple-900/20 to-dark-700 border border-purple-500/30 rounded-xl p-5">
+          <p class="text-purple-400 font-semibold mb-3">CAS — Compare-And-Swap</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-xs text-neutral-300 overflow-x-auto mb-3"><code># claudex_phase_transition &lt;file&gt; &lt;from&gt; &lt;to&gt;
+# Só escreve se a fase atual == from_phase
+current=$(claudex_state_read_field "$f" phase)
+if [[ "$current" != "$from_phase" ]]; then
+  return 1  # outro processo já avançou
+fi
+# Escreve nova fase atomicamente
+claudex_state_set_field "$f" phase "$to_phase"</code></pre>
+          <p class="text-neutral-400 text-xs">Impede duas invocações do hook de avançar o mesmo loop simultaneamente. Sem CAS, dois BLOCKs concorrentes poderiam criar estados inconsistentes.</p>
+        </div>
+      </div>
+
+      <!-- Por que isso não é óbvio -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔍</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Por Que Isso Não é Óbvio</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Claude Code pode disparar o Stop hook múltiplas vezes em rápida sucessão se o usuário encerrar o turno enquanto o hook ainda está processando. Sem CAS, dois disparos simultâneos do hook poderiam ambos ler <code class="bg-dark-700 px-1 py-0.5 rounded">phase=drafting</code>, ambos escrever a transição para <code class="bg-dark-700 px-1 py-0.5 rounded">reviewing</code>, e criar dois runners para a mesma rodada. Com CAS, o segundo disparo encontra <code class="bg-dark-700 px-1 py-0.5 rounded">phase=reviewing</code> e retorna 1 sem escrever.
+        </p>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Esses dois padrões — tmp+rename e CAS — aparecem em sistemas de banco de dados, sistemas operacionais e sistemas distribuídos há décadas. Aplicá-los em shell script não é over-engineering: é reconhecer que o Claudex é um sistema concorrente com estado compartilhado que precisa das mesmas garantias.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-2xl p-8">
+      <h2 class="text-2xl font-bold text-neutral-100 mb-6">Resumo do Módulo 2.1</h2>
+
+      <div class="grid sm:grid-cols-2 gap-6 mb-8">
+        <div>
+          <p class="text-purple-400 font-semibold text-sm uppercase tracking-wide mb-3">O que você aprendeu</p>
+          <ul class="space-y-2">
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Por que builds incrementais com fronteiras de verificação produzem sistemas mais confiáveis</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Como o SPEC.md funciona como blueprint e fonte de verdade durante o build</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>As 6 primitivas de segurança que o sistema nunca viola</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>O Prompt 01: esqueleto do plugin com fail-open hook desde o início</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Por que fail-open é inegociável em qualquer hook de sistema</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>O Prompt 02: máquina de estados com helpers testados em isolamento</span>
+            </li>
+            <li class="flex gap-2 text-sm text-neutral-300">
+              <span class="text-purple-400 mt-0.5">✓</span>
+              <span>Escrita atômica (tmp+rename) e CAS como garantias de consistência de estado</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-purple-400 font-semibold text-sm uppercase tracking-wide mb-3">Próximos passos</p>
+          <p class="text-neutral-300 text-sm leading-relaxed mb-4">
+            No Módulo 2.2, você vai ver o Prompt 03 — onde o hook recebe seu lifecycle real, aprendendo a orquestrar as transições de fase, gerar runner scripts para o Codex e fazer o loop se tornar verdadeiramente autônomo.
+          </p>
+          <p class="text-neutral-400 text-xs">
+            Também verá o Prompt 04 (extração de findings para economia de tokens) e o Prompt 05 (fase de sumarização para que o loop não termine em silêncio).
+          </p>
+        </div>
+      </div>
+
+      <!-- Botões de navegação -->
+      <div class="flex flex-wrap gap-3 justify-start">
+        <a href="index.html" class="flex items-center gap-2 px-5 py-2.5 bg-dark-700 hover:bg-dark-600 border border-dark-600 rounded-xl text-sm font-semibold text-neutral-300 transition-colors">
+          <span>←</span>
+          <span>Trilha 2</span>
+        </a>
+        <a href="modulo-2-2.html" class="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-500 rounded-xl text-sm font-semibold text-white transition-colors">
+          <span>Próximo Módulo</span>
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl">🏗️</span>
+          <div>
+            <p class="font-bold text-neutral-100 text-sm">Engenharia com Claude Code</p>
+            <p class="text-neutral-500 text-xs">Trilha 2 — Construindo o Claudex</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 text-sm text-neutral-500">
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 transition-colors font-medium">INEMA.CLUB</a>
+          <span>•</span>
+          <span>Módulo 2.1 de 6</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
