@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engenharia com Claude Code — Do Prompt ao Plugin de Produção | INEMA.CLUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - Purple */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:border-purple-500\/30:hover { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+
+    /* Light mode - remove gradients */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .text-green-400 { color: #16a34a; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Prompt blocks */
+    .prompt-block {
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<!-- NAVIGATION -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14">
+      <div class="flex items-center space-x-4">
+        <a href="#" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🔧</span>
+          <span class="font-bold text-lg hidden sm:inline">Build Claudex</span>
+        </a>
+        <span class="text-neutral-600">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+      </div>
+      <div class="flex items-center space-x-1 sm:space-x-2">
+        <a href="#modulo-1" class="px-2 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 transition-colors">
+          <span class="sm:hidden">M1</span><span class="hidden sm:inline">Blueprint</span>
+        </a>
+        <a href="#modulo-2" class="px-2 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+          <span class="sm:hidden">M2</span><span class="hidden sm:inline">Loop</span>
+        </a>
+        <a href="#modulo-3" class="px-2 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+          <span class="sm:hidden">M3</span><span class="hidden sm:inline">Segurança</span>
+        </a>
+        <a href="#modulo-4" class="px-2 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+          <span class="sm:hidden">M4</span><span class="hidden sm:inline">Resultados</span>
+        </a>
+        <a href="#modulo-5" class="px-2 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+          <span class="sm:hidden">M5</span><span class="hidden sm:inline">Método</span>
+        </a>
+        <a href="#modulo-6" class="px-2 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+          <span class="sm:hidden">M6</span><span class="hidden sm:inline">Seu Projeto</span>
+        </a>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+      TRILHA 2 — CONSTRUINDO
+    </span>
+    <div class="flex flex-col md:flex-row md:items-center gap-8 mb-4">
+      <div class="flex-1">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔧 Engenharia com Claude Code — Do Prompt ao Plugin de Produção</h1>
+        <p class="text-lg text-neutral-400 max-w-3xl">
+          Aprenda como o Claudex foi construído incrementalmente em 7 prompts. Cada decisão de arquitetura, cada camada de segurança, cada teste — explicados em ordem. Você sai com uma metodologia para construir qualquer plugin assim.
+        </p>
+      </div>
+    </div>
+    <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-purple-400">6</div>
+        <div class="text-xs text-neutral-400">Módulos</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-purple-400">38</div>
+        <div class="text-xs text-neutral-400">Tópicos</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-purple-400">~5h</div>
+        <div class="text-xs text-neutral-400">Duração</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-purple-400">Inter.</div>
+        <div class="text-xs text-neutral-400">Nível</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAVEGAÇÃO RÁPIDA -->
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <p class="text-xs text-neutral-500 uppercase font-semibold mb-4">Conteúdo do Curso</p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <a href="#modulo-1" class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center">1</span>
+        <span class="font-semibold group-hover:text-purple-400 transition-colors">O Blueprint</span>
+      </div>
+      <p class="text-neutral-500 text-sm">SPEC, filosofia incremental, Prompt 01 e 02. 7 tópicos.</p>
+    </a>
+    <a href="#modulo-2" class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center">2</span>
+        <span class="font-semibold group-hover:text-purple-400 transition-colors">O Cérebro do Loop</span>
+      </div>
+      <p class="text-neutral-500 text-sm">Stop Hook, findings, personas, sumarização. 7 tópicos.</p>
+    </a>
+    <a href="#modulo-3" class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center">3</span>
+        <span class="font-semibold group-hover:text-purple-400 transition-colors">Acabamento e Segurança</span>
+      </div>
+      <p class="text-neutral-500 text-sm">Utilitários, safety pass, testes, como shipar. 6 tópicos.</p>
+    </a>
+    <a href="#modulo-4" class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center">4</span>
+        <span class="font-semibold group-hover:text-purple-400 transition-colors">O que isso nos deu</span>
+      </div>
+      <p class="text-neutral-500 text-sm">Antes/depois, bugs evitados, custo do prompt único. 6 tópicos.</p>
+    </a>
+    <a href="#modulo-5" class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center">5</span>
+        <span class="font-semibold group-hover:text-purple-400 transition-colors">A Metodologia</span>
+      </div>
+      <p class="text-neutral-500 text-sm">Padrões reutilizáveis para qualquer build incremental. 6 tópicos.</p>
+    </a>
+    <a href="#modulo-6" class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center">6</span>
+        <span class="font-semibold group-hover:text-purple-400 transition-colors">Seu Próximo Projeto</span>
+      </div>
+      <p class="text-neutral-500 text-sm">Projeto guiado: construa um hook de linting do zero. 6 tópicos.</p>
+    </a>
+  </div>
+</div>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex items-center space-x-4 mb-8">
+    <div class="flex-1 border-t border-dark-600"></div>
+    <span class="text-neutral-500 text-sm font-medium px-4">Conteúdo Detalhado</span>
+    <div class="flex-1 border-t border-dark-600"></div>
+  </div>
+</div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+  <!-- ==================== MÓDULO 1 ==================== -->
+  <div id="modulo-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-purple-400 font-bold">Módulo 1</span>
+        <span class="text-xs text-neutral-500">~50 min</span>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">🗺️ O Blueprint</h3>
+      <p class="text-neutral-400 text-sm">Por que o Claudex foi construído em 7 prompts, o que o SPEC.md resolve, e os dois primeiros prompts: esqueleto do plugin e máquina de estados.</p>
+    </div>
+
+    <div class="divide-y divide-dark-600">
+
+      <!-- 1.1 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🧱</span>
+          <div>
+            <span class="font-medium">A filosofia do build incremental</span>
+            <span class="text-neutral-500 text-sm ml-2">— Por que um prompt de cada vez</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">A maioria das sessões de "construa isso para mim" com Claude falha porque o usuário joga uma spec de 500 linhas em um único prompt e o Claude tenta escrever tudo de uma vez. Cada camada construída em cima de uma camada não verificada é um lugar onde um bug se esconde. O Claudex foi construído incrementalmente porque as garantias do sistema exigem isso — estado precisa funcionar antes de ligar o hook, o hook precisa falhar aberto antes de escrever razões visíveis ao usuário, personas só importam depois que o lifecycle funciona.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Entender a filosofia muda como você pensa qualquer build com Claude Code. Cada prompt aqui representa uma fronteira de "verifique antes de continuar". O ponto não é copiar os prompts palavra por palavra — é ver a ordem: esqueleto primeiro, máquina de estados antes do lifecycle, lifecycle antes das personas, personas antes do polish.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Build incremental · Fronteira de verificação · Camadas dependentes · "Um bug por camada não verificada" · Prompt como unidade de entrega verificável · Fail-open desde o primeiro commit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.2 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">📐</span>
+          <div>
+            <span class="font-medium">O SPEC.md: o blueprint antes do código</span>
+            <span class="text-neutral-500 text-sm ml-2">— Especificar antes de codificar</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O SPEC.md é uma referência de arquitetura de página única que o Claude pode consultar a qualquer momento durante o build. Ele define: o que o sistema é, as garantias rígidas (fail-open, sem edições fora do diretório de estado, CAS de fase, escritas atômicas, varredor de loops stale, validação de CWD), o lifecycle completo de fases, o formato do arquivo de estado, os arquivos sidecar, os canais de comunicação entre Claude/Hook/Codex, as personas por rodada, as seis primitivas de segurança e as variáveis de ambiente.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Um SPEC bem escrito evita que o Claude precise inventar decisões de design durante o build. Cada prompt dos 7 pede para ler o SPEC.md como fonte da verdade — isso significa que você define uma vez e o Claude consulta várias, em vez de precisar repetir o contexto em cada prompt. O SPEC também funciona como documentação viva: ao terminar o build, ele já descreve o que foi construído.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">SPEC como fonte da verdade única · Definir garantias antes de escrever código · Tabela de fases com quem age e o que o hook faz · Campos do arquivo de estado · Canais de comunicação explícitos · SPEC como documentação viva.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.3 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🛡️</span>
+          <div>
+            <span class="font-medium">As 6 garantias de segurança do sistema</span>
+            <span class="text-neutral-500 text-sm ml-2">— O que nunca pode quebrar</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O SPEC define seis primitivas de segurança inegociáveis: (1) <strong class="text-purple-400">ERR trap fail-open</strong> — primeira linha ativa do hook instala um trap que aprova em qualquer erro não tratado. (2) <strong class="text-purple-400">Escritas atômicas de estado</strong> — toda mutação passa por <code class="bg-dark-600 px-1 rounded text-xs">tmp + rename</code>. (3) <strong class="text-purple-400">CAS de transição de fase</strong> — só escreve se a fase atual bate com o esperado. (4) <strong class="text-purple-400">Lockfile + liveness de PID</strong> — PID armazenado pode ser testado com <code class="bg-dark-600 px-1 rounded text-xs">kill -0</code>. (5) <strong class="text-purple-400">Varredor de loops stale</strong> — loops abandonados há mais de 15 minutos são removidos. (6) <strong class="text-purple-400">Validação de CWD</strong> — o hook falha aberto se o diretório atual diverge do repo_root salvo no estado.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Estas seis garantias definem o contrato de segurança do plugin antes de qualquer linha de código ser escrita. O usuário nunca pode ficar preso num loop quebrado, o estado nunca pode ficar corrompido a meio, dois loops nunca podem competir pela mesma sessão. Entender o "porquê" de cada primitiva permite replicar o padrão em qualquer outro plugin.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Fail-open como contrato · tmp + rename para atomicidade · Compare-and-swap (CAS) de fase · kill -0 como teste de liveness · CLAUDEX_STALE_MINUTES (padrão: 15) · repo_root como âncora de segurança.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.4 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">🏗️</span>
+          <div>
+            <span class="font-medium">Prompt 01 — Esqueleto do plugin e o fail-open hook</span>
+            <span class="text-neutral-500 text-sm ml-2">— A primeira camada, verificável antes da próxima</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O primeiro prompt cria apenas o esqueleto do plugin: manifestos, seis arquivos de comando que só fazem echo "TODO", o hooks.json registrando o Stop hook, e o stop-hook.sh já com ERR trap fail-open mas sem lógica real. O objetivo não é ter algo funcional — é ter algo <em>verificável</em>. O plugin precisa carregar no Claude Code e o hook precisa falhar aberto antes de qualquer lógica ser adicionada.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O principal aprendizado aqui é a sequência: manifesto antes de comandos, comandos antes de hooks, hook fail-open antes de hook com lógica. Cada item é testável de forma isolada. O platform-validation.sh criado neste prompt verifica apenas se o hook é executável, retorna JSON válido e falha aberto com entrada inválida — nada mais.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 01 — scaffold</span>
+                  <span class="text-xs text-neutral-500">Cole no Claude Code em uma pasta vazia</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Quero construir um plugin para o Claude Code chamado `claudex`. Leia o `SPEC.md` se ele estiver nesta pasta — ele é a fonte da verdade.
+
+Nesta primeira etapa, crie apenas o esqueleto. Sem lógica real ainda. Quero verificar se o plugin carrega no Claude Code antes de conectar qualquer coisa mais complexa.
+
+Construa:
+
+1. O manifesto do marketplace em `.claude-plugin/marketplace.json` e o manifesto do plugin em `plugins/claudex/.claude-plugin/plugin.json`. Autor: `promptadvisers`. Descrição conforme o spec.
+2. Seis arquivos de comandos slash em `plugins/claudex/commands/`: `plan.md`, `review.md`, `status.md`, `doctor.md`, `cancel.md`, `rollback.md`. Por enquanto, cada um apenas dá `echo "TODO"` para confirmar que os comandos aparecem na lista do Claude Code. Use YAML frontmatter correto (`description`, `allowed-tools: Bash`).
+3. `plugins/claudex/hooks/hooks.json` registrando um hook `Stop` que chama `${CLAUDE_PLUGIN_ROOT}/hooks/stop-hook.sh` com timeout de 60s e um `statusMessage`.
+4. `plugins/claudex/hooks/stop-hook.sh`. CRÍTICO: fail-open em todos os casos desde o início. Instale uma trap ERR que imprime `{"decision":"approve"}` em qualquer erro não tratado e sai com código 0. Corpo padrão por enquanto: ler stdin, registrar "sem lógica ainda", imprimir approve. O usuário NUNCA pode ficar preso por um crash do hook.
+5. `plugins/claudex/tests/platform-validation.sh`. Um teste bash simples que verifica se o hook é executável, retorna JSON válido quando alimentado com `{}` no stdin, e falha aberto com entrada inválida. Imprima ✓/✗ coloridos por verificação. Saia com código não-zero em qualquer falha.
+
+Não escreva nenhum código de máquina de estados ainda. Isso é o próximo prompt. Apenas o esqueleto + o hook de fail-open incondicional.
+
+Ao terminar, rode `bash plugins/claudex/tests/platform-validation.sh` e me diga o resultado.</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">marketplace.json · plugin.json · YAML frontmatter em commands/ · hooks.json com timeout · ERR trap como primeira linha · platform-validation.sh · Verificar o rascunho antes de continuar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.5 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🔓</span>
+          <div>
+            <span class="font-medium">Por que "falhar aberto" é inegociável em hooks</span>
+            <span class="text-neutral-500 text-sm ml-2">— O contrato que protege o usuário</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Um Stop hook que retorna BLOCK em caso de erro prende o usuário: a sessão do Claude Code não avança, não há mensagem clara de erro, e o único recurso é matar o processo. Fail-open significa que o hook, em qualquer situação de erro — bug de script, arquivo de estado corrompido, codex não disponível, permissão negada — imprime <code class="bg-dark-600 px-1 rounded text-xs">{"decision":"approve"}</code> e sai com código 0. A funcionalidade do Claudex pode não executar, mas o Claude Code nunca fica preso.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Fail-open é um padrão de design para qualquer coisa que intercepta um fluxo crítico do usuário. A ERR trap no início do hook garante isso mesmo para erros não antecipados. Esta escolha é feita antes da primeira linha de lógica real — não é um afterthought, é o contrato de base.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">BLOCK vs APPROVE · ERR trap: <code class="bg-dark-600 px-1 rounded text-xs">trap '... approve; exit 0' ERR</code> · Fail-open como padrão de design · Degradação graciosa · O usuário nunca fica preso.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.6 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">⚙️</span>
+          <div>
+            <span class="font-medium">Prompt 02 — A máquina de estados</span>
+            <span class="text-neutral-500 text-sm ml-2">— Estado antes de lifecycle</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O segundo prompt constrói toda a camada de estado sem tocar no lifecycle do hook. O state-helpers.sh expõe funções para gerar review_ids, ler e escrever campos de estado de forma atômica, fazer CAS de fase, gerenciar lockfiles e varrer loops stale. O start-loop.sh inicia um novo loop parseando flags, recusando loops concorrentes por fase (não por presença de arquivo), e gravando o estado inicial. O lifecycle do hook permanece fail-open stub — a verificação é só da máquina de estados em isolamento.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A máquina de estados precisa ser verificada em isolamento antes de ser conectada ao hook. Se o CAS não funciona corretamente, dois caminhos do hook podem avançar a mesma fase ao mesmo tempo. Se as escritas não são atômicas, um crash no meio de uma transição deixa o arquivo de estado corrompido. Testar isso separado não é burocracia — é o que permite confiar no estado quando o lifecycle for adicionado na próxima etapa.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 02 — state machine</span>
+                  <span class="text-xs text-neutral-500">Rode após o Prompt 01 passar</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Precisamos da máquina de estados antes de ligar o lifecycle do hook. O Claudex rastreia cada loop em um arquivo YAML-like em `.claude/claudex/&lt;review_id&gt;.state`. Por loop, nunca compartilhado. Veja o SPEC.md para a lista completa de campos.
+
+Construa:
+
+1. `plugins/claudex/scripts/state-helpers.sh`. Sourceable. Expõe:
+   - `claudex_new_review_id` — gera `YYYYMMDD-HHMMSS-XXXXXX` (seis caracteres hex minúsculos no final)
+   - `claudex_validate_review_id &lt;id&gt;` — verificação de regex estrita; retorna 0/1
+   - `claudex_state_write &lt;arquivo&gt; &lt;conteúdo&gt;` — atômico. Escreve em `${arquivo}.tmp.$$` depois `mv -f`. Nunca arquivos parciais
+   - `claudex_state_read_field &lt;arquivo&gt; &lt;campo&gt;` — grep do valor YAML-like
+   - `claudex_state_set_field &lt;arquivo&gt; &lt;campo&gt; &lt;valor&gt;` — sed in place via tmp + rename. Também atualiza `last_updated_at` para agora (UTC ISO 8601)
+   - `claudex_phase_transition &lt;arquivo&gt; &lt;fase_de&gt; &lt;fase_para&gt;` — compare-and-swap. Só escreve se a fase atual bate com `de`. Retorna 0/1
+   - `claudex_lock_write &lt;arquivo&gt;` — escreve `$$`
+   - `claudex_lock_is_active &lt;arquivo&gt;` — `kill -0` no PID armazenado
+   - `claudex_sweep_stale` — `find -mmin +$CLAUDEX_STALE_MINUTES` (padrão 15) em arquivos `*.state`; remove o state file e seus `.lock`, `-runner.sh`, `-prompt.txt`, e subpasta por loop
+   - `claudex_find_active_loop` — imprime o caminho para o state file mais recente (por mtime) ou retorna 1 se não houver
+
+2. `plugins/claudex/scripts/start-loop.sh`. Chamado por `/claudex:plan` e `/claudex:review`. Comportamento:
+   - Parseia flags antes do tópico: `--rounds N`, `--from-draft`, `--skip-interview`, `--interviewed`. Rejeita `--rounds 0` e não-inteiros com erro claro. Rejeita `--from-draft` se PLAN.md estiver ausente
+   - Recusa iniciar se algum state file existente tiver fase fora de `{done, cancelled, errored}`. Concorrência baseada em fase, NÃO em presença de arquivo. State files completos ficam no disco para auditoria
+   - Varre loops stale primeiro (`claudex_sweep_stale`)
+   - Gera um `review_id`, escreve o state file inicial atomicamente, escreve um lockfile
+   - Imprime instruções iniciais no stdout
+
+3. Estenda `plugins/claudex/tests/platform-validation.sh` com seções que exercitam cada helper.
+
+O lifecycle do hook permanece fail-open stub por enquanto. Estamos apenas verificando a máquina de estados em isolamento.
+
+Rode `bash plugins/claudex/tests/platform-validation.sh` e me diga o que passou.</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">state-helpers.sh · review_id no formato <code class="bg-dark-600 px-1 rounded text-xs">YYYYMMDD-HHMMSS-XXXXXX</code> · Atomicidade via tmp+rename · CAS de fase · Concorrência por fase (não por arquivo) · start-loop.sh com flags · Varredor de stale.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.7 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">7</span>
+          <span class="text-lg">💾</span>
+          <div>
+            <span class="font-medium">Escrita atômica e CAS — como o estado nunca fica corrompido</span>
+            <span class="text-neutral-500 text-sm ml-2">— Por que tmp + rename e não echo &gt;</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Escrita atômica significa que o arquivo de estado nunca existe em estado parcialmente escrito. A técnica é sempre escrever em um arquivo temporário (<code class="bg-dark-600 px-1 rounded text-xs">arquivo.tmp.$$</code>) e depois renomear para o destino final com <code class="bg-dark-600 px-1 rounded text-xs">mv -f</code>. Em sistemas de arquivos Unix, <code class="bg-dark-600 px-1 rounded text-xs">rename()</code> é atômico no mesmo filesystem. CAS (Compare-and-Swap) de fase significa que a transição só acontece se a fase atual é exatamente o que esperamos — isso evita que dois caminhos de código avancem a mesma fase ao mesmo tempo.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Um arquivo de estado corrompido — lido pelo hook enquanto está sendo escrito — pode fazer o hook falhar de formas imprevisíveis. Sem CAS, se o hook dispara duas vezes rápido (o Claude Code pode fazer isso), ambas as chamadas podem avançar a fase para a mesma fase seguinte, causando uma transição dupla. Entender esses dois padrões é suficiente para proteger qualquer sistema de estado baseado em arquivo.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">tmp + rename = atomicidade no mesmo filesystem · CAS = idempotência na transição de fase · Race condition sem CAS · Nunca usar <code class="bg-dark-600 px-1 rounded text-xs">echo &gt; state</code> direto · Aplicável a qualquer sistema de estado em arquivo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <a href="#modulo-2" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Módulo 2 →</a>
+      <a href="#" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">↑ Topo</a>
+    </div>
+  </div>
+
+  <!-- ==================== MÓDULO 2 ==================== -->
+  <div id="modulo-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-purple-400 font-bold">Módulo 2</span>
+        <span class="text-xs text-neutral-500">~60 min</span>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">🧠 O Cérebro do Loop</h3>
+      <p class="text-neutral-400 text-sm">O Stop Hook lifecycle, o runner script que chama o Codex, extração de findings para economizar tokens e rotação de personas por rodada.</p>
+    </div>
+
+    <div class="divide-y divide-dark-600">
+
+      <!-- 2.1 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🔄</span>
+          <div>
+            <span class="font-medium">Prompt 03 — O Stop Hook lifecycle: BLOCK vs APPROVE</span>
+            <span class="text-neutral-500 text-sm ml-2">— O stub vira o cérebro do sistema</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O terceiro prompt substitui o stub fail-open por o lifecycle real. O hook agora lê o state file, identifica a fase atual e age de acordo: na fase <code class="bg-dark-600 px-1 rounded text-xs">drafting</code>, verifica se o PLAN.md existe e faz CAS para <code class="bg-dark-600 px-1 rounded text-xs">reviewing</code>, gerando o runner script para o Codex. Na fase <code class="bg-dark-600 px-1 rounded text-xs">reviewing</code>, incrementa a rodada ou conclui o loop. Na fase <code class="bg-dark-600 px-1 rounded text-xs">done</code>, limpa artefatos e aprova. Em qualquer fase desconhecida, aprova.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Este é o prompt que transforma o plugin de "esqueleto que carrega" em "sistema que pensa". Toda a lógica de controle do loop vive aqui. O BLOCK diz ao Claude o que fazer a seguir — é o canal de comunicação do hook para o modelo. O APPROVE libera a sessão. Entender essa arquitetura explica por que o Claudex consegue coordenar Claude e Codex sem intervenção humana entre rodadas.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 03 — stop hook lifecycle</span>
+                  <span class="text-xs text-neutral-500">A máquina de estados está verificada. Agora ligue o hook.</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Substitua o stub fail-open em `plugins/claudex/hooks/stop-hook.sh` pelo motor de lifecycle real. Leia o SPEC.md para a tabela de fases.
+
+Construa:
+
+1. Helpers no topo: `log()` adiciona ao `.claude/claudex/log` com timestamp UTC. `approve(reason)` registra e imprime `{"decision":"approve"}`. `block(reason)` registra os primeiros 80 chars, escapa o JSON via python3 com fallback sed, depois imprime `{"decision":"block","reason":...}`.
+
+2. ERR trap incondicional. Primeira linha ativa do script. Captura qualquer coisa não tratada explicitamente e falha aberto.
+
+3. Source do state-helpers.sh (ou fail-open se estiver ausente).
+
+4. Encontra o loop ativo. Se não houver, aprova. Se o formato do review_id for inválido, remove o state file ruim e aprova.
+
+5. Lê campos de estado: mode, phase, round, max_rounds, decision_signal, topic, repo_root, started_at_epoch.
+
+6. Validação de CWD: se repo_root divergir do pwd atual, falha aberto com linha de log.
+
+7. Valida numéricos: round ou max_rounds inválidos caem para 1 / max-padrão.
+
+8. Helper `write_runner_script`: constrói um script bash autocontido em `.claude/claudex/&lt;id&gt;-runner.sh`. O script escreve o prompt num heredoc com `&lt;&lt;'PROMPTEOF'` (aspas simples — crítico: evita expansão shell do conteúdo do prompt) e depois roda `codex exec --dangerously-bypass-approvals-and-sandbox &lt; $PROMPT_FILE`.
+
+9. Case statement para modo plan:
+   - `drafting`: se PLAN.md ausente ou vazio → BLOCK pedindo ao Claude para rascunhá-lo. Se presente → CAS para `reviewing`, constrói prompt Codex da rodada 1, escreve o runner, BLOCK com instruções para rodar o runner e ler o arquivo de findings.
+   - `reviewing`: se `decision_signal=no-material-findings` → CAS para `done`, limpa, aprova. Caso contrário incrementa rodada; se nova rodada &gt; max_rounds, set `decision_signal=max-reached`, CAS para `done`, limpa, aprova. Caso contrário: escreve próximo runner, BLOCK com novas instruções.
+   - `done`: limpa artefatos restantes, aprova.
+   - qualquer outra fase: loga fase desconhecida, aprova.
+
+10. Case statement para modo review: `reviewing` escreve runner pedindo ao Codex para revisar o diff atual. `done` limpa, aprova.
+
+11. `plugins/claudex/scripts/mark-done.sh`. Recebe review_id como argumento. Valida o formato. Seta `decision_signal=no-material-findings` e `phase=done`. Atômico.
+
+12. Smoke test em `plugins/claudex/tests/smoke-test.sh`. Sobe um repo git temporário, roda start-loop.sh, escreve PLAN.md falso, dispara o hook diretamente e verifica que faz BLOCK. Verifica que o estado transicionou para `reviewing`. Verifica que um runner script foi criado. Verifica que disparar novamente incrementa a rodada. Verifica que mark-done.sh + hook produz approve. Verifica recusa de loop concorrente.
+
+NÃO chame o Codex de verdade em nenhum teste. Todos os testes fazem stub do runner ou só verificam que o arquivo existe.
+
+Rode os dois scripts de teste. Me diga as contagens.</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">log/approve/block helpers · Case statement por fase · write_runner_script · BLOCK como canal de comunicação hook→Claude · mark-done.sh · smoke-test.sh · Stub de runner nos testes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.2 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🎮</span>
+          <div>
+            <span class="font-medium">Como o hook controla cada fase do loop</span>
+            <span class="text-neutral-500 text-sm ml-2">— A tabela de fases na prática</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O lifecycle completo tem 4 fases: <strong class="text-purple-400">drafting</strong> — Claude escreve o PLAN.md, hook verifica existência e faz CAS para reviewing. <strong class="text-purple-400">reviewing</strong> — Claude roda o runner (que chama o Codex), lê os findings, revisa o PLAN.md ou chama mark-done.sh. <strong class="text-purple-400">summarizing</strong> — hook faz BLOCK com resumo final, Claude imprime ao usuário, hook aprova no próximo disparo. <strong class="text-purple-400">done</strong> — limpa artefatos, aprova.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Visualizar o fluxo completo esclarece por que o loop não precisa de intervenção humana entre rodadas. O hook é disparado automaticamente pelo Claude Code ao final de cada turno do Claude. O BLOCK é a forma do hook "falar" com o Claude na próxima rodada. O APPROVE libera a sessão. Entender isso permite depurar o loop quando ele para inesperadamente.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">drafting → reviewing → summarizing → done · Hook disparado no final de cada turno · BLOCK = instrução para o próximo turno · CAS de fase garante linearidade · mark-done.sh como sinal de "sem findings materiais".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.3 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🚀</span>
+          <div>
+            <span class="font-medium">O runner script — como Claude delega para o Codex</span>
+            <span class="text-neutral-500 text-sm ml-2">— O canal Claude → Codex</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O runner script é um arquivo bash gerado dinamicamente pelo hook para cada rodada. Ele contém o prompt para o Codex num heredoc com <code class="bg-dark-600 px-1 rounded text-xs">&lt;&lt;'PROMPTEOF'</code> (aspas simples — crítico para evitar expansão shell do conteúdo do prompt) e executa <code class="bg-dark-600 px-1 rounded text-xs">codex exec --dangerously-bypass-approvals-and-sandbox &lt; prompt.txt</code>. O BLOCK diz ao Claude para executar esse script. Após a execução, o Codex terá escrito o arquivo de findings, que o Claude lê para decidir o próximo passo.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O runner é o ponto de integração entre os dois modelos. Entender como ele funciona explica por que o Codex não precisa de contexto acumulado — cada rodada é uma chamada fresca com o prompt da rodada mais o PLAN.md atual. A flag <code class="bg-dark-600 px-1 rounded text-xs">--dangerously-bypass-approvals-and-sandbox</code> é necessária porque o Codex está rodando dentro de uma chamada de hook, que não tem contexto interativo para pedir aprovação.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm"><code class="bg-dark-600 px-1 rounded text-xs">&lt;&lt;'PROMPTEOF'</code> — aspas simples evitam expansão · <code class="bg-dark-600 px-1 rounded text-xs">codex exec --dangerously-bypass-approvals-and-sandbox</code> · Runner gerado por rodada · Findings escritos pelo Codex · Claude lê findings, não o transcript completo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.4 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">📋</span>
+          <div>
+            <span class="font-medium">Prompt 04 — Extração de findings para economizar tokens</span>
+            <span class="text-neutral-500 text-sm ml-2">— Claude não lê 30k tokens por rodada</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Em campo, Claude estava queimando contexto lendo transcritos do Codex de 30k+ tokens por rodada. O quarto prompt resolve isso pedindo ao Codex que também escreva um resumo limpo e pequeno dos findings — apenas severidade + descrição de uma linha + recomendação — em <code class="bg-dark-600 px-1 rounded text-xs">.claude/claudex/&lt;id&gt;/findings-round-N.md</code>. O BLOCK instrui o Claude a ler esse resumo em vez do transcript completo, exceto quando precisar de contexto adicional.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Este é um padrão de economia de contexto que aparece em qualquer sistema multi-modelo. Modelos grandes processando saídas longas de outros modelos acumulam custo e latência rapidamente. Extrair uma visão resumida das informações relevantes — e passar só essa visão para o modelo seguinte — é uma decisão de arquitetura que escala. O mesmo padrão se aplica a qualquer pipeline onde um modelo revisa a saída de outro.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 04 — findings + personas</span>
+                  <span class="text-xs text-neutral-500">Duas mudanças aditivas</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Duas mudanças, ambas aditivas:
+
+## A. Extração de arquivo de findings
+
+Testes em campo mostraram que o Claude estava queimando contexto lendo transcritos do Codex de 30k+ tokens por rodada. Peça ao Codex que também escreva um resumo limpo de bullets que o Claude lê no lugar.
+
+1. Atualize o prompt Codex da rodada N em stop-hook.sh para incluir este parágrafo no final:
+
+   REQUISITO CRÍTICO DE SAÍDA: Após sua análise completa, escreva um resumo limpo apenas dos findings (severidade + descrição de uma linha + recomendação) no arquivo `&lt;findings_path&gt;`. Use este formato exato: `# Findings rodada N\n\n## Alto\n- &lt;descrição&gt; (&lt;recomendação&gt;)\n## Médio\n...\n## Baixo\n...`. Se não houver findings materiais, o arquivo deve conter exatamente `# Findings rodada N\n\nNenhum finding substantivo.`.
+
+2. O hook constrói o caminho dos findings como `.claude/claudex/&lt;review_id&gt;/findings-round-&lt;round&gt;.md`. Pré-cria a subpasta por loop.
+
+3. O BLOCK diz ao Claude: "Quando o Codex terminar, leia o resumo limpo dos findings em `&lt;caminho&gt;`. Esse arquivo é uma lista curta de bullets. Pule o transcript completo a menos que precise de contexto extra."
+
+4. Adicione `claudex_findings_severity_counts &lt;arquivo&gt;` ao state-helpers.sh. Retorna `high=N medium=N low=N` contando linhas de bullet sob cada header `## Severidade`. Retorna zeros se o arquivo estiver ausente.
+
+5. Na rodada 2+, adicione uma linha "**Rodada anterior:** high=N medium=N low=N" no BLOCK para que o Claude veja a trajetória antes da próxima rodada.
+
+## B. Rotação de personas
+
+Faça cada rodada atacar de um ângulo diferente.
+
+1. Crie `plugins/claudex/scripts/personas.sh`. Sourceable. Duas funções:
+   - `claudex_persona_for_round &lt;N&gt;` — imprime uma estância multi-parágrafo descrevendo a persona do revisor para a rodada N.
+     - Rodada 1: engenheiro sênior cético. Caça falhas de design e premissas quebradas.
+     - Rodada 2: revisor de segurança e integridade de dados. Auth, validação, race conditions, recuperação de falha parcial, segredos, trilhas de auditoria, perda de dados.
+     - Rodada 3+: revisor ops/SRE. Segurança de rollback, observabilidade, rollout gradual, version skew, ergonomia de on-call. Na rodada 4+, a estância deve dizer "aprofunde os ângulos anteriores" em vez de repetir a mesma coisa.
+   - `claudex_persona_label_for_round &lt;N&gt;` — imprime um label de uma linha para uso nos headers de BLOCK.
+
+2. Em `write_runner_script`, source personas.sh e adicione a estância da persona ao início do prompt Codex.
+
+3. Atualize os headers dos BLOCKs para ler: `### Claudex rodada N de M, &lt;label-da-persona&gt;`.</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">findings-round-N.md · Economia de contexto · <code class="bg-dark-600 px-1 rounded text-xs">claudex_findings_severity_counts</code> · Trajetória high/medium/low entre rodadas · personas.sh · Stanza de persona no início do prompt Codex.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.5 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🎭</span>
+          <div>
+            <span class="font-medium">Rotação de personas por rodada</span>
+            <span class="text-neutral-500 text-sm ml-2">— Engenheiro, segurança, SRE</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Cada rodada do Codex ataca o plano de um ângulo diferente: <strong class="text-purple-400">Rodada 1 — engenheiro sênior</strong>: falhas de design, premissas quebradas, specs ambíguas. <strong class="text-purple-400">Rodada 2 — segurança e integridade de dados</strong>: auth, validação, race conditions, recuperação de falha parcial, segredos, auditoria, perda de dados. <strong class="text-purple-400">Rodada 3+ — ops/SRE</strong>: segurança de rollback, observabilidade, rollout gradual, version skew, ergonomia de on-call. As estâncias de persona vivem em <code class="bg-dark-600 px-1 rounded text-xs">scripts/personas.sh</code> e são adicionadas ao início do prompt Codex pelo hook a cada rodada.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Sem rotação de personas, o Codex tende a repetir os mesmos tipos de critique em cada rodada — a segunda rodada repete a primeira em vez de ir mais fundo. As personas forçam ângulos diferentes: depois do engenheiro verificar design, o revisor de segurança vai fundo em superfícies de ataque. Depois da segurança, o SRE verifica se o sistema sobrevive a rollback e falha de produção. O resultado é um plano revisado sob três lentes complementares.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Persona como stanza de instruções · Rodada 1: design · Rodada 2: segurança/integridade · Rodada 3+: ops/SRE · "Aprofundar" vs "repetir" · claudex_persona_label_for_round para headers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.6 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">📝</span>
+          <div>
+            <span class="font-medium">Prompt 05 — A fase de sumarização</span>
+            <span class="text-neutral-500 text-sm ml-2">— O loop não pode terminar em silêncio</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Sem a fase de sumarização, o loop terminava silenciosamente — o turno do Claude simplesmente parava sem mensagem de fechamento, deixando o usuário sem saber se algo aconteceu. O quinto prompt adiciona a fase <code class="bg-dark-600 px-1 rounded text-xs">summarizing</code> entre <code class="bg-dark-600 px-1 rounded text-xs">reviewing</code> e <code class="bg-dark-600 px-1 rounded text-xs">done</code>. Nela, o hook faz BLOCK com o resumo final — rodadas executadas, tempo total, tabela de findings por rodada. Claude imprime esse resumo ao usuário, termina o turno, e o próximo disparo do hook faz CAS para <code class="bg-dark-600 px-1 rounded text-xs">done</code> e aprova.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A sumarização fecha o loop de feedback. Sem ela, o usuário não sabe quantas rodadas rodaram, quantos findings foram encontrados em cada rodada, ou se o loop terminou por conclusão ou por atingir o máximo de rodadas. Com ela, o loop sempre aterra de forma visível. É um princípio de UX: sistemas automatizados que terminam sem mensagem criam ansiedade e desconfiança.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 05 — summarizing phase</span>
+                  <span class="text-xs text-neutral-500">Sem isso, o loop termina em silêncio</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Adicione uma nova fase entre `reviewing` e `done` chamada `summarizing`. O trabalho desta fase é fazer BLOCK uma vez com um resumo final para que o Claude o imprima ao usuário, depois aprovar no próximo disparo.
+
+## Mudança no lifecycle
+
+Antes:  drafting → reviewing → done
+Depois: drafting → reviewing → summarizing → done
+
+`summarizing` é tratada como fase **ativa** pela verificação de concorrência do start-loop.sh (ainda não é terminal).
+
+## Mudanças no hook (stop-hook.sh)
+
+1. Adicione um helper `build_rounds_table &lt;rodada_final&gt;` perto do topo. Itera `1..rodada_final`, lê cada arquivo de findings, chama `claudex_findings_severity_counts`, combina com o label da persona. Retorna linhas como:
+   - Rodada 1 (Engenheiro sênior): high=2 medium=4 low=1
+   - Rodada 2 (Segurança e integridade): high=2 medium=2 low=0
+
+2. No case `reviewing`, quando `decision_signal=no-material-findings`:
+   - CAS `reviewing → summarizing` (NÃO para `done`).
+   - Constrói o resumo usando `build_rounds_table` e `format_elapsed`.
+   - BLOCK com mensagem markdown intitulada `### Loop do Claudex completo ✓`. Corpo: rodadas executadas, tempo total, tabela de findings, depois "**Imprima este resumo ao usuário para que ele veja que o loop aterrou.** Depois termine seu turno."
+
+3. No case `reviewing`, quando overflow de rodadas:
+   - Set `decision_signal=max-reached`.
+   - CAS `reviewing → summarizing`.
+   - BLOCK com `### Loop do Claudex parado no máximo de rodadas (rodada N de M)`. Inclua a tabela de rodadas, o caminho para o arquivo de findings da última rodada, e três opções explícitas: revisar manualmente, re-rodar com `--rounds N` maior, ou aceitar como incompleto conhecido.
+
+4. Adicione um case `summarizing`:
+   - CAS `summarizing → done`.
+   - Limpa runner, prompt file, lockfile.
+   - Loga tempo decorrido.
+   - Aprova.
+
+## Mudança no mark-done.sh
+
+`mark-done.sh` atualmente seta `phase=done` e `decision_signal=no-material-findings`. Mude para **apenas** setar `decision_signal=no-material-findings` e **deixar `phase=reviewing`**. O próximo disparo do hook verá o sinal e dirigirá o caminho de sumarização.
+
+Atualize a linha de echo para dizer "Loop marcado como done. Stop hook entregará o resumo no próximo disparo."</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Fase summarizing · build_rounds_table · Término visível vs silencioso · BLOCK uma vez, APPROVE no próximo · mark-done.sh seta signal, não fase · max-reached com 3 opções explícitas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.7 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">7</span>
+          <span class="text-lg">🔕</span>
+          <div>
+            <span class="font-medium">Por que o loop não pode terminar em silêncio</span>
+            <span class="text-neutral-500 text-sm ml-2">— UX de sistemas automatizados</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Quando um processo automatizado termina sem mensagem, o usuário não sabe distinguir entre "terminou com sucesso", "falhou silenciosamente" ou "ainda está rodando". No contexto do Claudex, sem a sumarização o turno do Claude simplesmente parava — nenhum sinal de que 3 rodadas de revisão aconteceram, nenhuma tabela de findings, nenhum link para o PLAN.md final. O sistema parecia quebrado mesmo quando funcionava perfeitamente.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Este princípio se aplica a qualquer automação que o usuário não consegue ver executar. Sempre que um processo automatizado conclui — seja um deploy, um batch job, uma revisão de código — ele deve emitir um sinal claro de fechamento com suficiente contexto para o usuário entender o que aconteceu. No caso do Claudex, a fase de sumarização é essa garantia arquitetural.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Término visível como contrato de UX · Sumarização como fase obrigatória · "Aterrar de forma visível" · Diferença entre sucesso silencioso e falha silenciosa · Resumo como artefato de encerramento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <a href="#modulo-1" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">← Módulo 1</a>
+      <a href="#modulo-3" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Módulo 3 →</a>
+    </div>
+  </div>
+
+  <!-- ==================== MÓDULO 3 ==================== -->
+  <div id="modulo-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-purple-400 font-bold">Módulo 3</span>
+        <span class="text-xs text-neutral-500">~50 min</span>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">🔒 Acabamento e Segurança</h3>
+      <p class="text-neutral-400 text-sm">Os comandos utilitários que tornam o plugin usável no dia a dia, o safety pass que audita cada caminho de erro, e os três níveis de teste.</p>
+    </div>
+
+    <div class="divide-y divide-dark-600">
+
+      <!-- 3.1 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🛠️</span>
+          <div>
+            <span class="font-medium">Prompt 06 — Os quatro comandos utilitários</span>
+            <span class="text-neutral-500 text-sm ml-2">— status, doctor, cancel, rollback</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O sexto prompt adiciona quatro comandos que tornam o plugin operável em produção: <strong class="text-purple-400">/claudex:status</strong> — mostra o estado atual do loop (fase, rodada, tópico, tempo decorrido, findings por rodada). <strong class="text-purple-400">/claudex:doctor</strong> — diagnóstico completo do ambiente (bash, codex CLI, arquivos do plugin, hook fail-open). <strong class="text-purple-400">/claudex:cancel</strong> — interrompe o loop preservando o state file para auditoria. <strong class="text-purple-400">/claudex:rollback</strong> — limpa tudo, mantendo apenas o log.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Sem esses comandos, o loop é uma caixa preta. O /status é o instrumento que o usuário observa enquanto o loop roda. O /doctor é o primeiro comando a rodar quando algo não funciona. O /cancel preserva evidência, o /rollback limpa tudo — a distinção importa quando você precisa investigar por que um loop falhou. Esses quatro comandos são a diferença entre uma ferramenta de laboratório e uma ferramenta de produção.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 06 — utility commands</span>
+                  <span class="text-xs text-neutral-500">O loop funciona. Agora torne-o usável no dia a dia.</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Construa:
+
+## /claudex:status
+
+`plugins/claudex/commands/status.md` é uma linha que roda `bash "${CLAUDE_PLUGIN_ROOT}/scripts/status.sh"`. Read-only.
+
+`plugins/claudex/scripts/status.sh`:
+- Encontra o state file mais recente.
+- Imprime mode, phase (com código de cor: amarelo para ativo, verde para done, vermelho para cancelled/errored), round, topic, started_at, tempo decorrido, decision_signal, interview_used, from_draft.
+- Para cada arquivo de findings em `.claude/claudex/&lt;id&gt;/`, imprime uma linha como `rodada 1   high=2 medium=4 low=1`.
+- Sempre sai com 0. NÃO instale ERR trap — claudex_find_active_loop legitima­mente retorna não-zero quando não há loops.
+
+## /claudex:doctor
+
+`plugins/claudex/scripts/doctor.sh`:
+- Seções com verificações ✓/✗ coloridas.
+- Shell: bash presente, bash 4+ (avise no 3.x).
+- Codex CLI: no PATH; se presente, imprima também `codex --version`.
+- Dependências opcionais: python3 (só aviso).
+- Diretório de estado: `.claude/claudex` existe e é gravável.
+- Arquivos do plugin: colapse a verificação de existência dos 15 arquivos esperados em uma única linha `todos os 15 arquivos do plugin presentes` em caso de sucesso. Itemize apenas em caso de falha.
+- Sanidade fail-open do hook: hook é executável, retorna approve com estado vazio.
+- Smoke dos helpers: state-helpers + personas fazem source sem erro. Personas rodadas 1/2/3 são não-vazias e distintas.
+- Higiene do loop: imprime se há loop em disco e sua fase.
+
+Saia com 1 se alguma verificação obrigatória falhar, 0 caso contrário.
+Mesma regra que status: sem ERR trap.
+
+## /claudex:cancel e /claudex:rollback
+
+- `cancel-loop.sh`: encontra o loop ativo, seta `phase=cancelled`, remove runner/prompt/lock. Mantém o state file para auditoria.
+- `rollback-loop.sh`: apaga todos os state files, lock files, runners, prompts e subpastas de findings em `.claude/claudex/`. Mantém `.claude/claudex/log`. Imprime a contagem de arquivos removidos.
+
+## Oferta de entrevista em /claudex:plan
+
+Estenda o `commands/plan.md`:
+- Se `$ARGUMENTS` estiver vazio, pergunte ao usuário o tópico. NÃO rode start-loop ainda.
+- Se `$ARGUMENTS` não contiver `--skip-interview`, use `AskUserQuestion` com duas opções: "Me entreviste primeiro (Recomendado)" / "Apenas inicie o loop". Se optar pela entrevista, faça mais três perguntas (escopo, restrições, lista de preocupações). Componha um tópico enriquecido de linha única com separadores `; `. Passe com `--interviewed`.
+- Caso contrário, passe `$ARGUMENTS` verbatim para start-loop.sh.</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">status.sh sem ERR trap · doctor.sh como diagnóstico de onboarding · cancel preserva, rollback limpa · Entrevista antes do loop · AskUserQuestion para opções interativas · --interviewed registra interview_used no estado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.2 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🩺</span>
+          <div>
+            <span class="font-medium">O /claudex:doctor — diagnóstico completo do plugin</span>
+            <span class="text-neutral-500 text-sm ml-2">— Primeiro comando ao enfrentar problemas</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O doctor.sh verifica o ambiente completo em seções com ✓/✗: bash presente e versão 4+, Codex CLI no PATH, python3 disponível, diretório de estado gravável, todos os 15 arquivos do plugin presentes, hook executável e fail-open com entrada vazia, helpers fazendo source corretamente, personas 1/2/3 distintas e não-vazias, estado atual dos loops no disco. Sai com código 1 se alguma verificação obrigatória falhar, 0 caso contrário.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O /doctor é o padrão de auto-diagnóstico que qualquer plugin complexo deve ter. Em vez de deixar o usuário depurar o ambiente manualmente, o plugin verifica as próprias dependências e reporta o que está faltando. O padrão — verificações em seções, ✓/✗ coloridos, saída legível, código de saída significativo — é replicável em qualquer ferramenta de linha de comando.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Auto-diagnóstico como feature · ✓/✗ por seção · Avisos vs erros fatais · Código de saída significativo · bash 4+ (warn no 3.x) · Verificar hook fail-open na instalação.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.3 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🎤</span>
+          <div>
+            <span class="font-medium">A entrevista de planejamento antes do loop</span>
+            <span class="text-neutral-500 text-sm ml-2">— Contexto melhora o plano inicial</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Antes de iniciar o loop, o /claudex:plan oferece uma entrevista opcional de três perguntas: escopo (o que está dentro e fora do projeto), restrições (limitações técnicas, de tempo, de orçamento), e lista de preocupações (o que mais te preocupa nesse build). As respostas são compostas num tópico enriquecido de linha única com separadores <code class="bg-dark-600 px-1 rounded text-xs">; </code> e passadas ao start-loop.sh com a flag <code class="bg-dark-600 px-1 rounded text-xs">--interviewed</code>.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Quanto mais contexto o Claude tem ao escrever o PLAN.md inicial, melhor o rascunho que o Codex vai revisar. Uma entrevista de 2 minutos antes do loop pode poupar uma rodada inteira de revisão — o Codex não precisa descobrir as restrições óbvias, pode ir direto para os problemas não-óbvios. O padrão de enriquecer o prompt com contexto estruturado antes de uma chamada de modelo é replicável em qualquer pipeline.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">AskUserQuestion com opções · Três perguntas: escopo, restrições, preocupações · Tópico enriquecido de linha única · --interviewed registra no estado · --skip-interview para automação · Contexto melhora qualidade do rascunho inicial.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.4 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">🔍</span>
+          <div>
+            <span class="font-medium">Prompt 07 — O safety pass: auditando cada caminho de erro</span>
+            <span class="text-neutral-500 text-sm ml-2">— Verificação sistemática das 6 primitivas</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O sétimo e último prompt não adiciona features — ele audita o que foi construído contra o checklist das 6 primitivas de segurança do SPEC: (1) ERR trap é a primeira linha ativa? (2) Todas as mutações de estado passam por tmp+rename? (3) Todas as transições de fase usam CAS? (4) O lockfile é usado apenas informacionalmente? (5) O varredor stale roda antes da verificação de concorrência? (6) A validação de CWD está no lugar? Cada item é verificado com grep no codebase.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O safety pass é a prática de reler o que foi construído com olhos de auditoria, não de implementação. É mais fácil construir um sistema correto em 7 prompts do que reler um monolito de 500 linhas de uma vez. Mas "mais fácil" não significa "automático" — o último prompt existe para garantir que as invariantes do sistema ainda são verdadeiras depois de 7 iterações de adição de código.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">O Prompt (PT-BR):</span>
+              <div class="mt-2 bg-dark-900 rounded-lg border border-dark-600 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 border-b border-dark-600 bg-dark-800">
+                  <span class="text-xs text-purple-400 font-semibold">Prompt 07 — safety pass</span>
+                  <span class="text-xs text-neutral-500">Último prompt. Audite cada caminho de erro.</span>
+                </div>
+                <pre class="prompt-block text-neutral-300 p-4 overflow-x-auto">Leia a seção "Seis primitivas de segurança" do SPEC.md. O hook já deve ter a maioria. Este pass verifica e adiciona o que falta.
+
+## Checklist de auditoria
+
+Percorra cada caminho de código e confirme:
+
+1. ERR trap. Primeira linha do stop-hook.sh após as definições de helper instala um trap que retorna approve em qualquer erro e sai com 0. Confirme que nenhum caminho que muta estado roda antes do trap.
+
+2. Escritas atômicas. Toda mutação de estado passa por `claudex_state_write` ou `claudex_state_set_field` (que usam tmp + rename). Nenhum redirecionamento `&gt;` direto para state files em lugar nenhum. Faça grep no codebase para confirmar.
+
+3. CAS de transição de fase. Toda escrita no campo `phase` usa `claudex_phase_transition`, NÃO `claudex_state_set_field "phase"`. Exceção: sites de "força" deliberados como cancel-loop.sh que substituem independente da fase atual. Documente quais sites são quais em comentários de código.
+
+4. Lockfile + liveness de PID. `claudex_lock_is_active` faz `kill -0`. O lockfile é apenas informacional nesta arquitetura — não bloqueia concorrência (a fase faz isso). Não carregue o lock para nada importante.
+
+5. Varredor stale. Roda em cada invocação do start-loop.sh ANTES da verificação de concorrência. Loops completos antigos mantidos no disco para auditoria não são varridos; apenas state files mais velhos que CLAUDEX_STALE_MINUTES.
+
+6. Validação de CWD. Hook lê `repo_root` do estado e falha aberto se `pwd != repo_root`.
+
+## Novos testes
+
+`tests/synthetic-e2e.sh`. Chamadas reais ao Codex. Sobe um repo descartável em `/tmp/claudex_synthetic`, roda um ciclo completo de plan-mode end-to-end com `codex exec` real. Documente que este teste custa alguns centavos em tokens Codex.
+
+## README e docs de SAFETY
+
+Escreva `README.md` na raiz do repo e `plugins/claudex/docs/SAFETY.md`. O README lidera com o que o loop faz em inglês simples. SAFETY.md é a lista explícita do que o claudex faz e NÃO faz, arquivos que toca, e expectativa de custo (~25-30k tokens por rodada, ~75-90k para as 3 rodadas padrão).
+
+## Varredura final de testes
+
+bash plugins/claudex/tests/platform-validation.sh
+bash plugins/claudex/tests/smoke-test.sh
+bash plugins/claudex/tests/synthetic-e2e.sh   # apenas se login Codex configurado
+
+Se platform + smoke passam, o plugin está pronto para shipar.</pre>
+              </div>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Auditoria sistemática das 6 primitivas · Grep para confirmar invariantes · Sites de "força" vs CAS · synthetic-e2e.sh com Codex real · README + SAFETY.md como contrato de entrega · platform + smoke = pronto para shipar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.5 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🧪</span>
+          <div>
+            <span class="font-medium">Os três níveis de teste: platform, smoke e e2e sintético</span>
+            <span class="text-neutral-500 text-sm ml-2">— Cada nível verifica uma coisa diferente</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm"><strong class="text-purple-400">platform-validation.sh</strong> — testa primitivos em isolamento: geração e validação de review_id, round-trip de escrita atômica, CAS válido e inválido, varredor stale, lockfile alive vs dead PID, finder de loop ativo, personas distintas por rodada, contagem de findings. Sem looping, sem Codex. <strong class="text-purple-400">smoke-test.sh</strong> — testa o lifecycle completo com Codex stubado: start-loop, PLAN.md fake, disparos de hook, transições de fase, sumarização, cancel, rollback, recusa de concorrência. <strong class="text-purple-400">synthetic-e2e.sh</strong> — chamada real ao Codex, custa tokens, verifica integração end-to-end. Opcional para sign-off de unidade.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A separação em três níveis não é burocracia — é velocidade. Platform-validation roda em 2 segundos e verifica os primitivos sem precisar de infraestrutura. Smoke-test roda em 10 segundos e verifica o lifecycle sem gastar tokens. E2e sintético roda quando você quer confirmar que o Codex real integra. Saber qual nível testar em cada situação acelera o ciclo de desenvolvimento.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Pirâmide de testes · platform: primitivos sem I/O externo · smoke: lifecycle com stubs · e2e: integração real · ✓/✗ colorido · platform + smoke = sign-off de unidade · e2e = confirmação de integração.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.6 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">🚢</span>
+          <div>
+            <span class="font-medium">Como shipar o plugin e o que vem na v2</span>
+            <span class="text-neutral-500 text-sm ml-2">— O que está pronto e o que foi adiado</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O plugin está pronto para shipar quando platform + smoke passam. O e2e sintético confirma integração real com Codex mas não é obrigatório para sign-off de unidade. Para shipar: verifica se os 15 arquivos do plugin estão presentes, roda doctor.sh num repo limpo para confirmar que o install não depende de estado do ambiente de dev, e escreve README e SAFETY.md. Para a v2, o design de auto-aplicação com isolamento em branch foi documentado em V2_DESIGN.md mas deliberadamente adiado.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A decisão de adiar o modo de auto-aplicação da v2 é um exemplo de escopo deliberado. Sistemas que tentam fazer tudo na v1 geralmente não chegam a shipar. A v2 teria o Codex não só revisando mas também aplicando as mudanças em branch isolada — muito poder para ser feito sem a infraestrutura de testes de integração que a v1 estabelece. A lição: defina o que a v1 faz e o que não faz, em vez de tentar fazer tudo.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">doctor.sh num repo limpo · 15 arquivos do plugin · README + SAFETY.md como entrega · V2: auto-aplicação com branch isolation · Escopo deliberado de v1 · "Shippable" = platform + smoke + doctor passam.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <a href="#modulo-2" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">← Módulo 2</a>
+      <a href="#modulo-4" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Módulo 4 →</a>
+    </div>
+  </div>
+
+  <!-- ==================== MÓDULO 4 ==================== -->
+  <div id="modulo-4" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-purple-400 font-bold">Módulo 4</span>
+        <span class="text-xs text-neutral-500">~40 min</span>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">📊 O que isso nos deu</h3>
+      <p class="text-neutral-400 text-sm">Antes e depois do safety pass, bugs capturados pelo processo, o custo real de construir sobre camadas não verificadas.</p>
+    </div>
+
+    <div class="divide-y divide-dark-600">
+
+      <!-- 4.1 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">↕️</span>
+          <div>
+            <span class="font-medium">O plugin antes e depois do safety pass</span>
+            <span class="text-neutral-500 text-sm ml-2">— O que a auditoria revelou</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Depois de 6 prompts de construção, o safety pass do Prompt 07 encontrou problemas que passaram despercebidos durante o build incremental: paths de ERR trap que poderiam executar antes da instalação do trap, um redirect direto para um state file que escapou da regra de atomicidade, um site de transição de fase que usava state_set_field em vez de phase_transition. Nenhum desses problemas era óbvio lendo o código — só apareceram sob auditoria sistemática.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O safety pass não é burocracia — é a diferença entre "funciona nos testes" e "funciona quando algo dá errado em produção". Os bugs encontrados pelo safety pass são exatamente os bugs que aparecem em situações de falha parcial: o state file que fica corrompido porque a escrita não era atômica, o loop que avança duas fases porque o CAS não estava no lugar. São bugs difíceis de reproduzir e fáceis de auditar.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Auditoria sistemática vs revisão ad hoc · Bugs de caminho de erro · Falha parcial como classe de problema · "Funciona nos testes" ≠ "robusto em falha" · Safety pass como última camada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.2 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🐛</span>
+          <div>
+            <span class="font-medium">Bugs capturados pelo processo, não pela revisão manual</span>
+            <span class="text-neutral-500 text-sm ml-2">— O processo como rede de segurança</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Bugs capturados pelo processo incremental, não pela revisão do código final: a fase de sumarização foi adicionada porque sem ela o loop terminava silenciosamente — problema descoberto ao testar o smoke-test. O heredoc com aspas simples no runner script foi uma correção necessária descoberta ao testar que o Codex recebia o prompt correto — sem aspas simples, variáveis shell no prompt eram expandidas antes de chegarem ao Codex. A validação de review_id contra path traversal foi adicionada ao perceber que um review_id malicioso poderia remover arquivos fora do diretório de estado.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Cada um desses bugs teria chegado à produção num build de prompt único porque a superfície de teste seria muito grande para ser coberta manualmente. O build incremental com verificação entre etapas cria uma rede de segurança onde cada etapa só pode introduzir a classe de bugs da sua própria responsabilidade — muito mais fácil de auditar.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Bugs de silêncio (sem sumarização) · Expansão de variável em heredoc · Path traversal em review_id · Build incremental como rede de segurança · Superfície de teste menor por etapa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.3 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">💣</span>
+          <div>
+            <span class="font-medium">O que teria dado errado com um único prompt gigante</span>
+            <span class="text-neutral-500 text-sm ml-2">— Análise do caminho alternativo</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O SPEC tem ~500 linhas. Se esse conteúdo fosse passado num único prompt pedindo para construir o plugin completo de uma vez, o Claude produziria código — provavelmente com partes funcionais e partes incorretas misturadas. Identificar o que está errado exigiria ler e entender o output completo de uma vez. As garantias de atomicidade, CAS e fail-open provavelmente não estariam todas corretas — elas são invariantes sutis que emergem do entendimento da arquitetura, não de seguir instruções lineares.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O problema do prompt único não é que o Claude não consegue gerar o código — é que você não consegue verificar se o código está correto. Cada bug introduzido no layer 1 se propaga invisível pelos layers 2-7. No prompt único, você só descobre os problemas quando o sistema todo está rodando — na hora mais difícil de depurar.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Código correto vs código verificável · Invariantes sutis emergem do build incremental · Propagação de bugs entre camadas · "O Claude gera, mas você precisa verificar" · Depuração de sistema completo vs primitivo isolado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.4 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">⚖️</span>
+          <div>
+            <span class="font-medium">Comparação: um prompt vs. sete</span>
+            <span class="text-neutral-500 text-sm ml-2">— Qualidade, custo e velocidade</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Comparação direta entre as abordagens: <strong class="text-red-400">Um prompt</strong> — rápido para iniciar, mas cada camada adiciona dívida técnica não verificada. O custo real aparece nas semanas seguintes em depuração. <strong class="text-purple-400">Sete prompts</strong> — mais lento para iniciar, mas cada camada é verificada antes da próxima. O custo de tokens é maior porque há mais chamadas. O custo de tempo de desenvolvimento é menor porque os bugs são encontrados cedo, quando são baratos de corrigir.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A intuição de "um prompt é mais rápido" é correta para o início, mas errada para o total. O custo de depurar um bug de CAS que aparece em produção — porque o estado ficou inconsistente numa falha parcial — é muito maior que o custo de ter verificado o CAS no Prompt 02. Este é o cálculo que o build incremental torna explícito.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Custo antecipado vs custo postergado · Depurar cedo é barato · Dívida técnica não verificada · "Mais rápido de iniciar" ≠ "mais rápido no total" · Tokens de build vs tokens de depuração.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.5 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">💸</span>
+          <div>
+            <span class="font-medium">O custo real de construir sobre camadas não verificadas</span>
+            <span class="text-neutral-500 text-sm ml-2">— Bugs de arquitetura são os mais caros</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Bugs de arquitetura — falhas na máquina de estados, race conditions, ausência de fail-open — são os mais caros de corrigir porque exigem refatoração em múltiplas camadas ao mesmo tempo. Um bug de CAS descoberto depois que o lifecycle, as personas e a sumarização já foram construídas em cima dele exige entender como as camadas superiores dependem do comportamento incorreto, antes de corrigi-lo. Corrigir o mesmo bug no Prompt 02, antes das camadas superiores existirem, é trivial.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A regra geral: o custo de corrigir um bug cresce com o número de camadas construídas em cima da camada onde o bug mora. Verificar cada camada antes de adicionar a próxima minimiza esse custo. No contexto do Claude Code, isso significa: teste o que o Claude construiu antes de pedir para ele construir a próxima parte.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Bugs de arquitetura vs bugs de implementação · Custo cresce com camadas acima · "Verifique antes de continuar" como regra financeira · Refatoração multi-camada é cara · Testar antes de adicionar a próxima camada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.6 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">🔗</span>
+          <div>
+            <span class="font-medium">Quer usar o Claudex na prática?</span>
+            <span class="text-neutral-500 text-sm ml-2">— O curso do produto te espera</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Você acabou de ver como o Claudex foi construído — cada camada, cada prompt, cada decisão de arquitetura. Agora a pergunta natural é: como usar essa ferramenta no dia a dia? O curso <strong class="text-purple-400">iClaudex — Planejamento Inteligente com Claude Code + Codex</strong> cobre exatamente isso: os 6 comandos, quando usar, exemplos reais, a entrevista de planejamento, e a filosofia do ciclo propor–questionar–melhorar aplicada a projetos de verdade.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Saber como uma ferramenta foi construída e saber usá-la bem são habilidades complementares mas distintas. Quem entende a arquitetura interna usa a ferramenta com mais confiança — sabe por que o /cancel preserva o state file, por que o /doctor deve ser o primeiro comando ao ter problemas, por que a entrevista melhora a qualidade do plano final. Os dois cursos se reforçam mutuamente.</p>
+            </div>
+            <div class="mt-3">
+              <a href="curso-claudex.html" class="inline-flex items-center px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold text-sm transition-colors">
+                🤖 Ir para o curso iClaudex →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <a href="#modulo-3" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">← Módulo 3</a>
+      <a href="#modulo-5" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Módulo 5 →</a>
+    </div>
+  </div>
+
+  <!-- ==================== MÓDULO 5 ==================== -->
+  <div id="modulo-5" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-purple-400 font-bold">Módulo 5</span>
+        <span class="text-xs text-neutral-500">~45 min</span>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">🔬 A Metodologia</h3>
+      <p class="text-neutral-400 text-sm">Os padrões extraídos do build do Claudex — reutilizáveis em qualquer projeto incremental com Claude Code.</p>
+    </div>
+
+    <div class="divide-y divide-dark-600">
+
+      <!-- 5.1 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">📋</span>
+          <div>
+            <span class="font-medium">Sempre especificar antes de codificar</span>
+            <span class="text-neutral-500 text-sm ml-2">— O papel do SPEC em qualquer projeto</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Antes do Prompt 01, o SPEC.md foi escrito definindo o que o sistema faz, o que ele não faz, as garantias rígidas, o lifecycle, o formato de estado, os canais de comunicação. Isso não é documentação — é o contrato que cada prompt consulta como fonte da verdade. Qualquer decisão de design que não estava no SPEC foi adicionada ao SPEC antes de ser implementada, não depois.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Escrever o SPEC antes força clareza sobre o que o sistema precisa ser antes que as escolhas de implementação comprometam o design. No Claude Code, isso significa: antes de pedir para o Claude construir algo, escreva uma página descrevendo o que o sistema deve fazer, o que não deve fazer, e as invariantes que não podem ser violadas. O Claude consultará esse documento como âncora de decisão.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">SPEC como contrato, não documentação · Invariantes antes da implementação · Decisões de design registradas antes do código · "O que não faz" tão importante quanto "o que faz" · SPEC como referência entre prompts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.2 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🛡️</span>
+          <div>
+            <span class="font-medium">Fail-open primeiro, lógica depois</span>
+            <span class="text-neutral-500 text-sm ml-2">— O padrão que protege sistemas interceptores</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Qualquer sistema que intercepta um fluxo crítico do usuário deve falhar aberto por padrão. No Prompt 01, o hook foi escrito com ERR trap e comportamento fail-open antes de qualquer lógica existir. Isso não foi adicionado no safety pass — foi o ponto de partida. A lógica de lifecycle foi adicionada por cima de um hook que já garantia não travar o usuário.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O padrão é: (1) identifique o pior caso de falha — no Claudex, é travar a sessão do Claude Code. (2) Garanta que o sistema nunca cause esse pior caso, mesmo antes da lógica real existir. (3) Adicione a lógica real por cima dessa garantia de base. Isso se aplica a qualquer sistema de interceptação: proxies, middlewares, hooks de CI, validadores de formulário.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Pior caso de falha → garantia de base · ERR trap como contrato de não-travar · Fail-open como base, não como afterthought · Aplicável a qualquer interceptor · "Nunca prenda o usuário" como invariante.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.3 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🪜</span>
+          <div>
+            <span class="font-medium">Verificar camada por camada antes de subir</span>
+            <span class="text-neutral-500 text-sm ml-2">— A fronteira de verificação entre prompts</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Cada um dos 7 prompts termina com uma instrução de verificação: "rode platform-validation.sh e me diga o que passou", "rode smoke-test.sh e me diga as contagens". Isso não é opcional. Antes de enviar o próximo prompt, você precisa confirmar que a camada atual está funcionando. Se o platform-validation falha no Prompt 02, você não avança para o Prompt 03 — você depura e corrige primeiro.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A fronteira de verificação entre prompts é o mecanismo que torna o build incremental confiável. Sem ela, você tem apenas um build em múltiplos prompts — cada camada pode conter bugs que só aparecem quando a camada seguinte depende delas. Com a fronteira, cada camada é uma base verificada sobre a qual a próxima pode ser construída com confiança.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Verificação obrigatória antes do próximo prompt · Falha na verificação = depura antes de avançar · Cada camada é uma base verificada · O teste é parte do prompt, não separado · "Rode e me diga" como protocolo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.4 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">📦</span>
+          <div>
+            <span class="font-medium">Estado explícito, nunca implícito</span>
+            <span class="text-neutral-500 text-sm ml-2">— Por que o estado vive em arquivo, não em memória</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O Claudex armazena todo o estado do loop em arquivos: <code class="bg-dark-600 px-1 rounded text-xs">.claude/claudex/&lt;review_id&gt;.state</code>. Não em variáveis de ambiente, não em memória compartilhada, não em flags temporários. Isso significa que o estado sobrevive a crashes, reinicializações e pode ser inspecionado diretamente com <code class="bg-dark-600 px-1 rounded text-xs">cat</code>. O /status apenas lê esses arquivos. O /doctor verifica se o diretório de estado é gravável.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Estado implícito — espalhado em variáveis, flags, condições runtime — é impossível de inspecionar e depurar. Estado explícito em arquivo é visível, versionável, pode ser copiado para reprodução de bug e pode ser removido com rm. O padrão se aplica a qualquer sistema de automação de longa duração: o estado que sobrevive entre invocações deve ser explícito e inspecionável.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Estado em arquivo vs estado em memória · Sobrevive a crashes · Inspecionável com cat · Removível com rm · Por loop, nunca compartilhado · YAML-like: simples de ler e de grep.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.5 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🔩</span>
+          <div>
+            <span class="font-medium">Testar cada primitivo isolado antes de compor</span>
+            <span class="text-neutral-500 text-sm ml-2">— A pirâmide de testes do Claudex</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">O platform-validation.sh testa cada função do state-helpers.sh em isolamento: geração de review_id, validação de formato, escrita atômica, CAS, varredor, lockfile. Nenhuma dessas funções é testada apenas como efeito colateral de um teste de sistema maior. Isso significa que quando o smoke-test falha porque a máquina de estados se comporta inesperadamente, o platform-validation já confirmou que os primitivos individuais estão corretos — o bug está na composição, não nas partes.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Testar primitivos isolados acelera a depuração ao reduzir o espaço de busca do bug. Se o CAS falha no smoke-test mas passa no platform-validation, o bug não está no CAS — está em como o lifecycle usa o CAS. Se o CAS também falha no platform-validation, o bug está no próprio helper. Essa distinção pode economizar horas de depuração.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Teste de primitivo vs teste de composição · Falha no primitive test → bug na implementação · Falha no smoke test (com primitive ok) → bug na composição · Espaço de busca reduzido · platform-validation como base da pirâmide.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.6 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">📐</span>
+          <div>
+            <span class="font-medium">Como sequenciar qualquer projeto em prompts incrementais</span>
+            <span class="text-neutral-500 text-sm ml-2">— A receita extraída do build do Claudex</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">A sequência extraída do Claudex: (1) Escreva o SPEC antes do Prompt 01 — defina o que faz, o que não faz, invariantes. (2) Prompt 1 = esqueleto verificável — carrega sem lógica, falha aberto. (3) Prompt 2 = estado — sem lógica de negócio ainda, só as primitivas de armazenamento. (4) Prompt 3 = lógica de negócio — agora que o estado está verificado. (5) Prompts 4-5 = features aditivas — sem modificar o que já está testado. (6) Prompt 6 = acabamento operacional. (7) Prompt 7 = safety pass — auditoria contra as invariantes do SPEC.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Esta sequência não é específica do Claudex — é um padrão para qualquer sistema com estado persistente construído com Claude Code. Esqueleto → Estado → Lógica → Features → Operacional → Safety. Cada etapa tem uma responsabilidade clara e um critério de verificação. Aplicar esse padrão ao próximo projeto reduz o risco de construir sobre bases não verificadas.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">SPEC → Esqueleto → Estado → Lógica → Features → Operacional → Safety · Cada etapa tem critério de verificação · Features aditivas sem modificar o testado · Safety pass como etapa final · Padrão reutilizável para qualquer sistema com estado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <a href="#modulo-4" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">← Módulo 4</a>
+      <a href="#modulo-6" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Módulo 6 →</a>
+    </div>
+  </div>
+
+  <!-- ==================== MÓDULO 6 ==================== -->
+  <div id="modulo-6" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-purple-400 font-bold">Módulo 6</span>
+        <span class="text-xs text-neutral-500">~60 min</span>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">🚀 Seu Próximo Projeto</h3>
+      <p class="text-neutral-400 text-sm">Projeto guiado: construa um hook de linting que bloqueia commits com erros — aplicando exatamente a metodologia do Claudex.</p>
+    </div>
+
+    <div class="divide-y divide-dark-600">
+
+      <!-- 6.1 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">📝</span>
+          <div>
+            <span class="font-medium">Como escrever o SPEC do seu projeto</span>
+            <span class="text-neutral-500 text-sm ml-2">— O que vai no SPEC antes do Prompt 01</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Para o hook de linting, o SPEC deve responder: O que faz — interceptar commits via Pre-commit hook, rodar o linter configurado, bloquear se houver erros, aprovar se não houver. O que NÃO faz — não corrige os erros automaticamente, não roda em PR reviews, não suporta múltiplos linters em v1. Invariantes — fail-open obrigatório (um crash no hook nunca deve bloquear um commit), o linter deve ser configurável por variável de ambiente, a mensagem de bloqueio deve listar os arquivos com erro.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Escrever o SPEC para o hook de linting antes de qualquer código força decisões que parecem óbvias mas não são: o hook deve rodar em todos os commits ou só quando há arquivos alterados de uma certa extensão? O que acontece se o linter não estiver instalado — bloqueia ou aprova? Responder essas perguntas antes do código evita descobri-las pela primeira vez em produção.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Seções do SPEC: o que faz, o que não faz, invariantes · Hook de linting como exemplo · Decisões de escopo antes do código · "Linter não instalado" como caso de edge a definir · SPEC como filtro de scope creep.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.2 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">✂️</span>
+          <div>
+            <span class="font-medium">Como quebrar em prompts incrementais</span>
+            <span class="text-neutral-500 text-sm ml-2">— Onde cortar entre um prompt e o próximo</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Para o hook de linting, a sequência natural é: <strong class="text-purple-400">Prompt 1</strong> — hook com estrutura mínima: lê stdin de evento, instala ERR trap, imprime approve. Nada mais. Verificação: o hook é executável e retorna JSON válido. <strong class="text-purple-400">Prompt 2</strong> — detecta se há arquivos modificados da extensão-alvo. Verificação: testa com lista de arquivos fake. <strong class="text-purple-400">Prompt 3</strong> — roda o linter nos arquivos detectados. BLOCK se erros, APPROVE se limpo. Verificação: testa com arquivo com erro proposital. <strong class="text-purple-400">Prompt 4</strong> — mensagem de erro formatada com lista de arquivos. Verificação: confirma que a mensagem é legível.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">O critério de corte entre prompts é sempre: "posso verificar que isso funciona corretamente antes de adicionar a próxima parte?". Detector de arquivos sem o linter pode ser testado com arquivos fake. Linter sem mensagem formatada pode ser testado observando o código de saída. Cada corte cria um ponto de verificação independente.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Critério de corte: "verificável antes da próxima parte?" · Estrutura → Detecção → Lógica → Polish · Teste com dados fake em cada etapa · Verificação antes de avançar · Não combinar lógica de detecção e lógica de execução no mesmo prompt.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.3 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🪜</span>
+          <div>
+            <span class="font-medium">Esqueleto → Estado → Lógica → Segurança</span>
+            <span class="text-neutral-500 text-sm ml-2">— A sequência obrigatória</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Para o hook de linting: <strong class="text-purple-400">Esqueleto</strong> — hook que carrega, instala ERR trap, aprova sem lógica. <strong class="text-purple-400">Estado</strong> — detecta arquivos modificados, registra quais extensões estão em escopo. Para hooks simples, o "estado" pode ser apenas a lista de arquivos passada pelo evento de hook. <strong class="text-purple-400">Lógica</strong> — roda o linter, interpreta o código de saída, decide BLOCK vs APPROVE. <strong class="text-purple-400">Segurança</strong> — fail-open se linter não instalado, timeout para prevenir travamento, sanitização dos paths de arquivo para prevenir command injection.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">A sequência não é arbitrária — é a ordem das dependências. A lógica de bloqueio precisa dos arquivos detectados. A segurança precisa da lógica completa para saber o que sanitizar. O esqueleto precisa existir para qualquer outra coisa funcionar. Inverter a ordem — tentar escrever a lógica antes do esqueleto, ou o safety antes da lógica — cria dependências não resolvíveis.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Dependências determinam a ordem · Esqueleto: carrega + fail-open · Estado: o que o hook precisa para decidir · Lógica: BLOCK vs APPROVE · Segurança: fail-open de dependência, timeout, sanitização · Não existe atalho válido na sequência.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.4 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">✅</span>
+          <div>
+            <span class="font-medium">Como validar cada etapa antes de avançar</span>
+            <span class="text-neutral-500 text-sm ml-2">— O protocolo de verificação por prompt</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Protocolo de verificação para o hook de linting por etapa: <strong class="text-purple-400">Após esqueleto</strong> — teste manual: <code class="bg-dark-600 px-1 rounded text-xs">echo '{}' | bash hook.sh</code> retorna <code class="bg-dark-600 px-1 rounded text-xs">{"decision":"approve"}</code>. <strong class="text-purple-400">Após detecção</strong> — crie um arquivo .ts fake, simule o evento de hook com esse arquivo na lista, confirme que o hook o detecta. <strong class="text-purple-400">Após lógica</strong> — crie um arquivo com erro de lint proposital, confirme que o hook retorna BLOCK com o nome do arquivo. <strong class="text-purple-400">Após segurança</strong> — remova temporariamente o linter do PATH, confirme que o hook retorna APPROVE (fail-open).</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Cada verificação testa exatamente o que o prompt adicionou, não o sistema completo. Isso torna os testes rápidos de escrever e os bugs fáceis de localizar. A verificação do fail-open para linter não instalado é especialmente importante — é o tipo de caso de edge que só aparece em máquinas de CI onde o ambiente é diferente do ambiente de desenvolvimento.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Verificação focada no que o prompt adicionou · Teste manual rápido antes do teste automatizado · Testar fail-open deliberadamente · Simular ambiente CI (sem linter) · Uma verificação por fronteira de prompt.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.5 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🎭</span>
+          <div>
+            <span class="font-medium">Aplicando as personas do Claudex no seu contexto</span>
+            <span class="text-neutral-500 text-sm ml-2">— Revisão de três ângulos no hook de linting</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">As três personas aplicadas ao hook de linting: <strong class="text-purple-400">Engenheiro sênior</strong> — verifica design: o hook deveria suportar múltiplos linters? A configuração por variável de ambiente é suficiente ou precisa de um arquivo de config? O que acontece com arquivos deletados na lista de modificados? <strong class="text-purple-400">Segurança</strong> — verifica superfícies de ataque: os paths de arquivo são sanitizados antes de passá-los ao linter? Um nome de arquivo com <code class="bg-dark-600 px-1 rounded text-xs">; rm -rf /</code> seria executado? <strong class="text-purple-400">Ops/SRE</strong> — verifica operabilidade: como o desenvolvedor sabe por que o commit foi bloqueado? A mensagem de erro é acionável?</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Mesmo sem o Claudex, você pode aplicar as três personas manualmente ao revisar qualquer sistema que intercepta um fluxo crítico. A pergunta de command injection nos paths de arquivo (persona de segurança) é exatamente o tipo de coisa que um engenheiro esquece ao focar na lógica de negócio. Internalizar as três perspectivas como hábito de revisão melhora a qualidade do código independentemente da ferramenta.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">Personas como lentes de revisão · Command injection em paths de arquivo · Mensagem de erro acionável · Múltiplos linters como escopo v2 · Três perguntas: design sólido? superfície de ataque coberta? operável em falha?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.6 -->
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">🏁</span>
+          <div>
+            <span class="font-medium">Checklist de segurança antes de shipar</span>
+            <span class="text-neutral-500 text-sm ml-2">— As 8 perguntas que todo hook deve responder</span>
+          </div>
+        </button>
+        <div class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div>
+              <span class="text-purple-400 font-semibold">O que é:</span>
+              <p class="text-neutral-300 text-sm">Checklist de segurança para qualquer hook ou plugin antes de shipar: (1) <strong class="text-purple-400">Fail-open</strong> — um crash do hook nunca trava o usuário? (2) <strong class="text-purple-400">Escritas atômicas</strong> — qualquer arquivo de estado usa tmp+rename? (3) <strong class="text-purple-400">Sanitização de input</strong> — inputs do usuário e de eventos são sanitizados antes de usá-los em comandos? (4) <strong class="text-purple-400">Timeout</strong> — processos externos têm timeout para não travar indefinidamente? (5) <strong class="text-purple-400">Dependência ausente</strong> — o hook lida graciosamente com ferramentas opcionais não instaladas? (6) <strong class="text-purple-400">Mensagem de erro</strong> — a mensagem de BLOCK é acionável para o usuário? (7) <strong class="text-purple-400">Testes</strong> — platform-validation + smoke passam? (8) <strong class="text-purple-400">Doctor</strong> — um script de diagnóstico cobre as verificações principais?</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Por que aprender:</span>
+              <p class="text-neutral-300 text-sm">Este checklist é o safety pass genérico extraído do Prompt 07 do Claudex. Cada item corresponde a uma classe de problema que aparece em produção: fail-open para crashes inesperados, sanitização para inputs maliciosos, timeout para dependências lentas ou travadas. Revisar o checklist antes de shipar custa 10 minutos e evita a classe de bugs mais difíceis de depurar.</p>
+            </div>
+            <div>
+              <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+              <p class="text-neutral-300 text-sm">8 itens: fail-open, atomicidade, sanitização, timeout, dependência ausente, mensagem acionável, testes, doctor · Safety pass como checklist reutilizável · 10 minutos antes de shipar vs horas de depuração depois · Generalizável para qualquer hook ou plugin.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <a href="#modulo-5" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">← Módulo 5</a>
+      <a href="#" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">↑ Voltar ao topo</a>
+    </div>
+  </div>
+
+  <!-- RESUMO FINAL -->
+  <section class="mb-12">
+    <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+      <h2 class="text-2xl font-bold mb-6 flex items-center">
+        <span class="mr-3">✅</span> O que você aprendeu neste curso
+      </h2>
+
+      <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-purple-400 mt-1">✓</span>
+          <div>
+            <strong class="text-white">A filosofia do build incremental</strong>
+            <span class="text-neutral-400"> — por que cada prompt representa uma fronteira de verificação, não apenas uma etapa de construção</span>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-purple-400 mt-1">✓</span>
+          <div>
+            <strong class="text-white">Os 7 prompts do Claudex em PT-BR</strong>
+            <span class="text-neutral-400"> — com o raciocínio por trás de cada decisão, da ERR trap ao heredoc com aspas simples</span>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-purple-400 mt-1">✓</span>
+          <div>
+            <strong class="text-white">As 6 primitivas de segurança</strong>
+            <span class="text-neutral-400"> — fail-open, atomicidade, CAS, lockfile, varredor stale, validação de CWD</span>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-purple-400 mt-1">✓</span>
+          <div>
+            <strong class="text-white">A metodologia extraída</strong>
+            <span class="text-neutral-400"> — SPEC antes do código, fail-open primeiro, verificar camada por camada, estado explícito, testar primitivos isolados</span>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-purple-400 mt-1">✓</span>
+          <div>
+            <strong class="text-white">Como aplicar a metodologia</strong>
+            <span class="text-neutral-400"> — projeto guiado de hook de linting com as mesmas etapas: SPEC, esqueleto, estado, lógica, segurança</span>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-purple-400 mt-1">✓</span>
+          <div>
+            <strong class="text-white">O checklist de segurança</strong>
+            <span class="text-neutral-400"> — 8 perguntas que todo hook deve responder antes de shipar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-800/50 rounded-lg p-4 mb-8 border border-purple-500/20">
+        <p class="text-purple-400 font-semibold text-sm mb-1">Próximo passo:</p>
+        <p class="text-neutral-300 text-sm">Escolha um hook ou plugin que você precisaria no seu fluxo de trabalho. Escreva o SPEC.md. Abra o Claude Code. Envie o Prompt 01 seguindo a estrutura deste curso — esqueleto verificável, fail-open desde o início. Depois o Prompt 02. Você já sabe a sequência.</p>
+      </div>
+
+      <div class="bg-dark-800/50 rounded-lg p-4 mb-8 border border-dark-600">
+        <p class="text-neutral-300 font-semibold text-sm mb-2">🤖 Quer usar o Claudex na prática?</p>
+        <p class="text-neutral-400 text-sm mb-3">Agora que você entende como o Claudex foi construído, o curso de uso te mostra como tirar o máximo dele no dia a dia: entrevista de planejamento, exemplos reais, quando usar cada comando.</p>
+        <a href="curso-claudex.html" class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold text-sm transition-colors">
+          Ir para o iClaudex — Planejamento Inteligente →
+        </a>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="https://github.com/inematds/iclaudex" target="_blank" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+          🔗 Ver Repositório
+        </a>
+        <a href="https://inema.club" target="_blank" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+          INEMA.CLUB →
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-dark-600 py-8 mt-4">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Engenharia com Claude Code — Do Prompt ao Plugin de Produção · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800');
+
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+      if (exp !== explanation) {
+        exp.classList.remove('active');
+      }
+    });
+
+    explanation.classList.toggle('active');
+  }
+
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const html = document.documentElement;
+
+  if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+    themeToggleDarkIcon.classList.remove('hidden');
+    html.classList.remove('dark');
+  } else {
+    themeToggleLightIcon.classList.remove('hidden');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden');
+    themeToggleLightIcon.classList.toggle('hidden');
+    html.classList.toggle('dark');
+    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+  });
+</script>
+
+</body>
+</html>
