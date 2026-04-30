@@ -62,7 +62,20 @@
     html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
     html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
 
-    /* Light mode - Blue (T3 - Avançado) */
+    /* Light mode - Amber (T3 - O Método) */
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .hover\:bg-amber-500\/20:hover { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:border-amber-500\/40:hover { border-color: rgba(217, 119, 6, 0.30); }
+    html:not(.dark) .group:hover .group-hover\:text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-600 { background-color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500:hover { background-color: #78350f; }
+
+    /* Light mode - Blue (T4 - Avançado) */
     html:not(.dark) .text-blue-400 { color: #2563eb; }
     html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
     html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
@@ -114,8 +127,12 @@
           <span class="sm:hidden">T2</span>
           <span class="hidden sm:inline">Construindo</span>
         </a>
-        <a href="curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+        <a href="curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
           <span class="sm:hidden">T3</span>
+          <span class="hidden sm:inline">O Método</span>
+        </a>
+        <a href="curso/trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+          <span class="sm:hidden">T4</span>
           <span class="hidden sm:inline">Avançado</span>
         </a>
         <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
@@ -145,19 +162,19 @@
     <!-- Stats -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mb-8">
       <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-        <div class="text-2xl font-bold text-primary">3</div>
+        <div class="text-2xl font-bold text-primary">4</div>
         <div class="text-xs text-neutral-400">Trilhas</div>
       </div>
       <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-        <div class="text-2xl font-bold text-primary">18</div>
+        <div class="text-2xl font-bold text-primary">24</div>
         <div class="text-xs text-neutral-400">Módulos</div>
       </div>
       <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-        <div class="text-2xl font-bold text-primary">108</div>
+        <div class="text-2xl font-bold text-primary">144</div>
         <div class="text-xs text-neutral-400">Tópicos</div>
       </div>
       <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-        <div class="text-2xl font-bold text-primary">~14h</div>
+        <div class="text-2xl font-bold text-primary">~19h</div>
         <div class="text-xs text-neutral-400">Conteúdo</div>
       </div>
     </div>
@@ -178,10 +195,10 @@
 
   <!-- TRILHAS -->
   <section class="mb-16">
-    <h2 class="text-xl font-bold mb-2 text-neutral-300">As 3 Trilhas do Curso</h2>
+    <h2 class="text-xl font-bold mb-2 text-neutral-300">As 4 Trilhas do Curso</h2>
     <p class="text-neutral-500 text-sm mb-8">Cada trilha é independente — entre pela que faz mais sentido para o seu nível.</p>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
 
       <!-- T1 Fundamentos -->
       <a href="curso/trilha1/index.html" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 hover:bg-dark-700/50 transition-all group block">
@@ -257,15 +274,52 @@
         </div>
       </a>
 
-      <!-- T3 Avançado -->
-      <a href="curso/trilha3/index.html" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 hover:bg-dark-700/50 transition-all group block">
+      <!-- T3 O Método -->
+      <a href="curso/trilha3/index.html" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 hover:bg-dark-700/50 transition-all group block">
         <div class="p-6 flex flex-col h-full">
           <div class="flex items-center justify-between mb-4">
-            <span class="inline-block px-2.5 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+            <span class="inline-block px-2.5 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+            <span class="text-xs text-neutral-500">~4h30</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-amber-400 transition-colors">🔬 O Método</h3>
+          <p class="text-neutral-400 text-sm mb-4 flex-1">Extrai o PORQUÊ de cada decisão do Claudex e transforma em método reutilizável. Sai capaz de construir qualquer plugin — sem precisar do Claudex como exemplo.</p>
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="bg-dark-700/50 rounded-lg p-2 text-center border border-dark-600">
+              <div class="text-base font-bold text-amber-400">6</div>
+              <div class="text-xs text-neutral-500">Módulos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2 text-center border border-dark-600">
+              <div class="text-base font-bold text-amber-400">36</div>
+              <div class="text-xs text-neutral-500">Tópicos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2 text-center border border-dark-600">
+              <div class="text-base font-bold text-amber-400">Interm.</div>
+              <div class="text-xs text-neutral-500">Nível</div>
+            </div>
+          </div>
+          <div class="text-xs text-neutral-500 space-y-1 mb-5">
+            <div class="flex items-center space-x-2"><span class="text-amber-400">•</span><span>A lógica do SPEC primeiro</span></div>
+            <div class="flex items-center space-x-2"><span class="text-amber-400">•</span><span>Prompt engineering para sistemas complexos</span></div>
+            <div class="flex items-center space-x-2"><span class="text-amber-400">•</span><span>Padrões extraídos e reutilizáveis</span></div>
+            <div class="flex items-center space-x-2"><span class="text-amber-400">•</span><span>Projeto: seu próprio plugin do zero</span></div>
+          </div>
+          <div class="flex justify-start mt-auto">
+            <span class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-semibold transition-colors text-sm">
+              Acessar →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- T4 Avançado -->
+      <a href="curso/trilha4/index.html" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 hover:bg-dark-700/50 transition-all group block">
+        <div class="p-6 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-2.5 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 4</span>
             <span class="text-xs text-neutral-500">~5h</span>
           </div>
           <h3 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">⚡ Avançado</h3>
-          <p class="text-neutral-400 text-sm mb-4 flex-1">Revisor de PRs com git worktree. Isolamento de branch, análise multi-perspectiva com personas e relatório estruturado com integração GitHub.</p>
+          <p class="text-neutral-400 text-sm mb-4 flex-1">Os prompts reais explicados passo a passo — como em T2, mas para o revisor de PRs com worktree, personas e integração GitHub. Copie e execute no Claude Code.</p>
           <div class="grid grid-cols-3 gap-2 mb-4">
             <div class="bg-dark-700/50 rounded-lg p-2 text-center border border-dark-600">
               <div class="text-base font-bold text-blue-400">6</div>
