@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4.6 — Prompt 05: Safety Pass e Produção | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 4</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 4.6</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">MÓDULO 4.6</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Prompt 05 — <span class="text-blue-400">Safety Pass e Produção</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">50</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🔒</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Safety</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O que o Prompt 05 Entrega</h2>
+          <p class="text-neutral-400 text-sm mt-1">Auditoria das 6 primitivas + integração GitHub + configuração por repo</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Prompt 05 é o <strong class="text-blue-400">safety pass</strong> — o prompt que transforma um plugin que funciona em condições ideais em um plugin que funciona em produção. Toda edge case não coberta aqui vai manifestar no pior momento possível.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Deliverables do Prompt 05</span>
+        </div>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">1.</span><span>Auditoria de todos os scripts contra as 6 primitivas de segurança</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">2.</span><span>Integração <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">gh pr comment</code> para postar relatório no PR</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">3.</span><span>Arquivo <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">.claude/review-config.yaml</code> com configuração por repo</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">4.</span><span>Teste E2E completo: PR real → 3 rodadas → relatório → comment</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 — O Prompt Real -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Prompt 05 Completo</h2>
+          <p class="text-neutral-400 text-sm mt-1">Cole este texto no Claude Code com o SPEC.md em contexto</p>
+        </div>
+      </div>
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Prompt 05 — Cole no Claude Code</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">05_safety_pass_and_production.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Read SPEC.md — the safety invariants section is your audit checklist.
+
+You are building Prompt 05: the safety pass.
+Audit every script against the 6 primitives, then add GitHub
+integration and repo configuration.
+
+**Part A — Safety Audit (audit each file, fix what's missing):**
+
+For every .sh file in the plugin, verify and fix:
+
+1. ERR trap:
+   - Present as FIRST active line?
+   - Does it print to stderr and exit 0 (not exit 1)?
+   - Fix any script where it's missing or exits non-zero.
+
+2. Atomic writes:
+   - Every write to state/review.yaml goes through write_state_atomic?
+   - No direct `echo > state/review.yaml` anywhere?
+   - Fix any direct writes found.
+
+3. CAS on state transitions:
+   - Every status change in stop-hook.sh uses cas_state?
+   - Fix any status write that bypasses CAS.
+
+4. Lockfile:
+   - stop-hook.sh acquires lock at entry?
+   - EXIT trap releases it?
+   - Stale lock: add check — if lock exists but PID in it is dead, remove.
+   - Implement: `if [ -f state/review.lock ]; then
+     lock_pid=$(cat state/review.lock 2>/dev/null || echo "")
+     if [ -n "$lock_pid" ] &amp;&amp; ! kill -0 "$lock_pid" 2>/dev/null; then
+       rm -f state/review.lock  # stale lock — safe to remove
+     fi; fi`
+
+5. Path validation:
+   - All scripts that receive a path argument validate it starts
+     with /tmp/pr-review- before using it.
+   - Implement: `[[ "$WORKTREE_PATH" == /tmp/pr-review-* ]] ||
+     { echo "Invalid path: $WORKTREE_PATH" >&2; exit 0; }`
+
+6. Subprocess timeouts:
+   - runner scripts use `timeout 120 claude --print` not bare `claude`.
+   - Fix any runner that calls claude without timeout.
+
+**Part B — GitHub Integration:**
+
+In scripts/generate-report.sh, after saving the report file:
+
+Read .claude/review-config.yaml (use `yq` or manual grep fallback).
+If `post_to_github: true` (default true):
+  `gh pr comment $PR_NUMBER --body-file .claudex/reviews/PR-$PR_NUMBER-*.md`
+
+Handle gh failure gracefully (log error, don't abort).
+
+**Part C — repo configuration:**
+
+Create `.claude/review-config.yaml` with defaults:
+max_rounds: 3
+min_severity: MEDIUM    # CRITICAL|HIGH|MEDIUM|LOW — filter for gh comment
+ignore_paths:           # paths to skip in diff
+  - "*.lock"
+  - "*.sum"
+  - "vendor/"
+timeout_seconds: 120    # per runner invocation
+post_to_github: true
+
+**Part D — E2E test script:**
+
+Create `tests/e2e-test.sh &lt;pr_number&gt;`:
+1. Assert: state is clean (no active review)
+2. Invoke: `/pr-reviewer $pr_number` (simulate: set state=SETUP, run hook)
+3. Assert: state transitions SETUP → REVIEWING (round 1)
+4. Simulate 3 runner completions (inject mock findings)
+5. Assert: state transitions to SUMMARIZING
+6. Assert: report file created at .claudex/reviews/PR-$pr_number-*.md
+7. Assert: gh pr comment was called (check with mock or --dry-run)
+8. Assert: state is DONE, worktree removed
+
+**Report after delivery:**
+- List of fixes applied in Part A (by primitive)
+- Confirm all 6 primitives now covered
+- E2E test result: all 7 assertions PASS</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Safety Pass</h2>
+          <p class="text-neutral-400 text-sm mt-1">As 6 primitivas que todo plugin de produção deve ter</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Cada primitiva cobre uma classe de falha diferente. Ausência de uma única primitiva é suficiente para transformar um edge case comum em uma corrupção de estado irrecuperável.
+      </p>
+      <div class="space-y-3 mb-6">
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-bold">1</span>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">ERR trap em todo script</p>
+            <p class="text-neutral-400 text-xs mt-1">Qualquer erro não tratado é capturado. O hook não lança exceção para o Claude Code. Exit 0 sempre.</p>
+            <p class="text-blue-400 text-xs mt-1 font-mono">Falha coberta: erro de bash inesperado em qualquer linha</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-bold">2</span>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Escrita atômica universal</p>
+            <p class="text-neutral-400 text-xs mt-1">Todo write de estado usa tmp + rename. Nunca escrita direta.</p>
+            <p class="text-blue-400 text-xs mt-1 font-mono">Falha coberta: interrupção durante escrita → arquivo corrompido</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-bold">3</span>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">CAS em toda transição de estado</p>
+            <p class="text-neutral-400 text-xs mt-1">Toda mudança de status verifica version antes de escrever.</p>
+            <p class="text-blue-400 text-xs mt-1 font-mono">Falha coberta: duas instâncias modificando estado simultaneamente</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-bold">4</span>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Lockfile com varredor de stale</p>
+            <p class="text-neutral-400 text-xs mt-1">flock não-bloqueante + verificação de stale locks de processos mortos.</p>
+            <p class="text-blue-400 text-xs mt-1 font-mono">Falha coberta: crash deixa lock órfão, bloqueando execuções futuras</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-bold">5</span>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Validação de paths</p>
+            <p class="text-neutral-400 text-xs mt-1">worktree_path deve começar com /tmp/pr-review- antes de qualquer uso.</p>
+            <p class="text-blue-400 text-xs mt-1 font-mono">Falha coberta: path traversal acidental ou malformado apaga dados</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-bold">6</span>
+          <div>
+            <p class="text-neutral-200 font-semibold text-sm">Timeout em subprocessos</p>
+            <p class="text-neutral-400 text-xs mt-1">Todo `claude --print` envolto em `timeout 120`. Runner não bloqueia indefinidamente.</p>
+            <p class="text-blue-400 text-xs mt-1 font-mono">Falha coberta: API travada deixa o loop preso para sempre</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Integração GitHub</h2>
+          <p class="text-neutral-400 text-sm mt-1">gh pr comment com o relatório gerado automaticamente</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Postar o relatório diretamente no PR elimina o passo manual. A revisão aparece no contexto onde o time já está discutindo — sem precisar abrir outro arquivo.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🤖</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Postando o Relatório</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># Pegar o relatório mais recente para este PR
+REPORT_FILE=$(ls -t .claudex/reviews/PR-${PR_NUMBER}-*.md 2>/dev/null | head -1)
+
+if [ -z "$REPORT_FILE" ]; then
+  echo "[pr-reviewer] No report file found, skipping comment" >&2
+  exit 0
+fi
+
+# Postar no PR (fail gracefully se gh não está disponível)
+if command -v gh &gt;/dev/null 2>&amp;1; then
+  gh pr comment "$PR_NUMBER" \
+    --body-file "$REPORT_FILE" \
+    2>/dev/null || echo "[pr-reviewer] gh comment failed (ignored)" >&2
+fi</code></pre>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">min_severity filter</p>
+          <p class="text-neutral-400 text-xs">Se min_severity=HIGH, apenas findings CRITICAL e HIGH vão para o comment. MEDIUM e LOW ficam no relatório local mas não são postados — reduz ruído no PR.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">post_to_github: false</p>
+          <p class="text-neutral-400 text-xs">Para repos onde você não quer comentários automáticos (ex: OSS público), desabilitar no review-config.yaml. O relatório ainda é salvo localmente.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Configuração por Repositório</h2>
+          <p class="text-neutral-400 text-sm mt-1">.claude/review-config.yaml — defaults que o time pode ajustar</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Hardcoded defaults funcionam para um repo mas não para todos. Configuração por repo permite que cada time ajuste o revisor ao seu contexto sem modificar o código do plugin.
+      </p>
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Exemplo de review-config.yaml</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code># .claude/review-config.yaml
+# PR Reviewer Configuration — customize for this repo
+
+# Number of review rounds (1 = Author only, 2 = +Reviewer, 3 = +Security)
+max_rounds: 3
+
+# Minimum severity to include in the GitHub PR comment
+# CRITICAL|HIGH|MEDIUM|LOW — lower severity findings still appear in local report
+min_severity: MEDIUM
+
+# Paths to skip in the diff (supports glob patterns)
+ignore_paths:
+  - "*.lock"
+  - "*.sum"
+  - "vendor/"
+  - "*.generated.go"
+  - "testdata/"
+
+# Timeout per runner invocation (seconds)
+timeout_seconds: 120
+
+# Whether to post the report as a PR comment via gh
+# Set false for OSS repos or when you prefer manual review of the report
+post_to_github: true
+
+# Override max diff size (lines) — diffs larger than this are split
+max_diff_lines: 3000</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">E2E Sintético</h2>
+          <p class="text-neutral-400 text-sm mt-1">Rodando o revisor completo num PR de teste — validação ponta a ponta</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O teste E2E é o único que valida a integração ponta a ponta. Cada ponto de integração — Claude Code → hook → worktree → runner → relatório → GitHub — pode falhar silenciosamente. Este teste confirma que todos funcionam juntos.
+      </p>
+      <div class="space-y-3 mb-6">
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">1</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Criar PR de teste no GitHub</p>
+            <p class="text-neutral-400 text-xs mt-1">Um PR real com pelo menos um arquivo modificado. Não precisa ter bugs — é para validar o fluxo, não a qualidade da revisão.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">2</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Rodar o plugin completo</p>
+            <p class="text-neutral-400 text-xs mt-1">Invocar `/pr-reviewer NNN` no Claude Code. Observar as 3 rodadas completarem. Não interferir — deixar o loop rodar até DONE.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">3</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Verificar todos os artefatos</p>
+            <p class="text-neutral-400 text-xs mt-1">State DONE? Worktree removido? Relatório em .claudex/reviews/? Lock liberado? Runners limpos?</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">4</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Verificar integração GitHub</p>
+            <p class="text-neutral-400 text-xs mt-1">Abrir o PR no GitHub. O comentário do revisor deve estar lá. Se não está, verificar: gh autenticado? post_to_github: true? gh pr comment rodou sem erro?</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">5</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Testar falha e recovery</p>
+            <p class="text-neutral-400 text-xs mt-1">Matar o Claude Code durante uma rodada (Ctrl+C). Rodar novamente. O revisor deve detectar o stale lock, limpar e continuar de onde parou.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5 mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">🎉</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Plugin Completo</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Se o E2E passa — incluindo o teste de falha e recovery — o plugin pr-reviewer está pronto para produção. Você construiu um segundo plugin seguindo os mesmos 5 prompts incrementais da Trilha 2, aplicados a um sistema mais complexo com integração externa.
+        </p>
+      </div>
+
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🚀</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O que você pode fazer agora</span>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm">
+          <div class="flex gap-2"><span class="text-blue-400 mt-0.5">→</span><span class="text-neutral-300">Instalar em repos reais da sua equipe</span></div>
+          <div class="flex gap-2"><span class="text-blue-400 mt-0.5">→</span><span class="text-neutral-300">Adicionar personas específicas do domínio (ex: compliance, GDPR)</span></div>
+          <div class="flex gap-2"><span class="text-blue-400 mt-0.5">→</span><span class="text-neutral-300">Criar um 6° prompt para CI/CD integration (GitHub Actions trigger)</span></div>
+          <div class="flex gap-2"><span class="text-blue-400 mt-0.5">→</span><span class="text-neutral-300">Aplicar o mesmo padrão para construir outros plugins</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🏁</span> Trilha 4 Completa</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Módulo 4.1</strong><span class="text-neutral-400"> — SPEC.md completo antes do primeiro prompt</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt 01</strong><span class="text-neutral-400"> — Scaffold + worktree com idempotência e fail-open</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt 02</strong><span class="text-neutral-400"> — Estado YAML atômico, CAS e lockfile não-bloqueante</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt 03</strong><span class="text-neutral-400"> — Stop Hook engine com máquina de estados SETUP→DONE</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt 04</strong><span class="text-neutral-400"> — 3 personas (Author, Reviewer, Security) + relatório estruturado</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompt 05</strong><span class="text-neutral-400"> — Safety pass com 6 primitivas + gh integration + E2E test</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">O padrão que você aprendeu:</h3>
+          <p class="text-neutral-300 text-sm">SPEC.md → Scaffold → Estado → Loop → Conteúdo → Safety. Cinco prompts incrementais, cada um verificado antes do próximo. Este é o método para construir qualquer plugin Claude Code complexo.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-5.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 4.5: Personas</a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Voltar ao Índice da Trilha 4</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') { darkIcon.classList.remove('hidden'); html.classList.remove('dark'); }
+    else { lightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      darkIcon.classList.toggle('hidden');
+      lightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

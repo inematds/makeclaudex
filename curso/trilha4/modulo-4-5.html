@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4.5 — Prompt 04: Personas e Relatório | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 4</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 4.5</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">MÓDULO 4.5</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Prompt 04 — <span class="text-blue-400">Personas e Relatório</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">45</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🔨</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Build</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O que o Prompt 04 Entrega</h2>
+          <p class="text-neutral-400 text-sm mt-1">Rotação de personas + geração do relatório estruturado</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Prompt 04 transforma o runner genérico em três runners especializados — um por persona — e adiciona o código que consolida os findings em <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">.claudex/reviews/PR-NNN.md</code>.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Deliverables do Prompt 04</span>
+        </div>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">1.</span><span>System prompts das 3 personas injetados no write_runner helper</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">2.</span><span>Schema de findings estruturado (YAML output do runner)</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">3.</span><span>Script <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">scripts/generate-report.sh</code> que consolida findings em PR-NNN.md</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">4.</span><span>Template do relatório com sumário, findings por arquivo e métricas</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 — O Prompt Real -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Prompt 04 Completo</h2>
+          <p class="text-neutral-400 text-sm mt-1">Cole este texto no Claude Code com o SPEC.md em contexto</p>
+        </div>
+      </div>
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Prompt 04 — Cole no Claude Code</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">04_personas_and_report.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Read SPEC.md — personas section is your reference.
+
+You are building Prompt 04: add persona system prompts to the runner
+generator and create the report consolidation script.
+
+**Part A — Persona system prompts in write_runner:**
+
+Update the write_runner helper in hooks/stop-hook.sh to inject a
+persona-specific system prompt based on the current round:
+
+Round 1 — Author persona:
+"You are reviewing this PR as the AUTHOR of the code. Your job is to
+verify that the implementation matches the stated intent in the PR
+description. Look for: missing edge cases the description implies,
+incomplete implementations, code that doesn't match the PR title.
+Output ONLY a YAML list of findings."
+
+Round 2 — Reviewer persona:
+"You are a senior engineer reviewing this PR for correctness and
+maintainability. Look for: logic errors, off-by-one errors, null
+pointer risks, resource leaks, API misuse, missing error handling,
+performance issues. Output ONLY a YAML list of findings."
+
+Round 3 — Security persona:
+"You are a security engineer reviewing this PR for vulnerabilities.
+Look for: injection risks (SQL, command, path traversal), authentication
+bypass, authorization gaps, sensitive data in logs, insecure defaults,
+hardcoded secrets, SSRF vectors. Output ONLY a YAML list of findings."
+
+**Part B — Structured findings schema:**
+
+Each runner must instruct Claude to output findings as YAML only:
+findings:
+  - file: "relative/path/to/file.go"
+    line: 42
+    severity: HIGH        # CRITICAL|HIGH|MEDIUM|LOW
+    persona: "Reviewer"
+    description: "One sentence describing the issue"
+    suggestion: "One sentence fix suggestion"
+
+**Part C — generate-report.sh:**
+
+Create `scripts/generate-report.sh &lt;pr_number&gt;`:
+1. Read all findings from state/review.yaml
+2. Group findings by file
+3. Sort by severity (CRITICAL first)
+4. Generate .claudex/reviews/PR-$pr_number.md with:
+   - Header: # PR Review #NNN — [date]
+   - Executive summary: N findings (X CRITICAL, Y HIGH, Z MEDIUM, W LOW)
+   - Severity badges in header
+   - Per-file sections with findings
+   - Footer: "Generated by pr-reviewer plugin"
+5. Create .claudex/reviews/ dir if not exists
+
+**Call generate-report.sh from the SUMMARIZING phase in stop-hook.sh**
+before transitioning to DONE.
+
+**Constraints:**
+- Personas must be injected in single-quoted heredocs (no interpolation)
+- generate-report.sh must work even if findings list is empty
+  (output "No findings" section in that case)
+- Severity sort order: CRITICAL > HIGH > MEDIUM > LOW
+
+**Verification:**
+- Run the full loop on a test PR (use `--print` mock if needed)
+- Check that .claudex/reviews/PR-NNN.md exists after SUMMARIZING
+- Verify severity grouping is correct in the report
+- Report: "X findings found, report saved to .claudex/reviews/PR-NNN.md"</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">As 3 Personas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Author, Reviewer e Security — perspectivas complementares</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Cada persona ativa um conjunto diferente de heurísticas no modelo. O Author nunca procura SQL injection. O Security nunca avalia se a implementação atende ao requisito. A cobertura surge da composição.
+      </p>
+      <div class="space-y-4 mb-5">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-700 border border-dark-600 rounded-xl p-5">
+            <h4 class="font-semibold text-blue-400 mb-2">Author — Round 1</h4>
+            <p class="text-neutral-300 text-sm mb-2">Pergunta: "A implementação faz o que o PR diz que faz?"</p>
+            <p class="text-neutral-400 text-xs">Encontra: edge cases que o PR description implica mas o código ignora, implementações parciais, discrepâncias entre título e código.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-700 border border-dark-600 rounded-xl p-5">
+            <h4 class="font-semibold text-blue-400 mb-2">Reviewer — Round 2</h4>
+            <p class="text-neutral-300 text-sm mb-2">Pergunta: "Este código vai funcionar em produção?"</p>
+            <p class="text-neutral-400 text-xs">Encontra: erros de lógica, off-by-one, null pointer, resource leak, API misuse, missing error handling, problemas de performance.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-dark-700 border border-dark-600 rounded-xl p-5">
+            <h4 class="font-semibold text-blue-400 mb-2">Security — Round 3</h4>
+            <p class="text-neutral-300 text-sm mb-2">Pergunta: "Este código pode ser explorado?"</p>
+            <p class="text-neutral-400 text-xs">Encontra: injection (SQL, command, path traversal), auth bypass, dados sensíveis em logs, secrets hardcoded, SSRF, configurações inseguras.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Formato do Relatório</h2>
+          <p class="text-neutral-400 text-sm mt-1">Severidade, agrupamento por arquivo, métricas — output acionável</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Um relatório útil não é um dump de texto. É um documento estruturado que permite ao time priorizar e agir imediatamente.
+      </p>
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Estrutura do PR-NNN.md</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code># PR Review #123 — 2026-04-29 14:32 UTC
+
+## Executive Summary
+**3 findings** — 🔴 1 CRITICAL · 🟠 1 HIGH · 🟡 1 MEDIUM · ⚪ 0 LOW
+
+---
+
+## Findings by File
+
+### `auth/token_handler.go`
+
+#### 🔴 CRITICAL — Line 47
+**Persona:** Security
+**Issue:** Token transmitted without TLS enforcement check. If
+`REQUIRE_HTTPS` is not set, tokens can be sent over plain HTTP.
+**Suggestion:** Add `if !config.RequireHTTPS { return ErrInsecureConfig }`.
+
+---
+
+### `api/users.go`
+
+#### 🟠 HIGH — Line 128
+**Persona:** Reviewer
+**Issue:** `db.Query()` result not checked for error before iterating.
+**Suggestion:** `rows, err := db.Query(...); if err != nil { return err }`.
+
+---
+
+## Metrics
+- Rounds completed: 3 (Author, Reviewer, Security)
+- Files reviewed: 8
+- Lines changed: 247
+- Review duration: ~4m
+
+---
+*Generated by pr-reviewer plugin · Claude Code*</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Salvando o Relatório como Artefato</h2>
+          <p class="text-neutral-400 text-sm mt-1">.claudex/reviews/PR-NNN.md — histórico persistente</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O relatório é gerado na fase SUMMARIZING e salvo em <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">.claudex/reviews/PR-123-20260429.md</code>. O timestamp no nome permite múltiplas revisões do mesmo PR ao longo do tempo.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Versionamento</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Adicionar .claudex/ ao .gitignore para não versionar relatórios automaticamente. Ou incluir no git para histórico de revisões — depende da política do time.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Múltiplas Revisões</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Nome com timestamp: PR-123-20260429-1432.md. O Prompt 05 adiciona `gh pr comment` que posta o relatório mais recente.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Verificação: Revisar um PR Real de Teste</h2>
+          <p class="text-neutral-400 text-sm mt-1">Conferir as 3 personas e o relatório gerado</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Use um PR de teste com bugs conhecidos intencionais — isso permite verificar se o revisor encontra o que você plantou.
+      </p>
+      <div class="space-y-3 mb-6">
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">1</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Criar PR com bugs plantados</p>
+            <p class="text-neutral-400 text-xs mt-1">1 bug de lógica (off-by-one), 1 SQL sem parameterização, 1 inconsistência entre PR description e código. Três bugs conhecidos, um por persona.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">2</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Verificar cobertura por persona</p>
+            <p class="text-neutral-400 text-xs mt-1">O bug de Author deve aparecer com persona=Author. O SQL injection com persona=Security. Erros de cobertura indicam problema no system prompt da persona.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">3</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Conferir formato do relatório</p>
+            <p class="text-neutral-400 text-xs mt-1">Abrir .claudex/reviews/PR-NNN.md. Verificar: sumário executivo com contagem, findings agrupados por arquivo, severidades corretas, sugestões de fix.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">4</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Verificar artefato salvo</p>
+            <p class="text-neutral-400 text-xs mt-1">O arquivo deve existir após o ciclo completo. Se não existe, o generate-report.sh não foi chamado na fase SUMMARIZING — verificar o hook.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 4.5</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">3 personas especializadas</strong><span class="text-neutral-400"> — Author, Reviewer e Security com system prompts distintos</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Findings estruturados</strong><span class="text-neutral-400"> — YAML com file, line, severity, persona, description, suggestion</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Relatório acionável</strong><span class="text-neutral-400"> — sumário executivo, agrupamento por arquivo, badges de severidade</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Artefato persistido</strong><span class="text-neutral-400"> — .claudex/reviews/PR-NNN.md com timestamp para histórico</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">4.6 — Prompt 05: Safety Pass e Produção — auditoria das 6 primitivas e integração GitHub</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-4.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 4.4: Stop Hook</a>
+          <a href="modulo-4-6.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo: Safety Pass →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') { darkIcon.classList.remove('hidden'); html.classList.remove('dark'); }
+    else { lightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      darkIcon.classList.toggle('hidden');
+      lightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Módulo 3.3 — O Loop de Revisão | Engenharia com Claude Code</title>
+  <title>Módulo 3.3 — Fail-Open e os Padrões de Segurança | Engenharia com Claude Code</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,9 +22,6 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    pre { overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
-
     html:not(.dark) body { background-color: #f8fafc; }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
     html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
@@ -36,14 +33,13 @@
     html:not(.dark) .text-neutral-500 { color: #9ca3af; }
     html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
     html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
-    html:not(.dark) .text-blue-400 { color: #2563eb; }
-    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
-    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
-    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
-    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
-    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
-    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
-    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .bg-amber-600 { background-color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500:hover { background-color: #78350f; }
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
     html:not(.dark) .text-primary { color: #a16207; }
     html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
@@ -57,6 +53,10 @@
     html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
     html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
     html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -79,8 +79,11 @@
           <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
             <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
           </a>
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
-            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">O Método</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span>
           </a>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -93,526 +96,310 @@
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
     <nav class="flex items-center space-x-2 text-sm text-neutral-500">
-      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <a href="../../index.html" class="hover:text-amber-400 transition-colors">Início</a>
       <span>/</span>
-      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <a href="index.html" class="hover:text-amber-400 transition-colors">Trilha 3</a>
       <span>/</span>
-      <span class="text-blue-400 font-medium">Módulo 3.3</span>
+      <span class="text-amber-400 font-medium">Módulo 3.3</span>
     </nav>
   </div>
 
-  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <div class="mb-4">
-      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
-        MÓDULO 3.3
-      </span>
-    </div>
-    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
-      O Loop de Revisão: <span class="text-blue-400">SETUP → REVIEWING → SUMMARIZING → DONE</span>
-    </h1>
-    <div class="flex flex-wrap gap-4">
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">📚</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-10 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-4">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/20 text-amber-400 border border-amber-500/30">MÓDULO 3.3</span>
       </div>
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">⏱️</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">55</p></div>
-      </div>
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">🎯</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
-      </div>
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">⚙️</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Técnico</p></div>
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-4 leading-tight">
+        🛡️ Fail-Open e os <span class="text-amber-400">Padrões de Segurança</span>
+      </h1>
+      <p class="text-lg text-neutral-400 max-w-3xl mb-6">As seis primitivas de segurança que todo plugin precisa — e como verificar se o seu projeto as implementa corretamente.</p>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+          <span class="text-amber-400 text-lg">📚</span>
+          <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+        </div>
+        <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+          <span class="text-amber-400 text-lg">⏱️</span>
+          <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">45</p></div>
+        </div>
+        <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+          <span class="text-amber-400 text-lg">🛡️</span>
+          <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Primitivas</p></div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- TÓPICO 1 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">1</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">A Máquina de Estados</h2>
-          <p class="text-neutral-400 text-sm mt-1">SETUP → REVIEWING → SUMMARIZING → DONE (e FAILED)</p>
-        </div>
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🛡️ Fail-open</h2>
       </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        A máquina de estados é o esqueleto do sistema. Cada estado define o que pode acontecer e quais transições são permitidas. Estados explícitos eliminam comportamento indefinido — quando o sistema não sabe o que fazer (falha parcial, reinicialização), o estado persistido é a fonte de verdade sobre onde retomar ou o que limpar.
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-amber-400">Fail-open</strong> é a propriedade mais importante de qualquer hook ou plugin. Significa: quando o plugin falha por qualquer razão — exceção não tratada, timeout, arquivo ausente, dependência quebrada — o sistema host continua operando normalmente. O plugin não bloqueia, não trava, não interrompe o trabalho.
       </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Como implementar fail-open</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 mb-4">
+          <pre><code class="text-green-400"># Shell: wrap completo em try/catch equivalente
+main() {
+  # lógica do plugin aqui
+  :
+}
 
-      <!-- Diagrama de estados -->
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">Diagrama de Transições</p>
-        <pre class="text-xs text-neutral-300"><code>                    ┌─────────┐
-   /review-pr NNN   │  SETUP  │  Cria worktree, busca contexto do PR
-   ────────────────▶│         │  Inicializa estado YAML
-                    └────┬────┘
-                         │ worktree criado com sucesso
-                         ▼
-                    ┌──────────┐
-     loop: round++  │REVIEWING │  Executa runner com persona da rodada
-     ◀──────────────│          │◀─────────────────┐
-     BLOCK (exit 2) └────┬─────┘                  │
-                         │ current_round == max_rounds   │
-                         ▼                         │
-                    ┌───────────┐ ainda há         │
-                    │SUMMARIZING│ findings? ───────┘
-                    │           │ (retorna para REVIEWING)
-                    └─────┬─────┘
-                          │ relatório gerado + postado
-                          ▼
-                    ┌──────┐
-                    │ DONE │  Cleanup de worktree
-                    └──────┘
-
-    Em qualquer estado → FAILED (via ERR trap)</code></pre>
+main "$@" || true  # fail-open: erros não propagam</code></pre>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Exit code 0 em qualquer caminho de falha</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Log de erro para diagnóstico sem bloquear</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Verificar fail-open como primeiro teste após cada prompt</span></li>
+        </ul>
       </div>
+    </section>
 
-      <div class="grid sm:grid-cols-2 gap-4">
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">SETUP</p>
-          <p class="text-neutral-400 text-xs">Cria worktree, fetch da branch, inicializa estado YAML, busca metadados do PR via gh CLI. Se falhar aqui: nenhum dano, cleanup simples.</p>
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">⚛️ Escrita atômica</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-amber-400">Escrita atômica</strong> via write-then-rename garante que o arquivo de estado nunca existe em estado parcial. Escreva em arquivo temporário, depois renomeie. O rename no POSIX é atômico — nunca resulta em arquivo corrompido.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Write direto vs. Write-then-rename</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
+            <p class="text-red-400 font-semibold mb-2 text-sm">✗ Perigoso</p>
+            <pre><code class="text-neutral-300 text-xs">echo "$state" > state.json
+# Se interrompido aqui:
+# state.json está corrompido</code></pre>
+          </div>
+          <div class="bg-emerald-900/20 rounded-lg p-4 border border-emerald-500/30">
+            <p class="text-emerald-400 font-semibold mb-2 text-sm">✓ Seguro</p>
+            <pre><code class="text-neutral-300 text-xs">echo "$state" > state.json.tmp
+mv state.json.tmp state.json
+# Rename é atômico no POSIX</code></pre>
+          </div>
         </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">REVIEWING</p>
-          <p class="text-neutral-400 text-xs">Loop de rodadas. Cada rodada incrementa current_round, seleciona persona, executa análise e acumula findings. Stop Hook decide se continua ou avança.</p>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">SUMMARIZING</p>
-          <p class="text-neutral-400 text-xs">Uma única rodada com persona de síntese. Consolida findings, gera relatório markdown, posta no GitHub. Transição para DONE após sucesso.</p>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">FAILED</p>
-          <p class="text-neutral-400 text-xs">Estado irrecuperável via ERR trap. Tenta gerar relatório parcial com findings coletados até o momento antes do cleanup.</p>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> A janela de corrupção</h3>
+        <p class="text-neutral-300">Claude Code pode ser interrompido com Ctrl+C, timeout, ou kill a qualquer momento. A janela entre iniciar a escrita e completá-la é suficiente para corromper o arquivo. Estado corrompido frequentemente é irrecuperável — sem estado, a sessão está perdida.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🔒 Compare-and-swap (CAS)</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-amber-400">Compare-and-swap</strong> garante que uma transição de estado só é aplicada se o estado atual ainda é o esperado. Leia, verifique, escreva. Se entre a leitura e a escrita o estado mudou, rejeite a operação.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Implementação de CAS em JSON</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4">
+          <pre><code class="text-neutral-300 text-sm"># Ler estado atual com versão
+current=$(cat state.json)
+current_version=$(echo "$current" | jq -r '.version')
+expected_version=3
+
+# Verificar versão antes de modificar
+if [ "$current_version" != "$expected_version" ]; then
+  echo "CAS failed: state changed" >&2
+  exit 0  # fail-open
+fi
+
+# Aplicar transição com versão incrementada
+new_state=$(echo "$current" | jq '.phase = "running" | .version += 1')
+echo "$new_state" > state.json.tmp
+mv state.json.tmp state.json</code></pre>
         </div>
       </div>
     </section>
 
-    <!-- TÓPICO 2 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">2</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">O Stop Hook como Motor</h2>
-          <p class="text-neutral-400 text-sm mt-1">BLOCK mantém o loop, APPROVE encerra — o coração do sistema</p>
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🔐 Lockfiles</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-amber-400">Lockfiles</strong> garantem execução exclusiva em seções críticas. A criação de um diretório com <code class="text-amber-400 bg-dark-700 px-1 rounded">mkdir</code> é atômica no POSIX — apenas um processo consegue criar o diretório com sucesso. O restante falha e sabe que outro processo está executando.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Lockfile com cleanup garantido</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4">
+          <pre><code class="text-neutral-300 text-sm">LOCK_DIR="/tmp/plugin.lock"
+
+# Cleanup garantido ao sair
+cleanup() { rmdir "$LOCK_DIR" 2>/dev/null || true; }
+trap cleanup EXIT
+
+# Tentar adquirir lock
+if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+  echo "Already running, skipping" >&2
+  exit 0  # fail-open: outro processo está executando
+fi
+
+# Seção crítica aqui
+# Lock é liberado pelo trap EXIT</code></pre>
         </div>
       </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3">Stale locks: o problema mais comum</h3>
+        <p class="text-neutral-300">Se o processo morreu sem limpar o lock, o lockfile persiste indefinidamente. A solução é verificar se o PID registrado no lock ainda está ativo. Se não, o lock é stale e pode ser removido.</p>
+      </div>
+    </section>
 
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        O Stop Hook é chamado pelo Claude Code ao fim de cada turno. Ele lê o estado YAML, decide o que fazer na próxima rodada e injeta instruções para Claude. O <strong class="text-blue-400">exit code 2</strong> sinaliza BLOCK (continua), <strong class="text-blue-400">exit code 0</strong> sinaliza APPROVE (encerra o loop).
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🚨 ERR trap</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Bash por padrão ignora erros e continua executando. <strong class="text-amber-400">set -euo pipefail</strong> e <strong class="text-amber-400">trap ... ERR</strong> mudam isso — qualquer comando que falha dispara o trap, permitindo cleanup antes de sair.
       </p>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">stop-hook.sh — lógica central de decisão</p>
-        <pre class="text-xs text-neutral-300"><code>#!/usr/bin/env bash
-
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">O boilerplate completo</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4">
+          <pre><code class="text-neutral-300 text-sm">#!/usr/bin/env bash
 set -euo pipefail
 
-STATE_FILE=$(find .claudex/state -name "review-PR*.yaml" \
-  -newer /tmp/sentinel 2>/dev/null | head -1)
+# Handler de erro
+on_error() {
+  local exit_code=$?
+  local line=$1
+  echo "Error on line $line (exit: $exit_code)" >&2
+  cleanup
+}
 
-[[ -z "${STATE_FILE}" ]] && exit 0  # Nenhuma revisão ativa → APPROVE
+cleanup() {
+  rmdir "$LOCK_DIR" 2>/dev/null || true
+}
 
-STATUS=$(yq e '.status' "${STATE_FILE}")
-CURRENT_ROUND=$(yq e '.current_round' "${STATE_FILE}")
-MAX_ROUNDS=$(yq e '.max_rounds' "${STATE_FILE}")
+trap 'on_error $LINENO' ERR
+trap cleanup EXIT
 
-case "${STATUS}" in
-  SETUP)
-    # Primeira chamada — inicia primeira rodada
-    update_state status "REVIEWING"
-    update_state current_round 1
-    # Injeta instrução para Claude iniciar rodada 1
-    echo "INSTRUÇÃO: Inicie a rodada 1 de revisão usando a persona Author."
-    exit 2  # BLOCK — continua
-    ;;
-
-  REVIEWING)
-    if (( CURRENT_ROUND < MAX_ROUNDS )); then
-      # Ainda há rodadas — avança para próxima
-      update_state current_round "$(( CURRENT_ROUND + 1 ))"
-      NEXT_PERSONA=$(get_persona_for_round "$(( CURRENT_ROUND + 1 ))")
-      echo "INSTRUÇÃO: Execute a rodada $(( CURRENT_ROUND + 1 )) com persona ${NEXT_PERSONA}."
-      exit 2  # BLOCK — continua
-    else
-      # Todas as rodadas concluídas — avança para sumarização
-      update_state status "SUMMARIZING"
-      echo "INSTRUÇÃO: Execute a fase SUMMARIZING. Consolide todos os findings."
-      exit 2  # BLOCK — continua
-    fi
-    ;;
-
-  SUMMARIZING)
-    # Sumarização concluída — encerra
-    update_state status "DONE"
-    exit 0  # APPROVE — loop encerrado
-    ;;
-
-  DONE|FAILED)
-    exit 0  # APPROVE — nada mais a fazer
-    ;;
-esac</code></pre>
-      </div>
-
-      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">💡</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">A Mecânica do BLOCK</span>
+# Resto do script aqui</code></pre>
         </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          Quando o Stop Hook retorna exit code 2, o Claude Code não encerra a sessão. Em vez disso, qualquer texto escrito no stdout do hook é injetado como nova instrução para Claude no próximo turno. Isso é o que permite ao hook <em>dirigir</em> o comportamento de Claude em cada rodada — a instrução injetada define qual persona usar e qual objetivo da rodada.
-        </p>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-3">set -euo pipefail: o que cada flag faz</h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li><strong>-e:</strong> sai imediatamente se qualquer comando retorna exit code não-zero</li>
+          <li><strong>-u:</strong> trata variáveis não definidas como erro (não expande para string vazia)</li>
+          <li><strong>-o pipefail:</strong> pipeline retorna exit code do último comando que falhou</li>
+        </ul>
       </div>
     </section>
 
-    <!-- TÓPICO 3 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">3</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Passando Contexto do PR ao Claude</h2>
-          <p class="text-neutral-400 text-sm mt-1">Diff, commit messages e descrição via gh CLI</p>
-        </div>
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">📋 O checklist de segurança</h2>
       </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        Cada rodada de análise precisa de contexto completo do PR. O runner script monta esse contexto dinamicamente antes de invocar <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print</code>. Contexto rico melhora drasticamente a qualidade dos findings — Claude pode verificar se a implementação atende o objetivo declarado.
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        As seis primitivas formam um checklist que pode ser aplicado mecanicamente a qualquer plugin. Verificar todas antes de considerar o safety pass completo.
       </p>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">Construção do contexto via gh CLI</p>
-        <pre class="text-xs text-neutral-300"><code>build_pr_context() {
-  local pr_number="$1"
-
-  # Metadados do PR
-  local pr_title pr_body pr_labels
-  pr_title=$(gh pr view "${pr_number}" --json title -q '.title')
-  pr_body=$(gh pr view "${pr_number}" --json body -q '.body')
-  pr_labels=$(gh pr view "${pr_number}" --json labels -q '.labels[].name' | tr '\n' ', ')
-
-  # Diff completo do PR
-  local pr_diff
-  pr_diff=$(gh pr diff "${pr_number}")
-
-  # Histórico de commits
-  local commit_log
-  commit_log=$(gh pr view "${pr_number}" \
-    --json commits -q '.commits[] | "[\(.oid[:7])] \(.messageHeadline)"')
-
-  # Monta contexto para o prompt
-  cat <<EOF
-=== CONTEXTO DO PR #${pr_number} ===
-Título: ${pr_title}
-Labels: ${pr_labels}
-
-Descrição:
-${pr_body}
-
-Commits:
-${commit_log}
-
-Diff:
-\`\`\`diff
-${pr_diff}
-\`\`\`
-EOF
-}</code></pre>
-      </div>
-
-      <div class="grid sm:grid-cols-3 gap-4 mb-5">
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">gh pr view</p>
-          <p class="text-neutral-400 text-xs">Metadados: título, descrição, labels, reviewers, milestone. Define o "porquê" do PR.</p>
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Checklist de primitivas de segurança</h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <div>
+              <strong class="text-white">Fail-open:</strong>
+              <span class="text-neutral-300 text-sm ml-1">Matar o processo com SIGKILL não bloqueia o sistema host</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <div>
+              <strong class="text-white">Escrita atômica:</strong>
+              <span class="text-neutral-300 text-sm ml-1">Nenhum write direto em arquivo de estado — sempre via tmp + rename</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <div>
+              <strong class="text-white">CAS:</strong>
+              <span class="text-neutral-300 text-sm ml-1">Toda transição de estado verifica a versão antes de aplicar</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <div>
+              <strong class="text-white">Lockfile:</strong>
+              <span class="text-neutral-300 text-sm ml-1">Seções críticas têm lock com cleanup garantido no EXIT trap</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <div>
+              <strong class="text-white">ERR trap:</strong>
+              <span class="text-neutral-300 text-sm ml-1">set -euo pipefail e trap ERR em todo script shell</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <div>
+              <strong class="text-white">Idempotência:</strong>
+              <span class="text-neutral-300 text-sm ml-1">Re-executar o mesmo prompt duas vezes não causa efeitos duplicados</span>
+            </div>
+          </div>
         </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">gh pr diff</p>
-          <p class="text-neutral-400 text-xs">O diff unificado completo de todas as mudanças. É o "o quê" do PR.</p>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <p class="text-blue-400 font-semibold text-sm mb-2">Commits</p>
-          <p class="text-neutral-400 text-xs">Histórico de raciocínio. Commits de revert ou refactor revelam incertezas do autor.</p>
-        </div>
-      </div>
-
-      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-primary text-lg">⚡</span>
-          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          Para PRs com diffs muito grandes (mais de 2000 linhas), considere truncar o diff e focar nos arquivos mais críticos. Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">gh pr diff --name-only</code> para listar os arquivos e <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">git -C "${WORKTREE}" diff origin/main -- arquivo.ts</code> para diff por arquivo.
-        </p>
-      </div>
-    </section>
-
-    <!-- TÓPICO 4 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">4</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Controlando Rodadas</h2>
-          <p class="text-neutral-400 text-sm mt-1">MAX_ROUNDS configurável e estado de rodada atual</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        MAX_ROUNDS é a garantia de terminação do sistema. Sem ele, um loop de revisão poderia rodar indefinidamente se o Stop Hook nunca atingir a condição de APPROVE. É um parâmetro de <strong class="text-blue-400">segurança de custo</strong>, não apenas de performance.
-      </p>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">review-config.yaml — configuração de rodadas</p>
-        <pre class="text-xs text-neutral-300"><code># .claude/review-config.yaml
-max_rounds: 3                    # Default: 3 rodadas de análise
-personas:
-  - round: 1
-    name: "Author"
-    focus: "Intenção e completude"
-  - round: 2
-    name: "Reviewer"
-    focus: "Bugs e qualidade"
-  - round: 3
-    name: "Security"
-    focus: "Vulnerabilidades e riscos"
-
-# Thresholds para integração com CI
-blocking_severity: "HIGH"        # Findings >= HIGH bloqueiam merge
-report_on_no_findings: true      # Sempre gera relatório, mesmo sem findings</code></pre>
-      </div>
-
-      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">💡</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Garantia de Terminação</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          O Stop Hook verifica: se <code>current_round &gt;= max_rounds</code>, força transição para SUMMARIZING independente de qualquer outra condição. Isso garante que mesmo um bug no código de transição de persona não cria um loop infinito. MAX_ROUNDS é o safety net final.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-3 gap-4">
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
-          <p class="text-2xl font-bold text-blue-400">1</p>
-          <p class="text-sm text-neutral-300 mt-1">Rodada mínima</p>
-          <p class="text-neutral-400 text-xs mt-1">Para PRs simples ou revisão rápida</p>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center border-blue-500/30">
-          <p class="text-2xl font-bold text-blue-400">3</p>
-          <p class="text-sm text-neutral-300 mt-1">Padrão recomendado</p>
-          <p class="text-neutral-400 text-xs mt-1">Cobre Author, Reviewer e Security</p>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
-          <p class="text-2xl font-bold text-blue-400">5</p>
-          <p class="text-sm text-neutral-300 mt-1">Para PRs críticos</p>
-          <p class="text-neutral-400 text-xs mt-1">Adiciona Performance e Architecture</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TÓPICO 5 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">5</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">O Runner Script</h2>
-          <p class="text-neutral-400 text-sm mt-1">Delegando análise ao Claude com contexto de worktree</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        O runner script é a ponte entre o Stop Hook (orquestrador) e Claude (executor). Ele constrói o prompt completo para a rodada atual — contexto do PR + instrução de persona + findings anteriores — e invoca <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print</code> a partir do diretório do worktree para que Claude acesse o código da branch do PR.
-      </p>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">runner.sh — executa uma rodada de análise</p>
-        <pre class="text-xs text-neutral-300"><code>run_review_round() {
-  local round="$1"
-  local persona="$2"
-  local worktree_path="$3"
-  local pr_context="$4"
-  local previous_findings="$5"
-
-  # Monta prompt da rodada
-  local round_prompt
-  round_prompt=$(cat <<EOF
-Você está executando a RODADA ${round} de revisão de PR como ${persona}.
-
-${pr_context}
-
-Findings das rodadas anteriores (NÃO repita estes):
-${previous_findings}
-
-Instruções para esta rodada:
-$(get_persona_instructions "${persona}")
-
-Analise o código no diretório atual (branch do PR já carregada).
-Retorne findings em JSON: {"findings": [{"file": "", "line": 0, "severity": "", "type": "", "description": ""}]}
-EOF
-)
-
-  # Invoca Claude a partir do worktree — tem acesso ao código do PR
-  local output
-  output=$(cd "${worktree_path}" && \
-    claude --print "${round_prompt}" 2>/dev/null)
-
-  # Extrai findings do output JSON
-  echo "${output}" | extract_findings_json
-}</code></pre>
-      </div>
-
-      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-5">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-red-400 text-lg">⚠️</span>
-          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Ponto Crítico: cd no worktree</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          O <code class="bg-dark-700 px-1.5 py-0.5 rounded text-red-400">cd "${worktree_path}"</code> antes de invocar Claude não é opcional. Sem ele, Claude opera no diretório principal do repositório (sua branch de trabalho) em vez da branch do PR. Isso viola a garantia de isolamento e pode resultar em findings incorretos ou modificação da branch errada.
-        </p>
-      </div>
-
-      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-primary text-lg">⚡</span>
-          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print --output-format json</code> para obter output estruturado do Claude diretamente, sem necessidade de parsear texto livre. O output JSON facilita a extração de findings e reduz erros de parsing.
-        </p>
-      </div>
-    </section>
-
-    <!-- TÓPICO 6 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">6</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Findings Incrementais</h2>
-          <p class="text-neutral-400 text-sm mt-1">Acumulando achados sem repetir análises das rodadas anteriores</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        Cada rodada de análise deve adicionar <strong class="text-blue-400">valor novo</strong> ao conjunto de findings. Para garantir isso, os findings das rodadas anteriores são passados ao prompt de cada nova rodada com instrução explícita de não duplicar. O arquivo de findings é persistido em JSON para facilitar leitura e deduplicação.
-      </p>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">.claudex/state/findings-PR123.json — formato acumulado</p>
-        <pre class="text-xs text-neutral-300"><code>{
-  "pr_number": 123,
-  "total_findings": 6,
-  "rounds": [
-    {
-      "round": 1,
-      "persona": "Author",
-      "findings": [
-        {
-          "id": "f001",
-          "file": "src/auth/jwt.ts",
-          "line": 45,
-          "severity": "HIGH",
-          "type": "intent-gap",
-          "description": "PR descreve expiração configurável mas expiry está hardcoded em 3600s"
-        }
-      ]
-    },
-    {
-      "round": 2,
-      "persona": "Reviewer",
-      "findings": [
-        {
-          "id": "f002",
-          "file": "src/auth/jwt.ts",
-          "line": 78,
-          "severity": "MEDIUM",
-          "type": "error-handling",
-          "description": "Token inválido não retorna erro específico, dificulta debugging"
-        }
-      ]
-    }
-  ]
-}</code></pre>
-      </div>
-
-      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">💡</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">A Instrução de Não-Duplicação</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
-          O prompt de cada rodada inclui a lista de findings anteriores com instrução explícita:
-        </p>
-        <div class="bg-dark-900 rounded-lg p-4 text-xs text-neutral-300">
-          <em>"Os seguintes problemas já foram identificados nas rodadas anteriores. NÃO os repita. Foque em problemas que ainda não foram cobertos pela perspectiva da sua persona: [lista de findings anteriores]"</em>
-        </div>
-        <p class="text-neutral-400 text-sm mt-3">Isso maximiza o valor por token e garante que cada rodada adiciona perspectiva genuinamente nova.</p>
       </div>
     </section>
 
     <!-- RESUMO -->
     <section class="mb-12">
-      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
-        <h2 class="text-2xl font-bold mb-6 flex items-center">
-          <span class="mr-3">✅</span> Resumo do Módulo 3.3
-        </h2>
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 3.3</h2>
         <div class="space-y-4 mb-8">
           <div class="flex items-start space-x-3">
-            <span class="text-blue-400 mt-1">✓</span>
-            <div><strong class="text-white">Máquina de estados</strong><span class="text-neutral-400"> — SETUP→REVIEWING→SUMMARIZING→DONE com FAILED para erros irrecuperáveis</span></div>
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Fail-open é inegociável</strong><span class="text-neutral-400"> — plugin que bloqueia é pior que não existir</span></div>
           </div>
           <div class="flex items-start space-x-3">
-            <span class="text-blue-400 mt-1">✓</span>
-            <div><strong class="text-white">Stop Hook</strong><span class="text-neutral-400"> — exit 2 (BLOCK) mantém loop, exit 0 (APPROVE) encerra; stdout injeta instrução para próxima rodada</span></div>
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Write-then-rename</strong><span class="text-neutral-400"> — atomicidade POSIX elimina corrupção de estado</span></div>
           </div>
           <div class="flex items-start space-x-3">
-            <span class="text-blue-400 mt-1">✓</span>
-            <div><strong class="text-white">Contexto do PR</strong><span class="text-neutral-400"> — diff, commits e descrição via gh CLI constroem prompt rico por rodada</span></div>
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">CAS previne race conditions</strong><span class="text-neutral-400"> — versioning de estado para transições seguras</span></div>
           </div>
           <div class="flex items-start space-x-3">
-            <span class="text-blue-400 mt-1">✓</span>
-            <div><strong class="text-white">MAX_ROUNDS</strong><span class="text-neutral-400"> — garantia de terminação configurável, safety net contra loops infinitos</span></div>
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Lockfile + cleanup</strong><span class="text-neutral-400"> — mutex sem dependência externa</span></div>
           </div>
           <div class="flex items-start space-x-3">
-            <span class="text-blue-400 mt-1">✓</span>
-            <div><strong class="text-white">Findings incrementais</strong><span class="text-neutral-400"> — JSON acumulado, instrução de não-duplicação garante valor novo por rodada</span></div>
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">6 primitivas como checklist</strong><span class="text-neutral-400"> — verificação mecânica do safety pass</span></div>
           </div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
-          <p class="text-neutral-300">3.4 — Personas de Revisão Multi-perspectiva</p>
+          <h3 class="font-semibold text-amber-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.4 — Quebrar em Prompts Incrementais</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
-            ← Módulo 3.2
-          </a>
-          <a href="modulo-3-4.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
-            Próximo Módulo →
-          </a>
+          <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 3.2</a>
+          <a href="modulo-3-4.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">Módulo 3.4 →</a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="border-t border-dark-600 py-8 mt-8">
+  <footer class="border-t border-dark-600 py-8 mt-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>Engenharia Claude Code — Módulo 3.3 · 2026</p>
+      <p>Engenharia Claude Code — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
     </div>
   </footer>
 

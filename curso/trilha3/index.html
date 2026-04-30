@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trilha 3 — Avançado | Engenharia com Claude Code</title>
+  <title>Trilha 3 — O Método | Engenharia com Claude Code</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -40,17 +40,17 @@
     html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
     html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
 
-    /* Light mode - cores de acento Blue T3 */
-    html:not(.dark) .text-blue-400 { color: #2563eb; }
-    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
-    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
-    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
-    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
-    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
-    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
-    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
-    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
-    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    /* Light mode - cores de acento (Amber T3) */
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .group:hover .group-hover\:text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-600 { background-color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500:hover { background-color: #78350f; }
 
     /* Light mode - remove gradientes */
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
@@ -67,11 +67,13 @@
     /* Light mode - nav */
     html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
 
-    /* Light mode - T1 emerald e T2 purple (inativos na nav) */
+    /* Light mode - trilhas inativas */
     html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
     html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
     html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
     html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -97,8 +99,12 @@
             <span class="sm:hidden">T2</span>
             <span class="hidden sm:inline">Construindo</span>
           </a>
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
             <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">O Método</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
             <span class="hidden sm:inline">Avançado</span>
           </a>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
@@ -115,30 +121,30 @@
   </nav>
 
   <!-- HEADER -->
-  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">
         TRILHA 3
       </span>
-      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚀 Avançado: Revisor de PRs com Claude Code</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚗️ O Método</h1>
       <p class="text-lg text-neutral-400 max-w-3xl">
-        Aplique os padrões da Trilha 2 num projeto de nível de produção: um revisor de PRs com isolamento via git worktree, análise multi-perspectiva e relatório estruturado integrado ao GitHub.
+        A Trilha 2 mostrou como o Claudex foi construído. Esta trilha extrai o porquê de cada decisão e transforma em método reutilizável — para que você construa qualquer plugin com os mesmos princípios, sem precisar do Claudex como exemplo.
       </p>
       <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xl font-bold text-amber-400">6</div>
           <div class="text-xs text-neutral-400">Módulos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-blue-400">36</div>
+          <div class="text-xl font-bold text-amber-400">36</div>
           <div class="text-xs text-neutral-400">Tópicos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-blue-400">~5h</div>
+          <div class="text-xl font-bold text-amber-400">~4h30</div>
           <div class="text-xs text-neutral-400">Duração</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-blue-400">Avançado</div>
+          <div class="text-xl font-bold text-amber-400">Interm.</div>
           <div class="text-xs text-neutral-400">Nível</div>
         </div>
       </div>
@@ -158,94 +164,94 @@
     <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-blue-400 font-bold">3.1</span>
+          <span class="text-amber-400 font-bold">3.1</span>
           <span class="text-xs text-neutral-500">~40 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">🎯 O Projeto: Revisor de PRs com Claude Code</h3>
-        <p class="text-neutral-400 text-sm">Visão geral do plugin, arquitetura em 3 camadas e comparação com o Claudex da Trilha 2.</p>
+        <h3 class="text-2xl font-bold mb-2">📋 A Lógica do SPEC Primeiro</h3>
+        <p class="text-neutral-400 text-sm">Por que o documento de especificação precede qualquer linha de código — e como escrever um SPEC que realmente guia o build.</p>
       </div>
       <div class="divide-y divide-dark-600">
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">🎯</span>
-            <div><span class="font-medium">Visão geral do plugin</span><span class="text-neutral-500 text-sm ml-2">— o que ele faz e o que o torna diferente</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um plugin de revisão de PRs que automatiza a análise de código de branches inteiras, usando isolamento de worktree, múltiplas rodadas e personas especializadas.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Revisões manuais são inconsistentes e dependem do humor do revisor. Este plugin garante cobertura sistemática com múltiplas perspectivas em cada PR.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Plugin de revisão, automação de PR, análise multi-rodada, integração com gh CLI.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">📐</span>
-            <div><span class="font-medium">Por que revisão de PR é mais complexa</span><span class="text-neutral-500 text-sm ml-2">— múltiplos arquivos, contexto de branch</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A complexidade adicional de revisar PRs versus código inline: múltiplos arquivos modificados, contexto de commits, descrição de PR e histórico de discussões.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Entender essa complexidade justifica as escolhas arquiteturais — worktree, gh CLI e múltiplas rodadas — que parecem excessivas sem este contexto.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Diff de PR, commit messages, contexto de branch, escopo de revisão, surface area de análise.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">🌿</span>
-            <div><span class="font-medium">O desafio do isolamento</span><span class="text-neutral-500 text-sm ml-2">— por que não revisar na branch ativa</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O risco de modificação acidental quando Claude Code analisa código na branch de trabalho ativa — e como git worktree resolve esse problema estruturalmente.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem isolamento, um bug no plugin pode modificar o código que está sendo revisado, contaminando o resultado ou danificando a branch de produção.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Isolamento de ambiente, risco de contaminação, git worktree como sandbox, separação entre revisor e código revisado.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">🏗️</span>
-            <div><span class="font-medium">Arquitetura em 3 camadas</span><span class="text-neutral-500 text-sm ml-2">— Isolamento → Análise → Relatório</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As três camadas separadas que compõem o sistema: Isolamento (worktree + YAML de estado), Análise multi-perspectiva (loop de personas) e Relatório estruturado (markdown + gh CLI).</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Separar responsabilidades em camadas permite testar, depurar e evoluir cada parte independentemente. Um bug na camada de relatório não afeta a análise.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Separação de camadas, responsabilidade única, isolamento por camada, testabilidade modular.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">🔗</span>
-            <div><span class="font-medium">Comparando com o Claudex</span><span class="text-neutral-500 text-sm ml-2">— o que é idêntico e o que é diferente</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Mapeamento explícito entre os dois sistemas: máquina de estados e personas são idênticos; worktree, gh CLI e relatório de PR são novos.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Identificar o que é reaproveitável reduz o esforço de build. Você não está começando do zero — está estendendo padrões que já conhece.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Reúso de padrões, delta de complexidade, extensão vs reescrita, transferência de conhecimento entre projetos.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
             <span class="text-lg">📋</span>
-            <div><span class="font-medium">O SPEC do projeto</span><span class="text-neutral-500 text-sm ml-2">— as 8 garantias de segurança e o blueprint</span></div>
+            <div><span class="font-medium">O que é um SPEC e por que ele vem antes do código</span><span class="text-neutral-500 text-sm ml-2">— a fundação escrita</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O documento SPEC deste projeto com 8 garantias de segurança específicas para revisão de PR: worktree cleanup garantido, sem modificação na branch de trabalho, relatório sempre gerado mesmo em falha.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Garantias de segurança mais rígidas são necessárias porque este sistema opera em repositórios de produção. Um erro aqui pode afetar código de outros desenvolvedores.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">SPEC de segurança, garantias de worktree, blueprint de arquivos, invariantes de produção.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um documento que define o sistema em texto antes de qualquer implementação — componentes, responsabilidades, invariantes e o critério de sucesso.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem SPEC, cada prompt reinventa a arquitetura. Com SPEC, cada prompt navega por um mapa já definido — bugs arquiteturais são encontrados antes de custar horas de código.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Especificação antes de implementação, componentes e responsabilidades, invariantes de segurança, decisões de design explícitas.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🎯</span>
+            <div><span class="font-medium">As 3 perguntas que todo SPEC deve responder</span><span class="text-neutral-500 text-sm ml-2">— O quê, Por quê, Como verificar</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As três perguntas fundamentais: O quê o sistema faz (comportamento), Por quê cada decisão existe (justificativa), Como verificar que está correto (critério de aceitação).</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um SPEC que não responde estas três perguntas é incompleto. Prompts gerados a partir dele vão produzir código que funciona tecnicamente mas falha nos objetivos reais.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Comportamento esperado, justificativa de design, critério de aceitação, testabilidade por definição.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔒</span>
+            <div><span class="font-medium">As garantias de segurança</span><span class="text-neutral-500 text-sm ml-2">— declarar invariantes antes de codificar</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Invariantes são propriedades que o sistema nunca pode violar — independente do estado, carga ou falha. Declará-las no SPEC força cada prompt a respeitá-las.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem invariantes explícitos, o prompt 5 pode quebrar silenciosamente uma garantia que o prompt 2 estabeleceu. Descobrir isso tarde custa muito mais que escrever o SPEC.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Invariantes de segurança, fail-open, escrita atômica, idempotência, propriedades inegociáveis do sistema.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📐</span>
+            <div><span class="font-medium">SPEC vs. README vs. comentário</span><span class="text-neutral-500 text-sm ml-2">— qual é a diferença prática</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">README explica como usar. Comentário explica como funciona. SPEC define o que deve ser — antes que exista. São três camadas de documentação com propósitos distintos.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Confundir os três leva a documentação no lugar errado. Colocar invariantes em comentários garante que sejam ignorados. SPEC é contrato, não documentação.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">SPEC como contrato, README como guia de uso, comentário como explicação local, separação de responsabilidades de documentação.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">✍️</span>
+            <div><span class="font-medium">Como escrever um SPEC em 30 minutos</span><span class="text-neutral-500 text-sm ml-2">— o template reutilizável</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um template de seis seções — objetivo, componentes, invariantes, interface pública, sequência de build e critérios de aceitação — que pode ser preenchido em menos de meia hora para projetos médios.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">SPEC não precisa ser um documento extenso para ser útil. Um template estruturado garante que as perguntas certas sejam respondidas sem gastar tempo em seções desnecessárias.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template de SPEC, seis seções essenciais, proporcionalidade entre tamanho do SPEC e do projeto, completude mínima.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🧪</span>
+            <div><span class="font-medium">Como usar o SPEC para verificar cada prompt</span><span class="text-neutral-500 text-sm ml-2">— checklist de aceitação</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A prática de usar os critérios de aceitação do SPEC como checklist após cada prompt — confirmando que a entrega cumpre o contrato antes de avançar para a próxima camada.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O SPEC sem verificação é decorativo. Usá-lo como checklist transforma cada prompt em um passo verificado — e detecta desvios cedo, quando ainda são fáceis de corrigir.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Checklist de aceitação, verificação por prompt, SPEC como contrato ativo, detecção precoce de desvios.</p></div>
             </div>
           </div>
         </div>
@@ -254,7 +260,7 @@
         <button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
           Ver em Modal
         </button>
-        <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+        <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors">
           Ver Completo
         </a>
       </div>
@@ -264,94 +270,94 @@
     <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-blue-400 font-bold">3.2</span>
-          <span class="text-xs text-neutral-500">~50 min</span>
+          <span class="text-amber-400 font-bold">3.2</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">🌳 Isolamento de Branch com Git Worktree</h3>
-        <p class="text-neutral-400 text-sm">Como criar checkouts isolados, gerenciar estado do worktree em YAML e garantir limpeza em qualquer saída.</p>
+        <h3 class="text-2xl font-bold mb-2">🏗️ A Sequência Obrigatória</h3>
+        <p class="text-neutral-400 text-sm">A ordem correta de construção — esqueleto, estado, lógica, segurança — e o que acontece quando você pula etapas.</p>
       </div>
       <div class="divide-y divide-dark-600">
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">🌳</span>
-            <div><span class="font-medium">O que é um git worktree</span><span class="text-neutral-500 text-sm ml-2">— múltiplos checkouts simultaneamente</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🏗️</span>
+            <div><span class="font-medium">Esqueleto primeiro</span><span class="text-neutral-500 text-sm ml-2">— por que o scaffold precede a lógica</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um recurso do Git que permite ter múltiplos diretórios de trabalho do mesmo repositório ativos simultaneamente, cada um com sua própria branch e estado de arquivos.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">É a primitiva fundamental que permite ao revisor operar na branch do PR sem jamais tocar na branch onde o desenvolvedor está trabalhando.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">git worktree, checkout simultâneo, linked worktree, HEAD separado por diretório.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Criar primeiro a estrutura de arquivos, interfaces e pontos de integração — sem implementar nenhuma lógica real. O scaffold define o contrato externo do sistema.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Implementar lógica antes de ter estrutura leva a reescritas completas quando a arquitetura se mostra inadequada. Scaffold primeiro garante que o contrato externo está correto antes do custo da implementação.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Plugin scaffold, estrutura de arquivos, interfaces vazias, contrato externo, fail-open por padrão.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">⚡</span>
-            <div><span class="font-medium">Criando worktrees temporários</span><span class="text-neutral-500 text-sm ml-2">— git worktree add com path dinâmico</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">⚙️</span>
+            <div><span class="font-medium">Estado antes do comportamento</span><span class="text-neutral-500 text-sm ml-2">— a máquina de estados como fundação</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O comando <code>git worktree add /tmp/review-XYZ origin/feature-branch</code> que cria um diretório temporário com a branch do PR já carregada.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O path dinâmico (com timestamp ou PR number) garante que cada revisão usa um diretório único, evitando conflitos entre revisões paralelas.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">git worktree add, path temporário, fetch antes de criar, tracking de branch remota.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Implementar a representação e transições de estado antes de qualquer lógica de negócio. O sistema precisa saber em qual fase está antes de poder agir corretamente.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Lógica de negócio implementada sem estado explícito inevitavelmente cria estado implícito — variáveis globais, flags, condições aninhadas que tornam o sistema impossível de raciocinar.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State machine, representação de estado, transições explícitas, estado persistido, estado implícito vs. explícito.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">🧹</span>
-            <div><span class="font-medium">Limpeza garantida</span><span class="text-neutral-500 text-sm ml-2">— o hook que remove o worktree em qualquer saída</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🧠</span>
+            <div><span class="font-medium">Lógica sobre estado</span><span class="text-neutral-500 text-sm ml-2">— construindo sobre camadas verificadas</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O hook de cleanup que executa <code>git worktree remove --force</code> garantidamente em qualquer saída — sucesso, falha ou sinal de interrupção (SIGTERM, SIGINT).</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Worktrees órfãos acumulam espaço em disco e podem causar conflitos em revisões futuras. Cleanup garantido é uma invariante de segurança, não uma feature opcional.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">trap ERR EXIT, git worktree remove, cleanup atômico, handler de sinal.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A terceira camada que implementa o comportamento real do sistema — só depois que o scaffold e a máquina de estados estão verificados e funcionando.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Lógica implementada sobre fundação instável herda todos os bugs da fundação. Ao verificar cada camada antes de avançar, a lógica de negócio pode ser testada de forma isolada.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Camadas verificadas, lógica de negócio isolada, dependências de camadas, testabilidade por isolamento.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">📄</span>
-            <div><span class="font-medium">Estado do worktree em YAML</span><span class="text-neutral-500 text-sm ml-2">— paths, branch name, PR number, status</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O arquivo de estado que persiste o caminho do worktree, nome da branch, número do PR e status atual, permitindo retomada e cleanup mesmo após reinicialização.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem estado persistido, uma falha no meio da revisão deixa o worktree órfão. Com YAML de estado, o sistema sabe o que limpar mesmo se reiniciado.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State YAML, worktree path tracking, PR metadata, status machine, escrita atômica.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
             <span class="text-lg">🛡️</span>
-            <div><span class="font-medium">Fail-safe de existência</span><span class="text-neutral-500 text-sm ml-2">— conflitos de lock e worktrees duplicados</span></div>
+            <div><span class="font-medium">Segurança por último</span><span class="text-neutral-500 text-sm ml-2">— o safety pass só funciona se o resto está certo</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A verificação e resolução quando o worktree já existe no path de destino — seja por uma revisão anterior que não foi limpa ou por uma revisão paralela em andamento.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tentar criar um worktree onde já existe um falha silenciosamente ou com erro críptico. O fail-safe torna o comportamento determinístico e auditável.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Worktree lock file, detecção de existência, estratégia de resolução, idempotência de criação.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O safety pass final que reforça todas as primitivas de segurança — fail-open, escrita atômica, CAS, lockfiles — sobre um sistema funcionalmente correto.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Adicionar segurança em um sistema com bugs de lógica mascara os bugs — o sistema fica "seguro" mas incorreto. Segurança sobre lógica verificada garante que as primitivas protegem o comportamento correto.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Safety pass, primitivas de segurança, hardening sobre lógica correta, segurança como camada final.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-            <span class="text-lg">🧪</span>
-            <div><span class="font-medium">Testando o isolamento</span><span class="text-neutral-500 text-sm ml-2">— verificando que modificações não afetam a branch ativa</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">⚠️</span>
+            <div><span class="font-medium">O que acontece quando você pula etapas</span><span class="text-neutral-500 text-sm ml-2">— os bugs clássicos</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O conjunto de testes que verifica o isolamento real: modificar um arquivo no worktree e confirmar que a branch principal permanece intacta via git diff.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Isolamento é a garantia fundamental do sistema. Testá-lo explicitamente demonstra que a invariante é real e não apenas assumida.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Teste de isolamento, git status por diretório, verificação de estado limpo, smoke test de worktree.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Os padrões de falha recorrentes quando a sequência é ignorada: estado implícito que corrompe, lógica que não sabe sua fase, segurança que protege o comportamento errado.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Reconhecer estes padrões de falha permite diagnóstico rápido quando algo dá errado. A maioria dos bugs de LLM coding vem de sequência incorreta, não de código ruim.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Padrões de falha por sequência, estado implícito, bugs de fase, segurança sobre lógica incorreta.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔄</span>
+            <div><span class="font-medium">Sequenciando seu próprio projeto</span><span class="text-neutral-500 text-sm ml-2">— como dividir em 4-8 prompts</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O processo de mapear seu projeto nas quatro camadas da sequência e quebrar cada camada em prompts atômicos — cada um com entrada clara, saída verificável e critério de avanço.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A maior dificuldade de LLM coding não é escrever prompts — é decidir quantos prompts fazer e em qual ordem. Este processo elimina essa dificuldade com uma estrutura repetível.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Mapeamento de camadas, granularidade de prompts, dependências entre prompts, critério de avanço.</p></div>
             </div>
           </div>
         </div>
@@ -360,7 +366,7 @@
         <button onclick="openModal('modal-3-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
           Ver em Modal
         </button>
-        <a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+        <a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors">
           Ver Completo
         </a>
       </div>
@@ -370,94 +376,94 @@
     <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-blue-400 font-bold">3.3</span>
-          <span class="text-xs text-neutral-500">~55 min</span>
+          <span class="text-amber-400 font-bold">3.3</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">🔄 O Loop de Revisão</h3>
-        <p class="text-neutral-400 text-sm">A máquina de estados SETUP→REVIEWING→SUMMARIZING→DONE, o Stop Hook como motor e findings incrementais.</p>
+        <h3 class="text-2xl font-bold mb-2">🛡️ Fail-Open e os Padrões de Segurança</h3>
+        <p class="text-neutral-400 text-sm">As seis primitivas de segurança que todo plugin precisa — e como verificar se o seu projeto as implementa corretamente.</p>
       </div>
       <div class="divide-y divide-dark-600">
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">🔄</span>
-            <div><span class="font-medium">A máquina de estados</span><span class="text-neutral-500 text-sm ml-2">— SETUP → REVIEWING → SUMMARIZING → DONE</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🛡️</span>
+            <div><span class="font-medium">Fail-open</span><span class="text-neutral-500 text-sm ml-2">— o hook que falha não deve parar o sistema</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A máquina de estados de 4 fases que governa o ciclo de vida completo de uma revisão de PR, incluindo o estado FAILED para erros irrecuperáveis.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Estados explícitos eliminam ambiguidade sobre o que o sistema está fazendo e o que fazer em cada situação, especialmente em falhas parciais.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State machine, fases de revisão, transições permitidas, estado FAILED, persistência de estado.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A propriedade que garante: quando um hook ou plugin falha por qualquer razão, o sistema host (Claude Code) continua operando normalmente — sem bloquear, sem travar, sem perder trabalho.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um plugin que bloqueia o fluxo de trabalho quando falha é mais prejudicial que não existir. Fail-open é a primeira garantia de segurança — sem ela, as outras não importam.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fail-open vs. fail-closed, try/catch em todo código de hook, exit codes seguros, degradação graciosa.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">🧠</span>
-            <div><span class="font-medium">O Stop Hook como motor</span><span class="text-neutral-500 text-sm ml-2">— BLOCK mantém o loop, APPROVE encerra</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">⚛️</span>
+            <div><span class="font-medium">Escrita atômica</span><span class="text-neutral-500 text-sm ml-2">— mv é mais seguro que write — por quê</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O Stop Hook que intercepta cada fim de turno e decide: exit code 2 (BLOCK, continua loop) ou exit code 0 (APPROVE, encerra) com base no estado atual da revisão.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O hook é o único lugar onde o controle de fluxo é determinístico. Entender sua lógica de decisão é entender o coração do sistema.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Stop Hook, exit codes, leitura de estado, injeção de instrução, controle de loop.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A técnica de escrever em arquivo temporário e fazer rename atômico — garantindo que o arquivo de destino nunca fica em estado parcialmente escrito, mesmo com interrupção no meio.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escrever diretamente no arquivo de estado deixa uma janela onde interrupção (kill, crash, timeout) corrompe o arquivo. Estado corrompido pode ser permanente — sem recovery.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Write-then-rename, arquivo temporário, atomicidade do rename no POSIX, janela de corrupção, recovery.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">📬</span>
-            <div><span class="font-medium">Passando contexto do PR ao Claude</span><span class="text-neutral-500 text-sm ml-2">— diff, commits, descrição via gh CLI</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔒</span>
+            <div><span class="font-medium">Compare-and-swap (CAS)</span><span class="text-neutral-500 text-sm ml-2">— evitando condições de corrida</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A estratégia de injeção de contexto: diff do PR via <code>gh pr diff</code>, mensagens de commit, descrição e labels do PR são incluídos no prompt de revisão de cada rodada.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Claude precisa de contexto completo para revisar efetivamente. Sem a intenção do PR (descrição, commits), a revisão vira análise estática sem entender o objetivo.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">gh pr diff, gh pr view, context injection, prompt engineering com contexto dinâmico.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A operação que lê o estado atual, verifica que ainda é o esperado, e só então aplica a modificação — rejeitando a operação se o estado mudou entretanto.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Em hooks concorrentes (múltiplas instâncias de Claude Code), sem CAS dois processos podem ler o mesmo estado e ambos acreditar que são os donos de uma transição — corrompendo o estado.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Compare-and-swap, versioning de estado, condição de corrida, conflito de escrita, transição segura.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">🔢</span>
-            <div><span class="font-medium">Controlando rodadas</span><span class="text-neutral-500 text-sm ml-2">— MAX_ROUNDS configurável, estado de rodada atual</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🔐</span>
+            <div><span class="font-medium">Lockfiles</span><span class="text-neutral-500 text-sm ml-2">— execução exclusiva sem banco de dados</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O mecanismo de controle de rodadas: variável MAX_ROUNDS por configuração, contador de rodada atual no estado YAML, transição automática para SUMMARIZING quando o limite é atingido.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem limite explícito, o loop pode rodar indefinidamente consumindo tokens. MAX_ROUNDS é uma garantia de custo, não apenas uma preferência de usuário.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">MAX_ROUNDS, current_round counter, terminação garantida, transição automática de fase.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Usar criação atômica de arquivo (mkdir ou open com O_EXCL) como mutex — garantindo que apenas um processo executa uma seção crítica ao mesmo tempo, sem dependência de banco de dados ou serviço externo.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Plugins shell não têm acesso a mutexes de sistema operacional convenientes. Lockfiles são a solução portátil e sem dependências — mas precisam de cleanup garantido para não travar.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Lockfile como mutex, criação atômica de arquivo, cleanup em EXIT trap, stale lock detection.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">🏃</span>
-            <div><span class="font-medium">O runner script</span><span class="text-neutral-500 text-sm ml-2">— delegando análise ao Claude com contexto de worktree</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🚨</span>
+            <div><span class="font-medium">ERR trap</span><span class="text-neutral-500 text-sm ml-2">— capturando falhas silenciosas em shell scripts</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O script que invoca <code>claude --print</code> com o prompt de revisão correto para cada rodada, operando dentro do diretório do worktree para acessar o código da branch do PR.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O runner é a ponte entre o orquestrador (hook) e o executor (Claude). Seu design determina a qualidade do contexto que Claude recebe em cada rodada.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">claude --print, subprocess com cwd, context building, output capture e parsing.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A combinação de `set -euo pipefail` e `trap ... ERR` que garante que qualquer comando que falha em um shell script seja capturado — sem a falha silenciosa que é o padrão em bash.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Bash por padrão ignora erros de comandos individuais e continua executando. Um plugin que executa com estado inconsistente porque um comando falhou silenciosamente é difícil de debugar.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">set -euo pipefail, ERR trap, EXIT trap, falha silenciosa, pipelines e exit codes.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-            <span class="text-lg">📊</span>
-            <div><span class="font-medium">Findings incrementais</span><span class="text-neutral-500 text-sm ml-2">— acumulando achados sem repetir análises anteriores</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">📋</span>
+            <div><span class="font-medium">O checklist de segurança</span><span class="text-neutral-500 text-sm ml-2">— 6 primitivas a verificar em qualquer plugin</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O mecanismo de acumulação de findings entre rodadas: cada nova rodada recebe os findings das rodadas anteriores como contexto para não duplicar análises já feitas.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem acumulação inteligente, cada rodada repetiria os mesmos achados. O sistema incremental garante que cada rodada adiciona valor novo ao resultado.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Findings acumulados, deduplicação, contexto de rodadas anteriores, eficiência de token.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A lista de verificação com as seis primitivas que todo plugin deve implementar: fail-open, escrita atômica, CAS, lockfile com cleanup, ERR trap e idempotência.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem um checklist explícito, é fácil implementar cinco primitivas e esquecer a sexta. O checklist transforma segurança de conhecimento tácito em verificação mecânica — aplicável a qualquer projeto.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Checklist de primitivas, segurança como verificação mecânica, idempotência, completude das garantias.</p></div>
             </div>
           </div>
         </div>
@@ -466,7 +472,7 @@
         <button onclick="openModal('modal-3-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
           Ver em Modal
         </button>
-        <a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+        <a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors">
           Ver Completo
         </a>
       </div>
@@ -476,94 +482,94 @@
     <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-blue-400 font-bold">3.4</span>
+          <span class="text-amber-400 font-bold">3.4</span>
           <span class="text-xs text-neutral-500">~45 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">👁️ Personas de Revisão Multi-perspectiva</h3>
-        <p class="text-neutral-400 text-sm">Author, Reviewer e Security como perspectivas rotativas — prompt engineering e acumulação de findings entre rodadas.</p>
+        <h3 class="text-2xl font-bold mb-2">🎯 Quebrar em Prompts Incrementais</h3>
+        <p class="text-neutral-400 text-sm">Como dividir qualquer projeto em prompts atômicos — cada um com entrada verificável, saída verificável e critério de avanço claro.</p>
       </div>
       <div class="divide-y divide-dark-600">
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">👁️</span>
-            <div><span class="font-medium">Por que uma única perspectiva é insuficiente</span><span class="text-neutral-500 text-sm ml-2">— o viés do revisor único</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O problema fundamental de revisar código com uma única perspectiva: cada papel (autor, revisor técnico, especialista em segurança) encontra problemas diferentes no mesmo código.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Justifica a complexidade adicional do sistema de personas. Sem esse contexto, as 3 rodadas parecem redundantes em vez de complementares.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Viés cognitivo de revisor, perspectiva especializada, cobertura de análise, blind spots por papel.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">👤</span>
-            <div><span class="font-medium">As 3 personas</span><span class="text-neutral-500 text-sm ml-2">— Author, Reviewer, Security</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As três personas distintas: Author (entende intenção, valida implementação vs objetivo), Reviewer (encontra bugs e problemas de qualidade), Security (encontra vulnerabilidades e riscos).</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cada persona ativa um conjunto diferente de heurísticas no modelo. A definição precisa das personas determina a qualidade dos findings em cada rodada.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Author persona, Reviewer persona, Security persona, heurísticas por papel, instruções específicas.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">🔄</span>
-            <div><span class="font-medium">Rotação de personas por rodada</span><span class="text-neutral-500 text-sm ml-2">— round 1 Author, round 2 Reviewer, round 3 Security</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O mecanismo de seleção de persona por número de rodada: rodada 1 usa Author, rodada 2 usa Reviewer, rodada 3 usa Security — configurável via review-config.yaml.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A ordem importa: Author primeiro estabelece o contexto de intenção que as personas seguintes usam para avaliar se a implementação está correta para o objetivo declarado.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Persona rotation schedule, round-to-persona mapping, ordem de análise, configuração de rotação.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">✍️</span>
-            <div><span class="font-medium">Prompt engineering para personas</span><span class="text-neutral-500 text-sm ml-2">— instruções específicas por papel com exemplos</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A técnica de construir system prompts específicos para cada persona, com exemplos concretos de findings esperados e formato de output exigido.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um prompt de persona vago produz análise genérica. Instruções precisas com exemplos ancoram o modelo no papel correto e no formato esperado.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">System prompt de persona, exemplos few-shot, formato de output, ancoragem de papel.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">📚</span>
-            <div><span class="font-medium">Acumulando findings entre rodadas</span><span class="text-neutral-500 text-sm ml-2">— como não repetir o que já foi analisado</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O sistema de passagem de findings anteriores para cada nova rodada, instruindo explicitamente a persona atual a focar em aspectos ainda não cobertos pelas rodadas anteriores.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem contexto de rodadas anteriores, cada persona analisa o código do zero e pode duplicar findings. O acúmulo incremental maximiza a cobertura por token gasto.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Findings acumulados, instrução de não-duplicação, contexto cross-round, eficiência de análise.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
             <span class="text-lg">🎯</span>
-            <div><span class="font-medium">A persona de síntese</span><span class="text-neutral-500 text-sm ml-2">— como SUMMARIZING consolida todos os achados</span></div>
+            <div><span class="font-medium">O princípio: cada prompt entrega uma camada verificável</span><span class="text-neutral-500 text-sm ml-2">— atomicidade de entrega</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A fase SUMMARIZING que usa uma persona especial de "Senior Engineer" para consolidar, deduplicar e priorizar findings de todas as rodadas num relatório coerente e acionável.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Findings individuais de múltiplas rodadas podem ser contraditórios ou redundantes. A persona de síntese transforma dados brutos em recomendações priorizadas.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Synthesis persona, consolidação de findings, priorização, deduplicação, relatório final coerente.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Cada prompt deve entregar exatamente uma camada do sistema — completa, testável e com critério de aceitação claro — antes que o próximo prompt seja executado.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts que entregam múltiplas camadas ao mesmo tempo tornam impossível determinar qual camada causou um bug. Atomicidade de entrega é o que torna o diagnóstico de falhas possível.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt atômico, camada verificável, critério de aceitação por prompt, diagnóstico de falha isolado.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📏</span>
+            <div><span class="font-medium">O tamanho certo de um prompt</span><span class="text-neutral-500 text-sm ml-2">— nem grande demais, nem pequeno demais</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O prompt certo é aquele cuja entrega pode ser verificada em menos de 5 minutos e que não depende de mais de 2 prompts anteriores para fazer sentido.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts muito grandes criam múltiplos pontos de falha não isoláveis. Prompts muito pequenos criam overhead de verificação e aumentam o risco de incoerência entre entregas adjacentes.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Granularidade de prompt, tempo de verificação, profundidade de dependência, coerência entre prompts.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔗</span>
+            <div><span class="font-medium">Dependências entre prompts</span><span class="text-neutral-500 text-sm ml-2">— o que cada prompt assume do anterior</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O conjunto de pré-condições que cada prompt assume — arquivos presentes, interfaces implementadas, comportamentos verificados — e que devem ser explicitados no prompt.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Dependências implícitas criam falhas misteriosas quando o prompt anterior não entregou exatamente o que o próximo esperava. Torná-las explícitas transforma dependências em contratos verificáveis.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pré-condições de prompt, dependências explícitas, contratos de interface, verificação de pré-condição antes de executar.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">✅</span>
+            <div><span class="font-medium">A verificação entre prompts</span><span class="text-neutral-500 text-sm ml-2">— o que testar antes de avançar</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O conjunto mínimo de testes que confirma que a entrega do prompt atual satisfaz seus critérios de aceitação e não quebrou o que prompts anteriores entregaram.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Avançar sem verificar é acumular dívida técnica invisível. A verificação entre prompts é o momento em que cada camada é declarada sólida — e o custo de corrigir ainda é baixo.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Gate de verificação, critérios de aceitação, testes de não-regressão, dívida técnica por pulo de verificação.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🔄</span>
+            <div><span class="font-medium">Quando um prompt falha</span><span class="text-neutral-500 text-sm ml-2">— como regredir sem perder o que foi construído</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O protocolo de diagnóstico e regressão quando uma entrega não passa a verificação — identificar em qual camada a falha ocorreu, reverter apenas essa camada e re-executar com contexto adicional.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem protocolo de regressão, uma falha no prompt 6 leva a reescrever tudo do prompt 3. Com protocolo correto, a regressão é cirúrgica — preservando o trabalho verificado.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Diagnóstico de falha, regressão por camada, contexto de diagnóstico, re-execução com informação adicional.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">📋</span>
+            <div><span class="font-medium">Template de prompt incremental</span><span class="text-neutral-500 text-sm ml-2">— a estrutura que funciona sempre</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um template de cinco seções para cada prompt: contexto do projeto, estado atual verificado, entrega esperada, invariantes a respeitar e critério de aceitação.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts sem estrutura levam o modelo a fazer suposições sobre o que é esperado. O template elimina ambiguidade e garante que contexto, restrições e critérios estejam sempre presentes.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template de prompt, cinco seções obrigatórias, contexto explícito, invariantes como restrições, critério de aceitação como contrato.</p></div>
             </div>
           </div>
         </div>
@@ -572,7 +578,7 @@
         <button onclick="openModal('modal-3-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
           Ver em Modal
         </button>
-        <a href="modulo-3-4.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+        <a href="modulo-3-4.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors">
           Ver Completo
         </a>
       </div>
@@ -582,94 +588,94 @@
     <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-blue-400 font-bold">3.5</span>
-          <span class="text-xs text-neutral-500">~45 min</span>
+          <span class="text-amber-400 font-bold">3.5</span>
+          <span class="text-xs text-neutral-500">~40 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">📝 Relatório de Revisão</h3>
-        <p class="text-neutral-400 text-sm">Formato markdown estruturado, severidade de findings, agrupamento por arquivo e integração com GitHub via gh pr comment.</p>
+        <h3 class="text-2xl font-bold mb-2">🧪 Testando Camada por Camada</h3>
+        <p class="text-neutral-400 text-sm">Por que testar primitivos isolados antes de compor — e como estruturar platform tests, smoke tests e E2E sintético.</p>
       </div>
       <div class="divide-y divide-dark-600">
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">📝</span>
-            <div><span class="font-medium">O formato do relatório</span><span class="text-neutral-500 text-sm ml-2">— markdown legível por humanos e CI/CD</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🧪</span>
+            <div><span class="font-medium">Por que testar cada primitivo isolado</span><span class="text-neutral-500 text-sm ml-2">— antes de compor</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A estrutura markdown padronizada do relatório: cabeçalho com metadados do PR, seções por severidade, findings individuais com arquivo/linha/descrição e seção de sumário executivo.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um formato consistente permite automação — CI/CD pode parsear o relatório, contar findings críticos e bloquear merge automaticamente.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Markdown estruturado, parseable output, headers consistentes, frontmatter de metadados.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A prática de verificar cada primitiva (escrita atômica, CAS, lockfile, ERR trap) de forma independente antes de integrá-las — garantindo que o primitivo funciona antes de depender dele.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Bugs em primitivos compostos são difíceis de diagnosticar porque múltiplos componentes interagem. Testar isolado identifica exatamente qual primitivo falhou — sem interferência dos outros.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Teste de primitivo isolado, composição sobre primitivos verificados, diagnóstico por isolamento.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">🚦</span>
-            <div><span class="font-medium">Severidade dos achados</span><span class="text-neutral-500 text-sm ml-2">— CRITICAL, HIGH, MEDIUM, LOW, INFO</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🔬</span>
+            <div><span class="font-medium">Platform tests</span><span class="text-neutral-500 text-sm ml-2">— verificando que o ambiente suporta o que você vai fazer</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O sistema de 5 níveis de severidade com critérios explícitos: CRITICAL (bloqueador de merge), HIGH (deve ser corrigido antes de deploy), MEDIUM/LOW (recomendações), INFO (observações).</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Severidade sem critérios claros é arbitrária. Com critérios definidos, a mesma issue será classificada igual por qualquer persona em qualquer rodada.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Severity taxonomy, critérios de classificação, blocking vs non-blocking, critério de merge gate.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Testes que verificam as capacidades do ambiente de execução antes do build principal — versão de shell, disponibilidade de comandos, permissões de filesystem e comportamento de atomicidade.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Assumir que o ambiente suporta uma operação e descobrir que não no meio do build é custoso. Platform tests identificam incompatibilidades antes que se tornem bugs difíceis de reproduzir.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Platform tests, capability detection, pré-condições de ambiente, compatibilidade de shell.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">📁</span>
-            <div><span class="font-medium">Agrupamento por arquivo e tipo</span><span class="text-neutral-500 text-sm ml-2">— organizando achados de múltiplas rodadas</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">💨</span>
+            <div><span class="font-medium">Smoke tests</span><span class="text-neutral-500 text-sm ml-2">— o mínimo que confirma que a camada funciona</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A lógica de organização do relatório final que agrupa findings por arquivo modificado e por tipo (segurança, qualidade, performance), facilitando a triagem por desenvolvedor.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Findings em ordem cronológica de análise são difíceis de triagem. Agrupamento por arquivo permite ao desenvolvedor abrir um arquivo e resolver todos os problemas de uma vez.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Finding grouping, por arquivo, por tipo, merge sort de findings, estrutura de triagem.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O conjunto mínimo de testes que confirma que a camada entregue não está obviamente quebrada — sem cobrir edge cases, apenas o happy path principal.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Smoke tests são rápidos de escrever e executar — e eliminam os erros mais grosseiros antes que você avance. São o gate mínimo entre prompts, não o gate completo.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Smoke test vs. teste completo, happy path, gate mínimo, velocidade de verificação.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">💾</span>
-            <div><span class="font-medium">O relatório como artefato persistente</span><span class="text-neutral-500 text-sm ml-2">— salvando em .claudex/reviews/PR-NNN.md</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🎭</span>
+            <div><span class="font-medium">E2E sintético</span><span class="text-neutral-500 text-sm ml-2">— simulando o fluxo real sem dependências externas</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A convenção de salvar cada relatório em <code>.claudex/reviews/PR-NNN.md</code> com nomenclatura baseada no número do PR, criando um histórico auditável de revisões.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Relatórios persistidos permitem comparar revisões do mesmo PR ao longo do tempo (após novas iterações) e servem como documentação de decisões de engenharia.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Artefato persistente, naming convention, histórico de revisões, documentação de decisão.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Testes end-to-end que simulam o fluxo real do sistema usando fixtures e stubs controlados — sem depender do serviço externo real para verificação.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E2E com dependências reais são lentos, frágeis e custosos. E2E sintético tem a cobertura do fluxo completo com a velocidade e determinismo dos testes unitários.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">E2E sintético, fixture e stub, simulação de dependências, cobertura de fluxo, determinismo.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">🤖</span>
-            <div><span class="font-medium">Integração com GitHub</span><span class="text-neutral-500 text-sm ml-2">— comentários automáticos via gh pr comment</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">📊</span>
+            <div><span class="font-medium">O que fazer quando um teste falha no meio da sequência</span><span class="text-neutral-500 text-sm ml-2">— diagnóstico sistemático</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O passo final que posta o relatório como comentário no PR via <code>gh pr comment --body-file</code>, tornando os findings visíveis diretamente na interface do GitHub.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Findings que ficam só em arquivo local têm impacto zero. A integração com GitHub coloca os findings onde o desenvolvedor já está — na thread do PR.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">gh pr comment, body-file, API do GitHub, visibilidade de findings, notificação automática.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O protocolo de diagnóstico quando um teste falha no prompt N: identificar se a falha é da camada N ou de uma camada anterior, e como replicar a falha em isolamento para corrigir.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem protocolo sistemático, a resposta a uma falha é reescrever tudo. Com protocolo, cada falha tem um procedimento de diagnóstico que preserva o trabalho verificado.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Diagnóstico de falha em sequência, bisect de camada, replicação em isolamento, preservação de trabalho verificado.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-            <span class="text-lg">📈</span>
-            <div><span class="font-medium">Métricas de revisão</span><span class="text-neutral-500 text-sm ml-2">— linhas analisadas, achados por rodada, cobertura de diff</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔄</span>
+            <div><span class="font-medium">Regressão</span><span class="text-neutral-500 text-sm ml-2">— como garantir que o prompt 7 não quebrou o prompt 3</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As métricas incluídas no relatório: total de linhas no diff, número de findings por rodada e por severidade, percentual de arquivos com ao menos um finding.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Métricas permitem comparar qualidade de revisão entre PRs, identificar se o número de rodadas está sendo suficiente e calibrar MAX_ROUNDS para o repositório.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Revisão métricas, diff coverage, finding density, calibração de configuração.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A prática de re-executar os testes de camadas anteriores após cada novo prompt — garantindo que a nova camada não quebrou comportamentos já verificados.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O modelo pode resolver a tarefa do prompt 7 de uma forma que invalida uma suposição do prompt 3. Sem regressão, este bug só é descoberto em produção — ou nunca.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Regressão entre prompts, suite de não-regressão, suposições implícitas, detecção de quebra retroativa.</p></div>
             </div>
           </div>
         </div>
@@ -678,7 +684,7 @@
         <button onclick="openModal('modal-3-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
           Ver em Modal
         </button>
-        <a href="modulo-3-5.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+        <a href="modulo-3-5.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors">
           Ver Completo
         </a>
       </div>
@@ -688,94 +694,94 @@
     <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-blue-400 font-bold">3.6</span>
+          <span class="text-amber-400 font-bold">3.6</span>
           <span class="text-xs text-neutral-500">~50 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">🏭 Produção e Próximos Passos</h3>
-        <p class="text-neutral-400 text-sm">Safety pass, rate limiting, configuração por repositório e o que separa hobby de produção.</p>
+        <h3 class="text-2xl font-bold mb-2">🚀 Do Zero ao SPEC — Seu Próximo Projeto</h3>
+        <p class="text-neutral-400 text-sm">Exercício guiado completo: do projeto escolhido ao SPEC escrito, sequência de prompts definida e checklist de pré-build preenchido.</p>
       </div>
       <div class="divide-y divide-dark-600">
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">🔒</span>
-            <div><span class="font-medium">O safety pass do plugin de revisão</span><span class="text-neutral-500 text-sm ml-2">— as 6 primitivas no novo contexto</span></div>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🎯</span>
+            <div><span class="font-medium">Escolhendo o projeto certo</span><span class="text-neutral-500 text-sm ml-2">— critérios para um bom primeiro plugin</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A aplicação das 6 primitivas de segurança da Trilha 2 ao novo contexto: fail-open, cleanup garantido, estado atômico, idempotência de criação de worktree, timeout de revisão e limpeza de artefatos temporários.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">As primitivas são as mesmas, mas seus pontos de aplicação mudaram. Identificar onde aplicar cada uma no novo sistema é o exercício de maturidade de engenharia desta trilha.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Safety primitives, aplicação contextual, mapeamento de garantias, auditoria de segurança.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Os critérios que tornam um projeto adequado para aplicar o método pela primeira vez: escopo delimitado, comportamento verificável, um único ponto de integração e ausência de dependências externas complexas.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Aplicar o método pela primeira vez em um projeto excessivamente complexo mistura a curva de aprendizado do método com a complexidade do domínio — dificultando separar o que é dificuldade do método e o que é dificuldade do problema.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Critérios de projeto adequado, escopo delimitado, verificabilidade, ponto único de integração, complexidade gerenciável.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📋</span>
+            <div><span class="font-medium">Escrevendo o SPEC do seu projeto</span><span class="text-neutral-500 text-sm ml-2">— exercício guiado (30 min)</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">Um exercício prático de 30 minutos onde você preenche o template de SPEC para o seu projeto — respondendo as três perguntas fundamentais e declarando os invariantes de segurança.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Conhecer o template é necessário mas não suficiente. Preencher o template para o seu projeto específico é quando você descobre onde as perguntas são difíceis — e onde ainda não tem clareza suficiente.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Exercício guiado, template preenchido, dificuldades reveladas, clareza de requisitos, SPEC como ferramenta de descoberta.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔢</span>
+            <div><span class="font-medium">Quebrando em prompts</span><span class="text-neutral-500 text-sm ml-2">— do SPEC ao sequenciamento incremental</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O processo de transformar o SPEC em uma sequência de 4-8 prompts — mapeando cada seção do SPEC para uma ou mais camadas, e cada camada para um prompt atômico com critério de aceitação.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O SPEC diz o quê construir. A sequência de prompts diz em qual ordem e como verificar. Transformar SPEC em sequência é a habilidade central do método — e a mais difícil de dominar sem prática.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Mapeamento SPEC para prompts, sequência incremental, granularidade de camadas, critério de aceitação por prompt.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">⚡</span>
+            <div><span class="font-medium">Identificando as primitivas de segurança do seu projeto</span><span class="text-neutral-500 text-sm ml-2">— análise de risco</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A análise de quais das seis primitivas de segurança são relevantes para o seu projeto específico — e em qual camada da sequência cada uma deve ser adicionada.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Nem todo projeto precisa das seis primitivas com a mesma intensidade. Identificar as primitivas relevantes evita over-engineering e garante que as críticas não sejam esquecidas.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Análise de primitivas relevantes, risk assessment, primitivas críticas vs. opcionais, posicionamento na sequência.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
             <span class="text-lg">🧪</span>
-            <div><span class="font-medium">Testando com PRs reais</span><span class="text-neutral-500 text-sm ml-2">— e2e sintético com um PR de teste no repo</span></div>
+            <div><span class="font-medium">Definindo as verificações entre prompts</span><span class="text-neutral-500 text-sm ml-2">— gates de aceitação</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A estratégia de teste end-to-end usando um PR de teste sintético com issues intencionais: um bug, uma vulnerabilidade de segurança e um problema de performance — para validar que cada persona encontra o que deveria.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Testar com PRs reais de produção é arriscado. Um PR de teste sintético com issues conhecidas permite validar a cobertura das personas de forma determinística.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Teste E2E, PR sintético, golden path testing, validação de cobertura de personas.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O exercício de definir, para cada prompt da sua sequência, os testes concretos que confirmam a aceitação — antes de executar o prompt, para que os critérios não sejam ajustados para encobrir falhas.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Critérios de aceitação definidos depois da entrega tendem a se ajustar ao que foi entregue. Definir antes força clareza sobre o que realmente é necessário — e detecta requisitos ambíguos antes que virem bugs.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Critérios de aceitação antecipados, testes concretos, gates de avanço, requisitos explícitos.</p></div>
             </div>
           </div>
         </div>
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">💰</span>
-            <div><span class="font-medium">Rate limiting e custo</span><span class="text-neutral-500 text-sm ml-2">— controlando chamadas ao Claude, estimativa por PR</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O modelo de custo do plugin: estimativa de tokens por rodada baseada no tamanho do diff, custo por PR com 3 rodadas, e configurações para controlar o gasto em repositórios de alto volume.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um plugin sem controle de custo pode gerar faturas inesperadas em repos com muitos PRs. Estimativa e limites de custo são features de produção, não luxos.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Token budget, custo por rodada, MAX_TOKENS por chamada, throttling de revisões, alertas de custo.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">⚙️</span>
-            <div><span class="font-medium">Configuração por repositório</span><span class="text-neutral-500 text-sm ml-2">— .claude/review-config.yaml com thresholds e personas</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">O arquivo de configuração por repositório que define MAX_ROUNDS, personas ativas, threshold de severidade para bloquear merge e padrões de arquivos a ignorar na análise.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cada repositório tem perfil de risco diferente. Um repo de serviço financeiro precisa de Security como primeira persona; um repo de frontend pode priorizar Reviewer.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">review-config.yaml, configuração por repo, override de padrões, persona order, severity threshold.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">🏭</span>
-            <div><span class="font-medium">O que separa hobby de produção</span><span class="text-neutral-500 text-sm ml-2">— observabilidade, rollback, alertas</span></div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As três dimensões que elevam um script funcional a produção: observabilidade (logs estruturados, métricas de revisão), rollback (desfazer comentário postado) e alertas (falha silenciosa detectada).</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um sistema que funciona 95% do tempo e falha silenciosamente nos outros 5% é mais perigoso que um sistema que não existe. Produção exige detectabilidade de falha.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Observabilidade, logs estruturados, rollback de comentário, alertas de falha silenciosa.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
             <span class="text-lg">🚀</span>
-            <div><span class="font-medium">Próximos passos</span><span class="text-neutral-500 text-sm ml-2">— CI, multi-model e auto-apply de fixes</span></div>
+            <div><span class="font-medium">Checklist de pré-build</span><span class="text-neutral-500 text-sm ml-2">— o que confirmar antes de enviar o primeiro prompt</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div><span class="text-blue-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">As três extensões naturais do sistema: integração com CI/CD (rodar na abertura de PR), revisão multi-model (usar modelos diferentes por persona) e auto-apply de fixes para issues LOW/INFO.</p></div>
-              <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O sistema atual é manual (iniciado pelo desenvolvedor). As extensões tornam-no proativo e totalmente integrado ao workflow de engenharia da empresa.</p></div>
-              <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">CI integration, GitHub Actions, multi-model review, auto-fix, workflow proativo.</p></div>
+              <div><span class="text-amber-400 font-semibold">O que é:</span><p class="text-neutral-300 text-sm">A lista de verificação final antes de iniciar o build: SPEC completo, sequência definida, primitivas de segurança mapeadas, critérios de aceitação escritos e ambiente de teste preparado.</p></div>
+              <div><span class="text-amber-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O checklist de pré-build é o que separa um build planejado de uma série de tentativas. Confirmar cada item antes do primeiro prompt reduz drasticamente a probabilidade de reescritas completas.</p></div>
+              <div><span class="text-amber-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Checklist de pré-build, prontidão para build, ambiente de teste, SPEC completo, sequência verificada.</p></div>
             </div>
           </div>
         </div>
@@ -784,109 +790,104 @@
         <button onclick="openModal('modal-3-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
           Ver em Modal
         </button>
-        <a href="modulo-3-6.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+        <a href="modulo-3-6.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors">
           Ver Completo
         </a>
       </div>
     </div>
 
-    <!-- NAVEGAÇÃO ENTRE TRILHAS -->
+    <!-- NAVEGACAO -->
     <div class="flex flex-col sm:flex-row gap-4 mt-12">
       <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
         ← Trilha 2: Construindo
       </a>
-      <div class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-500 rounded-lg font-semibold cursor-default opacity-50">
-        Trilha 4: Em breve →
-      </div>
+      <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">
+        Trilha 4: Avançado →
+      </a>
     </div>
 
   </main>
 
-  <!-- MODALS -->
-  <div id="modal-3-1" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- MODAIS -->
+  <div id="modal-3-1" class="modal fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
       <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
         <div class="flex items-center space-x-3">
-          <span class="text-blue-400 font-bold">3.1</span>
-          <span class="font-semibold">O Projeto: Revisor de PRs com Claude Code</span>
+          <span class="text-amber-400 font-bold">3.1</span>
+          <span class="font-semibold">A Lógica do SPEC Primeiro</span>
         </div>
         <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
       <iframe src="modulo-3-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
-
-  <div id="modal-3-2" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div id="modal-3-2" class="modal fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
       <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
         <div class="flex items-center space-x-3">
-          <span class="text-blue-400 font-bold">3.2</span>
-          <span class="font-semibold">Isolamento de Branch com Git Worktree</span>
+          <span class="text-amber-400 font-bold">3.2</span>
+          <span class="font-semibold">A Sequência Obrigatória</span>
         </div>
         <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
       <iframe src="modulo-3-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
-
-  <div id="modal-3-3" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div id="modal-3-3" class="modal fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
       <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
         <div class="flex items-center space-x-3">
-          <span class="text-blue-400 font-bold">3.3</span>
-          <span class="font-semibold">O Loop de Revisão</span>
+          <span class="text-amber-400 font-bold">3.3</span>
+          <span class="font-semibold">Fail-Open e os Padrões de Segurança</span>
         </div>
         <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
       <iframe src="modulo-3-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
-
-  <div id="modal-3-4" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div id="modal-3-4" class="modal fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
       <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
         <div class="flex items-center space-x-3">
-          <span class="text-blue-400 font-bold">3.4</span>
-          <span class="font-semibold">Personas de Revisão Multi-perspectiva</span>
+          <span class="text-amber-400 font-bold">3.4</span>
+          <span class="font-semibold">Quebrar em Prompts Incrementais</span>
         </div>
         <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
       <iframe src="modulo-3-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
-
-  <div id="modal-3-5" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div id="modal-3-5" class="modal fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
       <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
         <div class="flex items-center space-x-3">
-          <span class="text-blue-400 font-bold">3.5</span>
-          <span class="font-semibold">Relatório de Revisão</span>
+          <span class="text-amber-400 font-bold">3.5</span>
+          <span class="font-semibold">Testando Camada por Camada</span>
         </div>
         <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
       <iframe src="modulo-3-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
-
-  <div id="modal-3-6" class="modal fixed inset-0 z-50 items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div id="modal-3-6" class="modal fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
       <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
         <div class="flex items-center space-x-3">
-          <span class="text-blue-400 font-bold">3.6</span>
-          <span class="font-semibold">Produção e Próximos Passos</span>
+          <span class="text-amber-400 font-bold">3.6</span>
+          <span class="font-semibold">Do Zero ao SPEC — Seu Próximo Projeto</span>
         </div>
         <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
       <iframe src="modulo-3-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-dark-600 py-8 mt-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>Engenharia Claude Code — Trilha 3: Avançado · 2026</p>
-    </div>
-  </footer>
 
   <script>
     function toggleTopic(button) {
@@ -933,5 +934,6 @@
       localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     });
   </script>
+
 </body>
 </html>

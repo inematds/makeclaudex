@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4.3 — Prompt 02: A Máquina de Estados | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 4</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 4.3</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">MÓDULO 4.3</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Prompt 02 — <span class="text-blue-400">A Máquina de Estados</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">50</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🔨</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Build</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O que o Prompt 02 Entrega</h2>
+          <p class="text-neutral-400 text-sm mt-1">Estado YAML persistente com primitivas de acesso seguro</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Prompt 02 constrói a <strong class="text-blue-400">base de estado</strong> do revisor: o arquivo YAML que persiste entre turnos do Claude Code, os helpers para ler/escrever com segurança e o mecanismo de lockfile. Sem isso, o hook do Prompt 03 não tem onde guardar informação.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Deliverables do Prompt 02</span>
+        </div>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">1.</span><span><code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">state/review.yaml</code> com schema completo e campos tipados</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">2.</span><span><code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">state/state-helpers.sh</code> com read_state, write_state_atomic, cas_state</span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">3.</span><span>Mecanismo de lockfile via <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">flock -n state/review.lock</code></span></div>
+          <div class="flex gap-3"><span class="text-blue-400 font-mono font-bold">4.</span><span>Testes unitários dos helpers: read/write/CAS/lock em isolamento</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 — O Prompt Real -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Prompt 02 Completo</h2>
+          <p class="text-neutral-400 text-sm mt-1">Cole este texto no Claude Code com o SPEC.md em contexto</p>
+        </div>
+      </div>
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Prompt 02 — Cole no Claude Code</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">02_state_machine.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Read SPEC.md — use the schema defined there as source of truth.
+
+You are building Prompt 02: the state persistence layer.
+Do NOT modify any hook logic yet.
+
+**Deliver in this prompt:**
+
+1. `state/review.yaml` — initial template (empty review):
+   pr_number: null
+   worktree_path: null
+   status: null            # SETUP|REVIEWING|SUMMARIZING|DONE
+   round: 0
+   max_rounds: 3
+   persona: null           # Author|Reviewer|Security
+   findings: []
+   started_at: null
+   version: 0              # CAS version — increment on every write
+
+2. `state/state-helpers.sh` — source this in hooks and scripts:
+
+   a) `read_state_field &lt;field&gt;` — reads a field from review.yaml using
+      `grep "^field:" state/review.yaml | awk '{print $2}'`.
+      Returns empty string if field missing or file absent.
+
+   b) `write_state_atomic &lt;yaml_content&gt;` — writes content to
+      state/review.yaml.tmp then renames to state/review.yaml.
+      Creates state/ dir if absent.
+
+   c) `cas_state &lt;expected_version&gt; &lt;new_yaml_content&gt;` — reads current
+      version field. If it matches expected_version, calls
+      write_state_atomic. If it doesn't match: prints CAS conflict to
+      stderr and returns exit 1. Caller must handle.
+
+   d) `acquire_lock` — runs `flock -n state/review.lock -c 'echo locked'`
+      to test non-blocking. If another process holds the lock: prints
+      error to stderr, returns exit 1.
+
+   e) `release_lock` — removes state/review.lock. Idempotent.
+
+3. Unit tests at `tests/test-state-helpers.sh`:
+   - Write state, read it back — fields must match
+   - CAS success: correct version → write succeeds
+   - CAS conflict: wrong version → write fails, exit 1
+   - Lock test: acquire → second acquire fails → release → acquire succeeds
+
+**Constraints:**
+- state-helpers.sh must be sourced, not executed directly
+- write_state_atomic must use tmp + rename (never write directly)
+- cas_state must never block — if version mismatch, fail immediately
+- All helpers fail-open: errors log to stderr, never crash the caller
+
+**Verification:**
+- `bash tests/test-state-helpers.sh` runs all 4 tests and reports PASS/FAIL
+- `source state/state-helpers.sh; write_state_atomic "pr_number: 42
+version: 0"; read_state_field pr_number` prints "42"
+- CAS test: set version to 0, call cas_state 99 ... — must fail
+
+Tell me the test results (all 4 should PASS).</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Schema do Estado</h2>
+          <p class="text-neutral-400 text-sm mt-1">PR number, worktree path, round, status, findings — cada campo com propósito</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O schema não é apenas estrutura — é uma decisão de design. Cada campo responde uma pergunta específica que o hook vai precisar responder durante o loop.
+      </p>
+      <div class="bg-dark-700 border border-dark-600 rounded-xl overflow-hidden mb-5">
+        <div class="grid grid-cols-3 gap-0 text-xs font-semibold uppercase tracking-wide text-neutral-500 bg-dark-600 px-4 py-2">
+          <span>Campo</span>
+          <span>Tipo</span>
+          <span>Pergunta que responde</span>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">pr_number</span>
+            <span class="text-neutral-400">int</span>
+            <span class="text-neutral-400 text-xs">Qual PR estou revisando?</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">worktree_path</span>
+            <span class="text-neutral-400">string</span>
+            <span class="text-neutral-400 text-xs">Onde está o código do PR?</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">status</span>
+            <span class="text-neutral-400">enum</span>
+            <span class="text-neutral-400 text-xs">Em qual fase estou?</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">round</span>
+            <span class="text-neutral-400">int</span>
+            <span class="text-neutral-400 text-xs">Qual rodada de revisão?</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">persona</span>
+            <span class="text-neutral-400">string</span>
+            <span class="text-neutral-400 text-xs">Qual perspectiva usar nesta rodada?</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">findings</span>
+            <span class="text-neutral-400">list</span>
+            <span class="text-neutral-400 text-xs">O que foi encontrado até agora?</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">version</span>
+            <span class="text-neutral-400">int</span>
+            <span class="text-neutral-400 text-xs">Alguém modificou o estado desde que eu li?</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Por que YAML e não JSON</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          YAML é legível por humanos sem ferramenta especial. Você pode abrir state/review.yaml num editor e entender exatamente o estado atual. JSON seria mais estrito, mas menos debugável quando algo dá errado às 23h com um PR urgente.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Escrita Atômica e CAS Aplicados ao Revisor</h2>
+          <p class="text-neutral-400 text-sm mt-1">Estado que nunca corrompe, mesmo com interrupção</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Claude Code pode ser interrompido a qualquer momento — Ctrl+C, timeout, crash. Sem primitivas de segurança, a interrupção durante uma escrita deixa o review.yaml corrompido e ilegível.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">⚛️</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Escrita Atômica via rename(2)</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># ERRADO: escrita direta — se interrompida, o arquivo fica corrompido
+echo "$new_content" > state/review.yaml
+
+# CORRETO: escrever em tmp e renomear atomicamente
+echo "$new_content" > state/review.yaml.tmp
+mv state/review.yaml.tmp state/review.yaml
+# mv/rename(2) é atômico no mesmo filesystem — não pode ser interrompido</code></pre>
+      </div>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔄</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Compare-and-Swap (CAS)</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># CAS: só escreve se a versão que você leu ainda é a atual
+cas_state() {
+  local expected_version=$1
+  local new_content=$2
+
+  local current_version=$(read_state_field version)
+
+  if [ "$current_version" != "$expected_version" ]; then
+    echo "[pr-reviewer] CAS conflict: expected v$expected_version, got v$current_version" >&2
+    return 1  # falha — o chamador deve relêr o estado e tentar novamente
+  fi
+
+  # Versão confere — pode escrever (atomicamente)
+  write_state_atomic "$new_content"
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Lockfile: Exclusão Mútua</h2>
+          <p class="text-neutral-400 text-sm mt-1">Garantindo que apenas um revisor roda por vez no mesmo repositório</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Se você abrir duas janelas do Claude Code no mesmo repositório, dois revisores podem ser disparados simultaneamente. Eles vão corromper o state/review.yaml um do outro. O lockfile previne isso.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🔐</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">flock não-bloqueante</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># -n = non-blocking: falha imediatamente se o lock não está disponível
+# -e = cria o lockfile se não existe
+exec 9>state/review.lock
+if ! flock -n 9; then
+  echo "[pr-reviewer] Another reviewer is already running. Aborting." >&2
+  exit 0  # fail-open: não bloqueia o usuário
+fi
+# Lock adquirido — o processo retém o lock até fechar fd 9 (EXIT trap)
+trap 'flock -u 9; rm -f state/review.lock' EXIT</code></pre>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Stale Lock (lock fantasma)</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Se o processo morreu sem liberar o lock, o arquivo state/review.lock existe mas não há processo segurando. O flock detecta isso automaticamente — um arquivo de lock sem processo = lock disponível.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Lock vs CAS</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">O lockfile garante exclusão mútua entre processos. O CAS garante consistência dentro de um processo contra interrupções. Ambos são necessários — são complementares, não alternativos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Verificação: Testar CAS e Atomicidade em Isolamento</h2>
+          <p class="text-neutral-400 text-sm mt-1">Antes de avançar para o Prompt 03</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        CAS e atomicidade são difíceis de debugar quando estão integrados com o hook completo. Testar agora, com o sistema simples, é a estratégia correta.
+      </p>
+      <div class="space-y-3 mb-6">
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">1</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Teste de read/write</p>
+            <p class="text-neutral-400 text-xs mt-1">Escrever estado com write_state_atomic, ler com read_state_field, confirmar que todos os campos batem.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">2</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Teste de CAS bem-sucedido</p>
+            <p class="text-neutral-400 text-xs mt-1">Estado com version=0, chamar cas_state 0 com novo conteúdo — deve escrever. Verificar version=1 após.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">3</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Teste de CAS com conflito</p>
+            <p class="text-neutral-400 text-xs mt-1">Estado com version=0, chamar cas_state 5 — deve falhar com exit 1. Estado original deve permanecer inalterado.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">4</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Teste de lockfile</p>
+            <p class="text-neutral-400 text-xs mt-1">Adquirir lock em subshell, tentar adquirir em outra subshell — deve falhar. Liberar primeiro lock, segunda tentativa deve passar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Todos os 4 testes devem passar antes de continuar</span>
+        </div>
+        <p class="text-neutral-300 text-sm">O arquivo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">tests/test-state-helpers.sh</code> deve reportar 4/4 PASS. Se qualquer teste falha, o Prompt 03 vai construir sobre uma base quebrada.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 4.3</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Estado YAML</strong><span class="text-neutral-400"> — schema com 8 campos tipados, cada um com propósito explícito</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Escrita atômica</strong><span class="text-neutral-400"> — tmp + rename, impossível de corromper por interrupção</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">CAS implementado</strong><span class="text-neutral-400"> — conflitos detectados e reportados sem corromper o estado</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Lockfile non-blocking</strong><span class="text-neutral-400"> — exclusão mútua sem risco de deadlock</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">4.4 — Prompt 03: O Stop Hook e o Loop — o engine real da máquina de estados</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 4.2: Scaffold</a>
+          <a href="modulo-4-4.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo: Stop Hook →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') { darkIcon.classList.remove('hidden'); html.classList.remove('dark'); }
+    else { lightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      darkIcon.classList.toggle('hidden');
+      lightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

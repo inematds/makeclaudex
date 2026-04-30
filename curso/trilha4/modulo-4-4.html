@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4.4 — Prompt 03: O Stop Hook e o Loop | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 4</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 4.4</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">MÓDULO 4.4</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Prompt 03 — <span class="text-blue-400">O Stop Hook e o Loop</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">55</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🔨</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Build</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O que o Prompt 03 Entrega</h2>
+          <p class="text-neutral-400 text-sm mt-1">O Stop Hook que substitui o stub pelo engine real do loop</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Prompt 03 é o maior salto do projeto: o stub incondicional vira o <strong class="text-blue-400">engine</strong> que controla o ciclo de vida inteiro. A máquina de estados construída no Prompt 02 ganha um cérebro. O hook passa a ler o estado e tomar decisões BLOCK/APPROVE por fase.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">BLOCK como canal de comunicação</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          O Stop Hook não é apenas um porteiro. Quando retorna BLOCK, entrega um <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">reason</code> que o Claude Code mostra ao Claude como instrução para o próximo turno. É um canal unidirecional: hook → Claude.
+        </p>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code># APPROVE: turno termina normalmente
+{"decision": "approve"}
+
+# BLOCK: Claude recebe instrução para agir antes de encerrar
+{"decision": "block", "reason": "### PR Reviewer — Round 1 of 3\n\nRun the reviewer script:\n\`\`\`bash\nbash runners/PR-123-round-1.sh\n\`\`\`\n\nThen read findings from state/review.yaml and advance to round 2."}</code></pre>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 — O Prompt Real -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Prompt 03 Completo</h2>
+          <p class="text-neutral-400 text-sm mt-1">Cole este texto no Claude Code com o SPEC.md em contexto</p>
+        </div>
+      </div>
+      <div class="mb-5">
+        <p class="text-neutral-400 text-sm font-semibold uppercase tracking-wide mb-3">Prompt 03 — Cole no Claude Code</p>
+        <div class="bg-dark-900 border border-dark-600 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-2 bg-dark-700 border-b border-dark-600">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-neutral-500 text-xs ml-2">03_stop_hook_and_loop.md</span>
+          </div>
+          <pre class="p-5 text-sm text-neutral-300 leading-relaxed overflow-x-auto"><code>Read SPEC.md — the lifecycle table is your implementation guide.
+
+You are building Prompt 03: replace the fail-open stub in
+`hooks/stop-hook.sh` with the real lifecycle engine.
+Source `state/state-helpers.sh` at the top.
+
+**Build the lifecycle engine:**
+
+1. **ERR trap first** — unconditional fail-open on line 1 of active code:
+   `trap 'echo "[pr-reviewer] ERR line $LINENO" >&2; printf '"'"'{"decision":"approve"}'"'"'\n'; exit 0' ERR`
+
+2. **Source state-helpers** (fail-open if missing):
+   `source state/state-helpers.sh 2>/dev/null || { printf '{"decision":"approve"}\n'; exit 0; }`
+
+3. **Check if a review is active** — read status field.
+   If null/empty: approve silently.
+
+4. **Case statement by status:**
+
+   SETUP:
+   - Run scripts/setup-worktree.sh $pr_number
+   - CAS: status → REVIEWING, round → 1, persona → Author, version++
+   - Write runner script to runners/PR-$pr_number-round-1.sh
+   - BLOCK with: "Run `bash runners/PR-$pr_number-round-1.sh` then
+     return to continue the review."
+
+   REVIEWING:
+   - If round &gt;= max_rounds: CAS status → SUMMARIZING, persona → null
+     BLOCK with: "All rounds complete. Consolidate findings from
+     state/review.yaml and generate the review report."
+   - Else: increment round. Set persona based on round
+     (1=Author, 2=Reviewer, 3=Security).
+     Write next runner script.
+     BLOCK with runner instructions.
+
+   SUMMARIZING:
+   - CAS status → DONE
+   - APPROVE with no reason (silent)
+
+   DONE:
+   - Run scripts/cleanup-worktree.sh $pr_number
+   - APPROVE
+
+   default:
+   - Log unknown status, approve.
+
+5. **write_runner helper** — writes self-contained bash to runners/:
+   - Gets PR diff: `cd $worktree_path && git diff origin/main...HEAD`
+   - Gets PR metadata: `gh pr view $pr_number --json title,body`
+   - Writes prompt to runners/PR-NNN-round-N.prompt (heredoc, single
+     quotes on delimiter to prevent expansion)
+   - Runner invokes: `claude --print < runners/PR-NNN-round-N.prompt`
+   - Runner output appended to findings in state/review.yaml
+
+**Constraints:**
+- ERR trap must be the FIRST active line
+- BLOCK reason must be valid Markdown (Claude reads it as instructions)
+- JSON escape the reason via python3 or sed fallback
+- Never block the user — every code path either returns approve or block
+
+**Smoke test (provide the commands):**
+Create a test git repo with a PR branch and run:
+- `echo '{"status":"SETUP","pr_number":1,"version":0}' |
+  [write to state/review.yaml]`
+- Execute hook manually: `bash hooks/stop-hook.sh`
+- Verify: output is BLOCK JSON, state is now REVIEWING, runner written
+- Set state to DONE, re-run hook: output must be APPROVE
+
+Report the smoke test results.</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">A Máquina de Estados</h2>
+          <p class="text-neutral-400 text-sm mt-1">SETUP → REVIEWING → SUMMARIZING → DONE — transições explícitas</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Cada estado tem uma única condição de transição. Não há transições implícitas ou "se não sei o que fazer, vou tentar tudo". Isso é o que torna o loop debugável.
+      </p>
+      <div class="bg-dark-700 border border-dark-600 rounded-xl overflow-hidden mb-5">
+        <div class="grid grid-cols-3 gap-0 text-xs font-semibold uppercase tracking-wide text-neutral-500 bg-dark-600 px-4 py-2">
+          <span>Estado</span>
+          <span>Quem Age</span>
+          <span>Hook Faz</span>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">SETUP</span>
+            <span class="text-neutral-300">Plugin cria worktree</span>
+            <span class="text-neutral-400 text-xs">CAS → REVIEWING, escreve runner round-1, BLOCK com instruções</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">REVIEWING</span>
+            <span class="text-neutral-300">Claude roda runner e lê diff</span>
+            <span class="text-neutral-400 text-xs">Se round &lt; max: incrementa, próximo runner, BLOCK. Se round ≥ max: CAS → SUMMARIZING</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">SUMMARIZING</span>
+            <span class="text-neutral-300">Claude consolida findings</span>
+            <span class="text-neutral-400 text-xs">CAS → DONE, APPROVE silencioso</span>
+          </div>
+          <div class="grid grid-cols-3 gap-0 px-4 py-3 text-sm">
+            <span class="text-blue-400 font-mono">DONE</span>
+            <span class="text-neutral-300">Terminal</span>
+            <span class="text-neutral-400 text-xs">Cleanup worktree, APPROVE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Runner Script</h2>
+          <p class="text-neutral-400 text-sm mt-1">Como o hook passa o diff e contexto do PR ao Claude</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O runner script é o ponto de integração entre o hook e o modelo. Ele monta o contexto completo — diff do PR, metadados do GitHub, instrução da persona — e invoca <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print</code> com esse contexto.
+      </p>
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">🏃</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Estrutura do Runner</span>
+        </div>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 overflow-x-auto"><code>#!/usr/bin/env bash
+# runners/PR-123-round-2.sh — Reviewer persona
+set -euo pipefail
+trap 'exit 0' ERR
+
+PR_NUMBER=123
+WORKTREE_PATH=/tmp/pr-review-123
+PERSONA="Reviewer"
+
+# 1. Obter diff do PR no worktree isolado
+PR_DIFF=$(cd "$WORKTREE_PATH" && git diff origin/main...HEAD 2>/dev/null || echo "")
+
+# 2. Obter metadados do PR
+PR_META=$(gh pr view $PR_NUMBER --json title,body,files 2>/dev/null || echo "{}")
+
+# 3. Montar prompt e invocar Claude
+claude --print &lt;&lt;'PROMPTEOF'
+You are reviewing PR #123 as a **$PERSONA**.
+
+[persona instructions here...]
+
+## PR Diff
+[diff content]
+
+## PR Metadata
+[gh pr view output]
+
+Output findings as YAML list:
+findings:
+  - file: path/to/file
+    line: 42
+    severity: HIGH
+    description: ...
+    suggestion: ...
+PROMPTEOF</code></pre>
+      </div>
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Por que separar runner do hook</span>
+        </div>
+        <p class="text-neutral-300 text-sm">Você pode testar o runner manualmente sem disparar o hook completo. Se a revisão produz output estranho, você sabe que o problema está no runner — não no hook, no estado ou no worktree.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Obtendo Contexto do PR</h2>
+          <p class="text-neutral-400 text-sm mt-1">gh pr view e git diff — o contexto que torna a revisão significativa</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Uma revisão genérica ("este código parece correto") é inútil. Uma revisão com contexto completo ("na linha 47 de auth.go, este token é enviado sem HTTPS_ONLY verificado, o que expõe credenciais") é acionável.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <p class="text-blue-400 font-semibold text-sm mb-3">gh pr view — Metadados</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-xs text-neutral-300 overflow-x-auto"><code>gh pr view $PR_NUMBER \
+  --json title,body,files,author \
+  -q '{
+    title: .title,
+    description: .body,
+    files_changed: [.files[].path]
+  }'</code></pre>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <p class="text-blue-400 font-semibold text-sm mb-3">git diff — O código em si</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-xs text-neutral-300 overflow-x-auto"><code># No worktree isolado — não contamina working tree
+cd "$WORKTREE_PATH"
+git diff origin/main...HEAD \
+  -- '*.go' '*.ts' '*.py' \
+  ':!*.lock' ':!*.sum'</code></pre>
+        </div>
+      </div>
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📏</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Gerenciando Diffs Grandes</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          PRs grandes podem ter diffs de milhares de linhas. Use <code class="bg-dark-700 px-1 py-0.5 rounded">git diff --stat</code> primeiro para avaliar o tamanho. Para PRs muito grandes, filtrar por tipos de arquivo ou limitar com <code class="bg-dark-700 px-1 py-0.5 rounded">--diff-filter=AM</code> (apenas arquivos adicionados ou modificados).
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Verificação: Smoke Test com PR Sintético</h2>
+          <p class="text-neutral-400 text-sm mt-1">Antes do Prompt 04 — validar o loop sem custo de API</p>
+        </div>
+      </div>
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O loop é a parte mais complexa. Testar com PR sintético (sem usar créditos de API) valida as transições de estado. Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print</code> mockado com um script que retorna findings fixos.
+      </p>
+      <div class="space-y-3 mb-6">
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">1</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">Criar repo de teste com PR sintético</p>
+            <p class="text-neutral-400 text-xs mt-1">Repo local com uma branch de feature e um commit simples. PR aberto no GitHub para que `gh pr view` funcione.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">2</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">SETUP → REVIEWING</p>
+            <p class="text-neutral-400 text-xs mt-1">Inicializar estado com status=SETUP. Rodar hook. Verificar: output é BLOCK, estado mudou para REVIEWING, runner foi escrito em runners/.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">3</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">REVIEWING round 1 → round 2</p>
+            <p class="text-neutral-400 text-xs mt-1">Rodar hook novamente. Verificar: round incrementou de 1 para 2, persona mudou para Reviewer, novo runner gerado.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-dark-700 rounded-lg p-4">
+          <span class="text-blue-400 mt-0.5 flex-shrink-0 font-mono text-sm">4</span>
+          <div>
+            <p class="text-neutral-200 text-sm font-semibold">DONE → APPROVE</p>
+            <p class="text-neutral-400 text-xs mt-1">Forçar estado para DONE. Rodar hook. Verificar: output é {"decision":"approve"}, worktree foi removido, estado limpo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 4.4</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Stop Hook engine</strong><span class="text-neutral-400"> — case statement por estado, BLOCK com reason como instrução</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Máquina de estados</strong><span class="text-neutral-400"> — 4 estados, transições explícitas e testadas</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Runner separado do hook</strong><span class="text-neutral-400"> — testável e debugável independentemente</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Smoke test validado</strong><span class="text-neutral-400"> — loop completo testado sem gastar créditos de API</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">4.5 — Prompt 04: Personas e Relatório — as 3 perspectivas e o output estruturado</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 4.3: Estado</a>
+          <a href="modulo-4-5.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo: Personas →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') { darkIcon.classList.remove('hidden'); html.classList.remove('dark'); }
+    else { lightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      darkIcon.classList.toggle('hidden');
+      lightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
