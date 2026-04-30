@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.3 — O Loop de Revisão | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 3.3</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        MÓDULO 3.3
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      O Loop de Revisão: <span class="text-blue-400">SETUP → REVIEWING → SUMMARIZING → DONE</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">55</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⚙️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Técnico</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">A Máquina de Estados</h2>
+          <p class="text-neutral-400 text-sm mt-1">SETUP → REVIEWING → SUMMARIZING → DONE (e FAILED)</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        A máquina de estados é o esqueleto do sistema. Cada estado define o que pode acontecer e quais transições são permitidas. Estados explícitos eliminam comportamento indefinido — quando o sistema não sabe o que fazer (falha parcial, reinicialização), o estado persistido é a fonte de verdade sobre onde retomar ou o que limpar.
+      </p>
+
+      <!-- Diagrama de estados -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Diagrama de Transições</p>
+        <pre class="text-xs text-neutral-300"><code>                    ┌─────────┐
+   /review-pr NNN   │  SETUP  │  Cria worktree, busca contexto do PR
+   ────────────────▶│         │  Inicializa estado YAML
+                    └────┬────┘
+                         │ worktree criado com sucesso
+                         ▼
+                    ┌──────────┐
+     loop: round++  │REVIEWING │  Executa runner com persona da rodada
+     ◀──────────────│          │◀─────────────────┐
+     BLOCK (exit 2) └────┬─────┘                  │
+                         │ current_round == max_rounds   │
+                         ▼                         │
+                    ┌───────────┐ ainda há         │
+                    │SUMMARIZING│ findings? ───────┘
+                    │           │ (retorna para REVIEWING)
+                    └─────┬─────┘
+                          │ relatório gerado + postado
+                          ▼
+                    ┌──────┐
+                    │ DONE │  Cleanup de worktree
+                    └──────┘
+
+    Em qualquer estado → FAILED (via ERR trap)</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">SETUP</p>
+          <p class="text-neutral-400 text-xs">Cria worktree, fetch da branch, inicializa estado YAML, busca metadados do PR via gh CLI. Se falhar aqui: nenhum dano, cleanup simples.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">REVIEWING</p>
+          <p class="text-neutral-400 text-xs">Loop de rodadas. Cada rodada incrementa current_round, seleciona persona, executa análise e acumula findings. Stop Hook decide se continua ou avança.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">SUMMARIZING</p>
+          <p class="text-neutral-400 text-xs">Uma única rodada com persona de síntese. Consolida findings, gera relatório markdown, posta no GitHub. Transição para DONE após sucesso.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">FAILED</p>
+          <p class="text-neutral-400 text-xs">Estado irrecuperável via ERR trap. Tenta gerar relatório parcial com findings coletados até o momento antes do cleanup.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Stop Hook como Motor</h2>
+          <p class="text-neutral-400 text-sm mt-1">BLOCK mantém o loop, APPROVE encerra — o coração do sistema</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Stop Hook é chamado pelo Claude Code ao fim de cada turno. Ele lê o estado YAML, decide o que fazer na próxima rodada e injeta instruções para Claude. O <strong class="text-blue-400">exit code 2</strong> sinaliza BLOCK (continua), <strong class="text-blue-400">exit code 0</strong> sinaliza APPROVE (encerra o loop).
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">stop-hook.sh — lógica central de decisão</p>
+        <pre class="text-xs text-neutral-300"><code>#!/usr/bin/env bash
+
+set -euo pipefail
+
+STATE_FILE=$(find .claudex/state -name "review-PR*.yaml" \
+  -newer /tmp/sentinel 2>/dev/null | head -1)
+
+[[ -z "${STATE_FILE}" ]] && exit 0  # Nenhuma revisão ativa → APPROVE
+
+STATUS=$(yq e '.status' "${STATE_FILE}")
+CURRENT_ROUND=$(yq e '.current_round' "${STATE_FILE}")
+MAX_ROUNDS=$(yq e '.max_rounds' "${STATE_FILE}")
+
+case "${STATUS}" in
+  SETUP)
+    # Primeira chamada — inicia primeira rodada
+    update_state status "REVIEWING"
+    update_state current_round 1
+    # Injeta instrução para Claude iniciar rodada 1
+    echo "INSTRUÇÃO: Inicie a rodada 1 de revisão usando a persona Author."
+    exit 2  # BLOCK — continua
+    ;;
+
+  REVIEWING)
+    if (( CURRENT_ROUND < MAX_ROUNDS )); then
+      # Ainda há rodadas — avança para próxima
+      update_state current_round "$(( CURRENT_ROUND + 1 ))"
+      NEXT_PERSONA=$(get_persona_for_round "$(( CURRENT_ROUND + 1 ))")
+      echo "INSTRUÇÃO: Execute a rodada $(( CURRENT_ROUND + 1 )) com persona ${NEXT_PERSONA}."
+      exit 2  # BLOCK — continua
+    else
+      # Todas as rodadas concluídas — avança para sumarização
+      update_state status "SUMMARIZING"
+      echo "INSTRUÇÃO: Execute a fase SUMMARIZING. Consolide todos os findings."
+      exit 2  # BLOCK — continua
+    fi
+    ;;
+
+  SUMMARIZING)
+    # Sumarização concluída — encerra
+    update_state status "DONE"
+    exit 0  # APPROVE — loop encerrado
+    ;;
+
+  DONE|FAILED)
+    exit 0  # APPROVE — nada mais a fazer
+    ;;
+esac</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">A Mecânica do BLOCK</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Quando o Stop Hook retorna exit code 2, o Claude Code não encerra a sessão. Em vez disso, qualquer texto escrito no stdout do hook é injetado como nova instrução para Claude no próximo turno. Isso é o que permite ao hook <em>dirigir</em> o comportamento de Claude em cada rodada — a instrução injetada define qual persona usar e qual objetivo da rodada.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Passando Contexto do PR ao Claude</h2>
+          <p class="text-neutral-400 text-sm mt-1">Diff, commit messages e descrição via gh CLI</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Cada rodada de análise precisa de contexto completo do PR. O runner script monta esse contexto dinamicamente antes de invocar <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print</code>. Contexto rico melhora drasticamente a qualidade dos findings — Claude pode verificar se a implementação atende o objetivo declarado.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Construção do contexto via gh CLI</p>
+        <pre class="text-xs text-neutral-300"><code>build_pr_context() {
+  local pr_number="$1"
+
+  # Metadados do PR
+  local pr_title pr_body pr_labels
+  pr_title=$(gh pr view "${pr_number}" --json title -q '.title')
+  pr_body=$(gh pr view "${pr_number}" --json body -q '.body')
+  pr_labels=$(gh pr view "${pr_number}" --json labels -q '.labels[].name' | tr '\n' ', ')
+
+  # Diff completo do PR
+  local pr_diff
+  pr_diff=$(gh pr diff "${pr_number}")
+
+  # Histórico de commits
+  local commit_log
+  commit_log=$(gh pr view "${pr_number}" \
+    --json commits -q '.commits[] | "[\(.oid[:7])] \(.messageHeadline)"')
+
+  # Monta contexto para o prompt
+  cat <<EOF
+=== CONTEXTO DO PR #${pr_number} ===
+Título: ${pr_title}
+Labels: ${pr_labels}
+
+Descrição:
+${pr_body}
+
+Commits:
+${commit_log}
+
+Diff:
+\`\`\`diff
+${pr_diff}
+\`\`\`
+EOF
+}</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">gh pr view</p>
+          <p class="text-neutral-400 text-xs">Metadados: título, descrição, labels, reviewers, milestone. Define o "porquê" do PR.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">gh pr diff</p>
+          <p class="text-neutral-400 text-xs">O diff unificado completo de todas as mudanças. É o "o quê" do PR.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Commits</p>
+          <p class="text-neutral-400 text-xs">Histórico de raciocínio. Commits de revert ou refactor revelam incertezas do autor.</p>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Para PRs com diffs muito grandes (mais de 2000 linhas), considere truncar o diff e focar nos arquivos mais críticos. Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">gh pr diff --name-only</code> para listar os arquivos e <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">git -C "${WORKTREE}" diff origin/main -- arquivo.ts</code> para diff por arquivo.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Controlando Rodadas</h2>
+          <p class="text-neutral-400 text-sm mt-1">MAX_ROUNDS configurável e estado de rodada atual</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        MAX_ROUNDS é a garantia de terminação do sistema. Sem ele, um loop de revisão poderia rodar indefinidamente se o Stop Hook nunca atingir a condição de APPROVE. É um parâmetro de <strong class="text-blue-400">segurança de custo</strong>, não apenas de performance.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">review-config.yaml — configuração de rodadas</p>
+        <pre class="text-xs text-neutral-300"><code># .claude/review-config.yaml
+max_rounds: 3                    # Default: 3 rodadas de análise
+personas:
+  - round: 1
+    name: "Author"
+    focus: "Intenção e completude"
+  - round: 2
+    name: "Reviewer"
+    focus: "Bugs e qualidade"
+  - round: 3
+    name: "Security"
+    focus: "Vulnerabilidades e riscos"
+
+# Thresholds para integração com CI
+blocking_severity: "HIGH"        # Findings >= HIGH bloqueiam merge
+report_on_no_findings: true      # Sempre gera relatório, mesmo sem findings</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Garantia de Terminação</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O Stop Hook verifica: se <code>current_round &gt;= max_rounds</code>, força transição para SUMMARIZING independente de qualquer outra condição. Isso garante que mesmo um bug no código de transição de persona não cria um loop infinito. MAX_ROUNDS é o safety net final.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-blue-400">1</p>
+          <p class="text-sm text-neutral-300 mt-1">Rodada mínima</p>
+          <p class="text-neutral-400 text-xs mt-1">Para PRs simples ou revisão rápida</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center border-blue-500/30">
+          <p class="text-2xl font-bold text-blue-400">3</p>
+          <p class="text-sm text-neutral-300 mt-1">Padrão recomendado</p>
+          <p class="text-neutral-400 text-xs mt-1">Cobre Author, Reviewer e Security</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-blue-400">5</p>
+          <p class="text-sm text-neutral-300 mt-1">Para PRs críticos</p>
+          <p class="text-neutral-400 text-xs mt-1">Adiciona Performance e Architecture</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Runner Script</h2>
+          <p class="text-neutral-400 text-sm mt-1">Delegando análise ao Claude com contexto de worktree</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O runner script é a ponte entre o Stop Hook (orquestrador) e Claude (executor). Ele constrói o prompt completo para a rodada atual — contexto do PR + instrução de persona + findings anteriores — e invoca <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print</code> a partir do diretório do worktree para que Claude acesse o código da branch do PR.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">runner.sh — executa uma rodada de análise</p>
+        <pre class="text-xs text-neutral-300"><code>run_review_round() {
+  local round="$1"
+  local persona="$2"
+  local worktree_path="$3"
+  local pr_context="$4"
+  local previous_findings="$5"
+
+  # Monta prompt da rodada
+  local round_prompt
+  round_prompt=$(cat <<EOF
+Você está executando a RODADA ${round} de revisão de PR como ${persona}.
+
+${pr_context}
+
+Findings das rodadas anteriores (NÃO repita estes):
+${previous_findings}
+
+Instruções para esta rodada:
+$(get_persona_instructions "${persona}")
+
+Analise o código no diretório atual (branch do PR já carregada).
+Retorne findings em JSON: {"findings": [{"file": "", "line": 0, "severity": "", "type": "", "description": ""}]}
+EOF
+)
+
+  # Invoca Claude a partir do worktree — tem acesso ao código do PR
+  local output
+  output=$(cd "${worktree_path}" && \
+    claude --print "${round_prompt}" 2>/dev/null)
+
+  # Extrai findings do output JSON
+  echo "${output}" | extract_findings_json
+}</code></pre>
+      </div>
+
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-400 text-lg">⚠️</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Ponto Crítico: cd no worktree</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O <code class="bg-dark-700 px-1.5 py-0.5 rounded text-red-400">cd "${worktree_path}"</code> antes de invocar Claude não é opcional. Sem ele, Claude opera no diretório principal do repositório (sua branch de trabalho) em vez da branch do PR. Isso viola a garantia de isolamento e pode resultar em findings incorretos ou modificação da branch errada.
+        </p>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">claude --print --output-format json</code> para obter output estruturado do Claude diretamente, sem necessidade de parsear texto livre. O output JSON facilita a extração de findings e reduz erros de parsing.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Findings Incrementais</h2>
+          <p class="text-neutral-400 text-sm mt-1">Acumulando achados sem repetir análises das rodadas anteriores</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Cada rodada de análise deve adicionar <strong class="text-blue-400">valor novo</strong> ao conjunto de findings. Para garantir isso, os findings das rodadas anteriores são passados ao prompt de cada nova rodada com instrução explícita de não duplicar. O arquivo de findings é persistido em JSON para facilitar leitura e deduplicação.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">.claudex/state/findings-PR123.json — formato acumulado</p>
+        <pre class="text-xs text-neutral-300"><code>{
+  "pr_number": 123,
+  "total_findings": 6,
+  "rounds": [
+    {
+      "round": 1,
+      "persona": "Author",
+      "findings": [
+        {
+          "id": "f001",
+          "file": "src/auth/jwt.ts",
+          "line": 45,
+          "severity": "HIGH",
+          "type": "intent-gap",
+          "description": "PR descreve expiração configurável mas expiry está hardcoded em 3600s"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "persona": "Reviewer",
+      "findings": [
+        {
+          "id": "f002",
+          "file": "src/auth/jwt.ts",
+          "line": 78,
+          "severity": "MEDIUM",
+          "type": "error-handling",
+          "description": "Token inválido não retorna erro específico, dificulta debugging"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">A Instrução de Não-Duplicação</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          O prompt de cada rodada inclui a lista de findings anteriores com instrução explícita:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 text-xs text-neutral-300">
+          <em>"Os seguintes problemas já foram identificados nas rodadas anteriores. NÃO os repita. Foque em problemas que ainda não foram cobertos pela perspectiva da sua persona: [lista de findings anteriores]"</em>
+        </div>
+        <p class="text-neutral-400 text-sm mt-3">Isso maximiza o valor por token e garante que cada rodada adiciona perspectiva genuinamente nova.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 3.3
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Máquina de estados</strong><span class="text-neutral-400"> — SETUP→REVIEWING→SUMMARIZING→DONE com FAILED para erros irrecuperáveis</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Stop Hook</strong><span class="text-neutral-400"> — exit 2 (BLOCK) mantém loop, exit 0 (APPROVE) encerra; stdout injeta instrução para próxima rodada</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Contexto do PR</strong><span class="text-neutral-400"> — diff, commits e descrição via gh CLI constroem prompt rico por rodada</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">MAX_ROUNDS</strong><span class="text-neutral-400"> — garantia de terminação configurável, safety net contra loops infinitos</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Findings incrementais</strong><span class="text-neutral-400"> — JSON acumulado, instrução de não-duplicação garante valor novo por rodada</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.4 — Personas de Revisão Multi-perspectiva</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 3.2
+          </a>
+          <a href="modulo-3-4.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code — Módulo 3.3 · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

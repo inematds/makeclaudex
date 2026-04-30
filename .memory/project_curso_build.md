@@ -12,21 +12,35 @@ Curso em 3 trilhas sobre como o Claudex foi construído, usando os build_prompts
 
 ## Estado em 2026-04-29
 
-- **Trail 2 (Construindo)** — ENTREGUE: `docs/como-construimos-o-claudex.html`
-- **Trail 1 (Fundamentos)** — não iniciado
-- **Trail 3 (Avançado)** — não iniciado
+- **Trail 1 (Fundamentos)** — ENTREGUE (Emerald, 7 arquivos, ~4h30min)
+- **Trail 2 (Construindo)** — ENTREGUE (Purple, 7 arquivos, ~5h)
+- **Trail 3 (Avançado)** — ENTREGUE (Blue, 7 arquivos, ~5h)
 
-Ordem de construção decidida: Trail 2 → Trail 3 → Trail 1
+Todas as trilhas concluídas. Curso completo com 21 arquivos HTML.
 
 ## Decisões tomadas
 
 - Cor: **Purple T3** (diferencia do Teal do curso-claudex.html)
 - Prompts: incluídos em PT-BR com bloco de código + explicação
 - M6: hook de linting como projeto guiado
+- Formato: multi-página obrigatório (trilha/index.html + modulo-X-X.html separados)
 
-## Arquivo de saída atual
+## Arquivos de saída (Trail 2)
 
-`iclaudex/docs/como-construimos-o-claudex.html` — 6 módulos, 38 tópicos, ~5h
+```
+makeclaudex/curso/trilha2/
+├── index.html          — índice da trilha (cards, modal+iframe, "Ver Completo")
+├── modulo-2-1.html     — O Blueprint (7 tópicos, ~50 min)
+├── modulo-2-2.html     — O Cérebro do Loop (7 tópicos, ~60 min)
+├── modulo-2-3.html     — Acabamento e Segurança (6 tópicos, ~50 min)
+├── modulo-2-4.html     — O que Isso nos Deu (6 tópicos, ~40 min)
+├── modulo-2-5.html     — A Metodologia (6 tópicos, ~45 min)
+└── modulo-2-6.html     — Seu Próximo Projeto (6 tópicos, ~60 min)
+```
+
+Git: `github.com/inematds/makeclaudex` — commit `7e67f85`
+
+**Nota:** O arquivo `docs/como-construimos-o-claudex.html` era a tentativa anterior (single-page, formato incorreto) — está obsoleto e pode ser removido do repo.
 
 ## Estrutura do Trail 2 (entregue)
 
@@ -39,6 +53,6 @@ Ordem de construção decidida: Trail 2 → Trail 3 → Trail 1
 
 ## Próximos passos
 
-1. Trail 3 (Avançado): projeto guiado mais complexo (ex: plugin de revisão de PRs com isolamento de branch)
-2. Trail 1 (Fundamentos): base zero — definir quem é o aluno antes de escrever
-3. Adicionar CTA de volta no `curso-claudex.html` apontando para este novo curso
+- Fazer commit e push de todos os arquivos novos
+- Remover `docs/como-construimos-o-claudex.html` (single-page obsoleto)
+- Testar navegação entre as 3 trilhas no browser

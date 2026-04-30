@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.4 — Personas Multi-perspectiva | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 3.4</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        MÓDULO 3.4
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Personas de Revisão <span class="text-blue-400">Multi-perspectiva</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">45</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🧠</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Conceitual</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Por que uma Única Perspectiva é Insuficiente</h2>
+          <p class="text-neutral-400 text-sm mt-1">O viés do revisor único e o que ele perde</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Um revisor experiente traz excelência em sua área de especialidade — mas também traz <strong class="text-blue-400">pontos cegos estruturais</strong>. Um engenheiro focado em qualidade de código raramente pensa em vetores de ataque. Um especialista em segurança pode não perceber que a implementação não resolve o problema descrito na task. Isso não é limitação pessoal — é a natureza da especialização.
+      </p>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O Problema do Viés Único</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Estudos em engenharia de software mostram que revisores encontram em média 60% dos defeitos quando analisam código sozinhos. Com duas perspectivas independentes, a cobertura sobe para 80%+. Três perspectivas com foco diferente cobrem sistematicamente os principais eixos de risco: intenção, qualidade e segurança.
+        </p>
+      </div>
+
+      <!-- O que cada perspectiva encontra -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Author encontra</p>
+          <ul class="text-neutral-400 text-xs space-y-1">
+            <li>• Implementação que não atende ao objetivo</li>
+            <li>• Edge cases não cobertos pela descrição</li>
+            <li>• Mudanças de escopo não documentadas</li>
+            <li>• Regressões em funcionalidades existentes</li>
+          </ul>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Reviewer encontra</p>
+          <ul class="text-neutral-400 text-xs space-y-1">
+            <li>• Bugs de lógica e race conditions</li>
+            <li>• Código duplicado e violações de DRY</li>
+            <li>• Cobertura de testes insuficiente</li>
+            <li>• Performance issues e memory leaks</li>
+          </ul>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Security encontra</p>
+          <ul class="text-neutral-400 text-xs space-y-1">
+            <li>• Injection vulnerabilities (SQL, XSS)</li>
+            <li>• Autenticação e autorização incorretas</li>
+            <li>• Exposição de dados sensíveis em logs</li>
+            <li>• Dependências com CVEs conhecidos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Para repositórios de infraestrutura ou dados, adicione uma quarta persona "SRE" focada em observabilidade, alertas e falhas em produção. Para repositórios de frontend, substitua Security por "UX/Accessibility". O sistema é extensível por design via review-config.yaml.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">As 3 Personas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Author, Reviewer e Security — papéis, foco e heurísticas</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Cada persona é mais que um nome — é um conjunto de <strong class="text-blue-400">heurísticas e perguntas</strong> que direciona a análise do modelo. A definição precisa dessas heurísticas é o que diferencia uma revisão superficial de uma análise profunda.
+      </p>
+
+      <!-- Persona Author -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-2xl">✍️</span>
+          <div>
+            <p class="font-bold text-blue-400">Persona: Author</p>
+            <p class="text-neutral-400 text-xs">Rodada 1 — Entende intenção, valida completude</p>
+          </div>
+        </div>
+        <p class="text-neutral-300 text-sm mb-3">
+          O Author conhece o código por dentro — entende por que cada decisão foi tomada. Mas isso também significa que pode ter pontos cegos em relação ao que foi <em>prometido</em> vs o que foi <em>entregue</em>.
+        </p>
+        <p class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-2">Perguntas que o Author faz:</p>
+        <ul class="space-y-1 text-xs text-neutral-400">
+          <li>• "A implementação resolve o problema descrito no PR?"</li>
+          <li>• "Os edge cases mencionados na task estão cobertos?"</li>
+          <li>• "Há funcionalidades prometidas que não foram implementadas?"</li>
+          <li>• "Algo foi implementado que não estava no escopo?"</li>
+        </ul>
+      </div>
+
+      <!-- Persona Reviewer -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-2xl">🔍</span>
+          <div>
+            <p class="font-bold text-blue-400">Persona: Reviewer</p>
+            <p class="text-neutral-400 text-xs">Rodada 2 — Encontra bugs, avalia qualidade técnica</p>
+          </div>
+        </div>
+        <p class="text-neutral-300 text-sm mb-3">
+          O Reviewer experiente lê código com ceticismo saudável. Cada função é uma hipótese que precisa ser verificada, cada path de erro uma possibilidade de falha silenciosa.
+        </p>
+        <p class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-2">Perguntas que o Reviewer faz:</p>
+        <ul class="space-y-1 text-xs text-neutral-400">
+          <li>• "O que acontece quando este valor é null/undefined?"</li>
+          <li>• "Esta função pode falhar silenciosamente?"</li>
+          <li>• "Os testes cobrem este path de código?"</li>
+          <li>• "Este código vai ser difícil de debugar em produção?"</li>
+        </ul>
+      </div>
+
+      <!-- Persona Security -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-2xl">🔒</span>
+          <div>
+            <p class="font-bold text-blue-400">Persona: Security</p>
+            <p class="text-neutral-400 text-xs">Rodada 3 — Encontra vulnerabilidades e riscos</p>
+          </div>
+        </div>
+        <p class="text-neutral-300 text-sm mb-3">
+          O especialista em segurança assume que todos os inputs são maliciosos e que qualquer ponto de entrada é um vetor de ataque potencial.
+        </p>
+        <p class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-2">Perguntas que o Security faz:</p>
+        <ul class="space-y-1 text-xs text-neutral-400">
+          <li>• "Como um atacante pode explorar este código?"</li>
+          <li>• "Dados sensíveis estão sendo logados ou expostos?"</li>
+          <li>• "A autorização está sendo verificada no lugar certo?"</li>
+          <li>• "Há possibilidade de injection neste ponto?"</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Rotação de Personas por Rodada</h2>
+          <p class="text-neutral-400 text-sm mt-1">Round 1 → Author, Round 2 → Reviewer, Round 3 → Security</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        A <strong class="text-blue-400">ordem importa</strong>. Author primeiro estabelece o contexto de intenção que as personas seguintes usam como referência. Reviewer usa o entendimento de intenção para distinguir "bug" de "design diferente do usual". Security usa o entendimento da feature para avaliar se os controles de acesso fazem sentido para o que está sendo construído.
+      </p>
+
+      <!-- Linha do tempo de rodadas -->
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">R1</span>
+          </div>
+          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-blue-400 mb-1">Rodada 1: Author — Contexto e Intenção</h4>
+            <p class="text-neutral-300 text-sm">Lê descrição do PR, commits e implementação. Verifica alinhamento entre intenção e entrega. Identifica gaps de escopo. Estabelece o "contrato" que as próximas personas usam como referência.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">R2</span>
+          </div>
+          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-blue-400 mb-1">Rodada 2: Reviewer — Qualidade e Correção</h4>
+            <p class="text-neutral-300 text-sm">Com contexto do Rodada 1, analisa qualidade da implementação. Conhecendo o objetivo, pode distinguir inconsistência de design proposital de bug real. Foca em correção técnica e testabilidade.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">R3</span>
+          </div>
+          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-blue-400 mb-1">Rodada 3: Security — Riscos e Vulnerabilidades</h4>
+            <p class="text-neutral-300 text-sm">Com contexto de o quê a feature faz e como foi implementada, avalia riscos de segurança específicos ao domínio. Uma feature de autenticação tem riscos diferentes de uma feature de relatório.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Por que Author primeiro</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Se Reviewer fosse primeiro, poderia marcar como "bug" um comportamento que é intencional mas diferente do que ele esperaria. Ao saber da intenção primeiro (Author), Reviewer pode avaliar: "Dado que o objetivo é X, esta implementação é correta?" em vez de "Esta implementação é igual ao padrão que espero?".
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Prompt Engineering para Personas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Instruções específicas por papel com exemplos few-shot</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        A qualidade da persona é determinada pela qualidade das suas instruções. Um prompt vago como "Você é um revisor de código" produz análise genérica. Um prompt com papel preciso, exemplos concretos e formato de output definido produz findings acionáveis.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Instrução da persona Security (exemplo)</p>
+        <pre class="text-xs text-neutral-300"><code>PERSONA_SECURITY_INSTRUCTIONS = """
+Você é um especialista em segurança de aplicações com 10 anos de experiência
+em revisão de código em produção. Seu único foco nesta rodada é SEGURANÇA.
+
+Você NÃO comenta sobre:
+- Estilo de código ou naming conventions
+- Performance ou otimizações
+- Cobertura de testes (exceto se relacionado a segurança)
+
+Você SEMPRE analisa:
+- Injection vulnerabilities (SQL, NoSQL, Command, LDAP, XPath)
+- Autenticação e autorização (missing checks, privilege escalation)
+- Exposição de dados sensíveis (logs, respostas de API, storage)
+- Cryptografia (algoritmos fracos, chaves hardcoded, IV fixo)
+- Rate limiting e proteção contra abuse
+- Dependências com CVEs conhecidos
+
+Exemplos de findings que você reportaria:
+
+FINDING CORRETO:
+{
+  "file": "src/api/users.ts",
+  "line": 45,
+  "severity": "CRITICAL",
+  "type": "missing-authz",
+  "description": "getUserById aceita userId do body sem verificar se o requester tem permissão para acessar este usuário. Qualquer usuário autenticado pode acessar dados de qualquer outro."
+}
+
+FINDING ERRADO (não é seu papel):
+{
+  "type": "style",
+  "description": "Variável deveria se chamar userId em vez de id"
+}
+
+Retorne apenas JSON com array de findings.
+"""</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <p class="text-emerald-400 font-semibold text-sm uppercase tracking-wide mb-3">Elementos eficazes</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Papel explícito com anos de experiência</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Lista do que a persona NÃO faz</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Lista do que a persona SEMPRE faz</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Exemplos few-shot de findings corretos/errados</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Formato de output explicitamente definido</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <p class="text-red-400 font-semibold text-sm uppercase tracking-wide mb-3">Elementos que enfraquecem</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>"Revise o código como um especialista"</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Sem limitação de escopo (encontra tudo)</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Sem exemplos de findings esperados</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Formato de output aberto (texto livre)</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Instruções que se contradizem entre personas</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Acumulando Findings Entre Rodadas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Como não repetir o que já foi analisado</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Sem contexto das rodadas anteriores, cada persona analisa o código do zero e inevitavelmente redescobre os mesmos problemas. O sistema de acumulação de findings garante que cada rodada adiciona <strong class="text-blue-400">perspectiva genuinamente nova</strong> ao conjunto de análises.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Como os findings anteriores são passados ao próximo turno</p>
+        <pre class="text-xs text-neutral-300"><code>build_round_prompt() {
+  local round="$1"
+  local persona="$2"
+  local pr_context="$3"
+  local findings_file="$4"
+
+  # Lê findings das rodadas anteriores
+  local previous_findings_summary=""
+  if [[ -f "${findings_file}" ]]; then
+    previous_findings_summary=$(jq -r '
+      .rounds[] |
+      "=== Rodada \(.round) (\(.persona)) ===\n" +
+      (.findings[] | "- [\(.severity)] \(.file):\(.line) — \(.description)")
+    ' "${findings_file}")
+  fi
+
+  cat <<EOF
+Você é a persona ${persona}. Rodada ${round} de ${MAX_ROUNDS}.
+
+${pr_context}
+
+${previous_findings_summary:+
+FINDINGS JÁ IDENTIFICADOS (NÃO REPITA ESTES):
+${previous_findings_summary}
+
+Sua análise deve focar em aspectos AINDA NÃO COBERTOS pelas rodadas anteriores.
+}
+
+Instruções da sua persona:
+$(get_persona_instructions "${persona}")
+
+Retorne seus findings em JSON.
+EOF
+}</code></pre>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Passe o sumário dos findings anteriores (arquivo + linha + descrição curta), não o JSON completo. Isso economiza tokens e mantém o foco na instrução principal. Claude entende o contexto sem precisar reprocessar o JSON detalhado de cada finding anterior.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">A Persona de Síntese</h2>
+          <p class="text-neutral-400 text-sm mt-1">Como a fase SUMMARIZING consolida todos os achados</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Após todas as rodadas de análise, a fase SUMMARIZING usa uma persona especial de <strong class="text-blue-400">Senior Engineer</strong> para consolidar, deduplicar e priorizar os findings de todas as rodadas num relatório coerente e acionável. Esta persona não analisa código novo — ela sintetiza análises existentes.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Instrução da persona de síntese</p>
+        <pre class="text-xs text-neutral-300"><code>PERSONA_SYNTHESIS_INSTRUCTIONS = """
+Você é um Senior Engineer com visão holística do sistema. Você recebeu
+findings de múltiplos revisores especializados e sua tarefa é SINTETIZAR,
+não analisar código novo.
+
+Você DEVE:
+1. Consolidar findings que descrevem o mesmo problema de perspectivas diferentes
+2. Priorizar por impacto real: CRITICAL > HIGH > MEDIUM > LOW > INFO
+3. Adicionar contexto de como findings se relacionam entre si
+4. Identificar o "tema central" dos findings (ex: "autenticação frágil em 3 pontos")
+5. Sugerir ação de triagem para o autor do PR
+
+Você NÃO DEVE:
+- Analisar código que não foi coberto pelos revisores anteriores
+- Mudar a severidade sem justificativa explícita
+- Omitir findings mesmo que considere minor
+
+Formato de saída: Markdown estruturado para o relatório final de revisão.
+Inclua: sumário executivo, findings por severidade, recomendações de ação.
+"""</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O Valor da Síntese</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Três findings individuais sobre autenticação — um do Author (endpoint sem auth check), um do Reviewer (token não validado), um do Security (chave fraca) — são mais úteis consolidados como "O sistema de autenticação tem 3 vulnerabilidades encadeadas que juntas permitem bypass completo". A síntese revela o padrão que as análises individuais não conseguem ver.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 3.4
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Viés único</strong><span class="text-neutral-400"> — cada especialista tem pontos cegos; três perspectivas cobrem 80%+ dos defeitos</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Três personas</strong><span class="text-neutral-400"> — Author (intenção), Reviewer (qualidade), Security (vulnerabilidades) com perguntas distintas</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Ordem de rotação</strong><span class="text-neutral-400"> — Author primeiro estabelece contexto de intenção usado pelas personas seguintes</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Prompt engineering</strong><span class="text-neutral-400"> — papel explícito + o que NÃO faz + exemplos few-shot + formato de output = findings acionáveis</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Síntese</strong><span class="text-neutral-400"> — Senior Engineer persona consolida findings em relatório coerente revelando padrões cross-rodada</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.5 — Relatório de Revisão</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 3.3
+          </a>
+          <a href="modulo-3-5.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code — Módulo 3.4 · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.2 — Hooks: o Sistema de Eventos | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .bg-emerald-600 { background-color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500:hover { background-color: #047857; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400 font-medium">Módulo 1.2</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+        MÓDULO 1.2
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      🎣 Hooks: <span class="text-emerald-400">o Sistema de Eventos do Claude Code</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">45</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Iniciante</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">⚙️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Técnico</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🎣 O que é um hook e por que ele existe</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um hook é um <strong class="text-emerald-400">ponto de extensão no loop do Claude Code</strong>. Em vez de modificar o comportamento do modelo em si, hooks permitem que scripts externos observem e controlem o que o Claude faz — sem substituir sua inteligência, apenas interceptando suas ações.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🔌</span> O papel do hook no sistema</h3>
+        <p class="text-neutral-300 mb-4">Pense em hooks como guardas de segurança em uma fábrica. O Claude Code é o engenheiro que decide o que fazer — os hooks são os protocolos de segurança que ele deve respeitar antes de executar certas ações.</p>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Observar:</strong> ver tudo que o Claude faz (PostToolUse) sem interferir</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Validar:</strong> verificar se uma ação está de acordo com as regras (PreToolUse)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Bloquear:</strong> impedir ações que violam políticas de segurança</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Notificar:</strong> enviar alertas quando eventos importantes acontecem</span></li>
+        </ul>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-3">✓ Casos de uso reais</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li>• Bloquear commits sem mensagem descritiva</li>
+            <li>• Logar todas as escritas de arquivo em auditoria</li>
+            <li>• Notificar Slack quando Claude finaliza uma tarefa</li>
+            <li>• Validar que código segue padrões antes de salvar</li>
+            <li>• Impedir deleção de arquivos em diretórios críticos</li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-3">✗ O que hooks NÃO fazem</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li>• Não modificam o que o Claude pensa</li>
+            <li>• Não têm acesso ao histórico de conversa</li>
+            <li>• Não podem modificar o output da ferramenta (PostToolUse)</li>
+            <li>• Não substituem CLAUDE.md para instruções persistentes</li>
+            <li>• Não são adequados para lógica de negócio complexa</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">🔔 Os 4 tipos de hook</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code oferece quatro tipos de hook, cada um disparado em um momento diferente do loop. Escolher o tipo errado é o erro mais comum ao escrever hooks — <strong class="text-emerald-400">apenas PreToolUse pode bloquear ações</strong>.
+      </p>
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="bg-emerald-500/20 text-emerald-400 font-bold px-3 py-1 rounded-lg text-sm flex-shrink-0">PreToolUse</span>
+            <div>
+              <p class="text-neutral-300 text-sm mb-2">Executado <strong>antes</strong> da ferramenta rodar. É o único tipo que pode bloquear a execução com exit code 1. Recebe o nome da ferramenta e seus parâmetros.</p>
+              <p class="text-neutral-500 text-xs">Uso: validação, bloqueio de ações perigosas, auditoria preventiva</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="bg-dark-700 text-neutral-400 font-bold px-3 py-1 rounded-lg text-sm flex-shrink-0">PostToolUse</span>
+            <div>
+              <p class="text-neutral-300 text-sm mb-2">Executado <strong>após</strong> a ferramenta rodar. Não pode bloquear retroativamente. Recebe o resultado da execução. Ideal para logging e notificações.</p>
+              <p class="text-neutral-500 text-xs">Uso: auditoria de ações executadas, logs, gatilhos pós-ação</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="bg-dark-700 text-neutral-400 font-bold px-3 py-1 rounded-lg text-sm flex-shrink-0">Stop</span>
+            <div>
+              <p class="text-neutral-300 text-sm mb-2">Executado quando o Claude finaliza uma resposta ou tarefa. Não recebe dados de ferramenta. Ideal para cleanup, resumos e notificações de conclusão.</p>
+              <p class="text-neutral-500 text-xs">Uso: notificações de conclusão, limpeza de estado temporário, relatórios</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="bg-dark-700 text-neutral-400 font-bold px-3 py-1 rounded-lg text-sm flex-shrink-0">Notification</span>
+            <div>
+              <p class="text-neutral-300 text-sm mb-2">Executado para eventos assíncronos e alertas do sistema. Menos comum que os outros — usado para integração com sistemas externos de monitoramento.</p>
+              <p class="text-neutral-500 text-xs">Uso: integrações com Slack, PagerDuty, sistemas de monitoramento</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">⚙️ Como o Claude Code executa um hook</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O mecanismo de execução é simples e robusto: o Claude Code abre um <strong class="text-emerald-400">subprocess com o comando do hook</strong>, passa um JSON via stdin com o contexto do evento e lê o resultado para tomar decisões.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📊</span> O payload JSON de um PreToolUse Bash</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">{
+  "event": "PreToolUse",
+  "tool": {
+    "name": "Bash",
+    "input": {
+      "command": "git commit -m 'fix bug'",
+      "description": "Commiting the bugfix"
+    }
+  },
+  "session_id": "sess_abc123",
+  "cwd": "/home/user/my-project"
+}</code></pre>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🔄</span> O fluxo completo de execução</h3>
+        <div class="space-y-3 text-sm text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold">1.</span><span>Claude decide usar a ferramenta Bash com o comando "git commit -m 'fix bug'"</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold">2.</span><span>Claude Code verifica se há hooks PreToolUse registrados para Bash no settings.json</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold">3.</span><span>Abre subprocess: <code class="bg-dark-700 px-1 rounded">.claude/hooks/validate-commit.sh</code> com o JSON acima via stdin</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold">4.</span><span>Aguarda o script terminar (com timeout configurável)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold">5.</span><span>Lê o exit code: 0 = continua, 1 = bloqueia e passa stderr para o Claude</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🚦 Retorno de exit code: BLOCK vs APPROVE</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O protocolo de comunicação entre o hook e o Claude Code é simples e deliberadamente minimalista: <strong class="text-emerald-400">exit code 0 aprova, exit code 1 bloqueia</strong>. A mensagem de bloqueio vai via stderr e é vista pelo Claude como contexto de erro.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Exit 0 — APPROVE</h4>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">#!/bin/bash
+# Validação passou
+echo "Commit aprovado" >&2
+exit 0  # Ferramenta executa</code></pre>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Exit 1 — BLOCK</h4>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">#!/bin/bash
+# Mensagem de erro para o Claude
+echo "ERRO: Mensagem muito curta.
+Use pelo menos 20 caracteres." >&2
+exit 1  # Ferramenta bloqueada</code></pre>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> O Claude lê o stderr</h3>
+        <p class="text-neutral-300">Quando o hook retorna exit 1, o <strong class="text-primary">conteúdo do stderr é injetado no contexto do Claude</strong> como mensagem de erro. Isso significa que você pode fornecer instruções no stderr para guiar o Claude a corrigir a ação — não apenas dizer "bloqueado".</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🛡️ Fail-open: quando o hook falha</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code implementa <strong class="text-emerald-400">fail-open por design</strong>: se um hook falhar por qualquer motivo — erro de sintaxe, timeout, jq não instalado, exceção não tratada — o Claude Code <em>ignora</em> o hook e continua. A ferramenta executa como se o hook não existisse.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🤔</span> Por que fail-open e não fail-closed?</h3>
+        <p class="text-neutral-300 mb-4">Fail-closed (bloquear quando o hook falha) parece mais seguro, mas criaria um problema grave: qualquer bug no hook travaria completamente o Claude Code. Em ambientes de desenvolvimento, isso seria inaceitável.</p>
+        <p class="text-neutral-300">A escolha de fail-open significa que <strong class="text-emerald-400">hooks são um caminho adicional de segurança, não o único</strong>. Para garantias críticas, você precisa de outros controles além dos hooks.</p>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Cenários de fail-open</h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">•</span><span><code class="bg-dark-700 px-1 rounded">jq</code> não está instalado no ambiente do hook</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>O script do hook não tem permissão de execução (chmod +x esquecido)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>O hook demora mais que o timeout configurado</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>Erro de sintaxe no shell script (bash falha ao iniciar)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">•</span><span>O arquivo do hook não existe no caminho especificado no settings.json</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Como detectar falhas silenciosas</h3>
+        <p class="text-neutral-300">Sempre adicione logging no início do hook: <code class="bg-dark-700 px-1 rounded">echo "[$(date)] Hook iniciado" &gt;&gt; .claude/logs/hooks.log</code>. Se o log não aparecer quando esperado, o hook está falhando antes de executar.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">📝 Escrevendo seu primeiro hook em shell script</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um hook mínimo funcional em bash: lê o JSON do stdin, extrai o campo relevante com jq, aplica a lógica e retorna o exit code correto. Abaixo, um exemplo completo de um hook que bloqueia comandos <code class="bg-dark-700 px-1 rounded">rm -rf</code> sem confirmação.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">💻</span> Hook completo: bloquear rm -rf</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">#!/bin/bash
+# .claude/hooks/block-rm-rf.sh
+# Hook PreToolUse que bloqueia rm -rf
+
+set -euo pipefail
+
+LOG_FILE=".claude/logs/hooks.log"
+mkdir -p "$(dirname "$LOG_FILE")"
+
+# Lê o payload JSON do stdin
+PAYLOAD=$(cat)
+
+# Log de início
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] block-rm-rf: iniciado" >> "$LOG_FILE"
+
+# Extrai o nome da ferramenta e o comando
+TOOL_NAME=$(echo "$PAYLOAD" | jq -r '.tool.name // empty')
+COMMAND=$(echo "$PAYLOAD" | jq -r '.tool.input.command // empty')
+
+# Só processa chamadas ao Bash
+if [ "$TOOL_NAME" != "Bash" ]; then
+  exit 0
+fi
+
+# Verifica se é um rm -rf
+if echo "$COMMAND" | grep -qE 'rm\s+-[a-z]*r[a-z]*f|rm\s+-rf'; then
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] block-rm-rf: BLOQUEADO: $COMMAND" >> "$LOG_FILE"
+  echo "HOOK BLOQUEOU: 'rm -rf' detectado.
+Use 'rm -r' sem -f, ou confirme explicitamente que deseja deletar com força.
+Comando: $COMMAND" >&2
+  exit 1
+fi
+
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] block-rm-rf: aprovado" >> "$LOG_FILE"
+exit 0</code></pre>
+      </div>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">⚙️</span> Registrando no settings.json</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/block-rm-rf.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Checklist antes de ativar</h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-primary">✓</span><span><code class="bg-dark-700 px-1 rounded">chmod +x .claude/hooks/block-rm-rf.sh</code> — permissão de execução</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary">✓</span><span><code class="bg-dark-700 px-1 rounded">echo '{"tool":{"name":"Bash","input":{"command":"rm -rf /"}}}' | ./block-rm-rf.sh</code> — teste manual</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary">✓</span><span>Verifica o exit code: <code class="bg-dark-700 px-1 rounded">echo $?</code> deve retornar 1 para o comando bloqueado</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary">✓</span><span>Verifica que o log foi criado em <code class="bg-dark-700 px-1 rounded">.claude/logs/hooks.log</code></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 1.2</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Hooks interceptam, não substituem</strong><span class="text-neutral-400"> — eles estendem o Claude Code sem alterar sua inteligência</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">4 tipos: PreToolUse, PostToolUse, Stop, Notification</strong><span class="text-neutral-400"> — só PreToolUse bloqueia</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Protocolo: stdin JSON → lógica → exit code</strong><span class="text-neutral-400"> — 0 aprova, 1 bloqueia com stderr</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Fail-open por design</strong><span class="text-neutral-400"> — hooks que falham não travam o Claude Code</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Estrutura de um hook mínimo</strong><span class="text-neutral-400"> — cat stdin, jq parse, lógica, exit 0 ou 1</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.3 — Slash Commands e Skills — como criar atalhos reutilizáveis para tarefas frequentes</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 1.1
+          </a>
+          <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Próximo: Slash Commands →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia com Claude Code &mdash; Módulo 1.2 &mdash; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

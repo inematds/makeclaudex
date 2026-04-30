@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.6 — Seu Primeiro Hook de Validação | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .bg-emerald-600 { background-color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500:hover { background-color: #047857; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400 font-medium">Módulo 1.6</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+        MÓDULO 1.6 — PROJETO FINAL
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      🎯 Seu Primeiro Hook de Validação: <span class="text-emerald-400">Do SPEC ao Código</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">50</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Iniciante</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🔨</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Projeto Prático</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🎯 O projeto — hook de validação de commits</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O projeto final da Trilha 1 é construir um <strong class="text-emerald-400">PreToolUse hook que intercepta git commits</strong> e bloqueia mensagens que não são descritivas. Este é o caso de uso mais comum de hook de validação e aplica todos os conceitos dos módulos anteriores.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📋</span> O que vamos construir</h3>
+        <div class="space-y-3 text-neutral-300 text-sm">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>PreToolUse hook</strong> que intercepta chamadas ao Bash com "git commit"</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Valida</strong> que a mensagem tem pelo menos 20 caracteres</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Rejeita</strong> mensagens genéricas: "fix", "update", "changes", "wip" sozinhos</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Aprova</strong> git commit --amend e commits de merge automaticamente</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Logar</strong> cada execução em .claude/logs/validate-commit.log</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Fail-open</strong> quando qualquer dependência falha</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Por que este projeto</h3>
+        <p class="text-neutral-300">Mensagens de commit ruins são o problema de qualidade mais comum em projetos de engenharia — e são fáceis de automatizar. Este hook é imediatamente útil, simples o suficiente para ser o primeiro, e complexo o suficiente para cobrir todos os conceitos da trilha.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">📋 Escrevendo o SPEC antes do código</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Antes de uma linha de código, escrevemos o SPEC. Isso força decisões difíceis quando ainda são baratas: <strong class="text-emerald-400">o que é uma "mensagem ruim"? Como capturar a mensagem das diferentes flags do git commit?</strong>
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📋</span> SPEC.md completo</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300"># SPEC: validate-commit hook
+
+## Objetivo
+Bloquear git commits do Claude Code com mensagens que não são
+descritivas — garantindo um histórico de git útil.
+
+## Entrada
+- Evento: PreToolUse
+- Ferramenta: Bash
+- Condição: comando contém "git commit"
+
+## Critérios de BLOQUEIO
+1. Mensagem tem menos de 20 caracteres
+2. Mensagem é exatamente um dos termos genéricos:
+   fix, update, changes, wip, temp, test, misc, stuff
+
+## Critérios de APROVAÇÃO (exceções)
+1. git commit --amend (re-commit não precisa re-validar)
+2. git commit --no-edit (merge commit automático)
+3. Mensagem começa com "Merge " (merge commit)
+4. Mensagem começa com "Revert " (revert automático)
+5. Hook falha por qualquer razão (fail-open)
+
+## Extração da mensagem
+- Flag -m "mensagem": extrair entre aspas após -m
+- Flag --message="mensagem": extrair valor após =
+- Sem -m: git commit abrirá editor — não interceptar
+
+## Invariantes
+- Nunca bloqueia se jq não estiver disponível (fail-open)
+- Sempre logar a decisão (aprovar ou bloquear) com timestamp
+- Mensagem de erro é acionável: diz o que está errado E como corrigir
+
+## Decisões de design
+- Comprimento mínimo 20 chars: suficiente para uma descrição útil
+- Lista de termos genéricos pequena: falsos positivos são piores que falsos negativos
+- Não validar formato Conventional Commits: escopo desta versão é só comprimento</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">💻 Implementando o hook em shell</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com o SPEC em mãos, a implementação é direta. Cada decisão do SPEC tem correspondência exata no código — isso é o que um bom SPEC produz.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">💻</span> validate-commit.sh completo</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">#!/bin/bash
+# .claude/hooks/validate-commit.sh
+# PreToolUse hook: valida mensagens de git commit
+# SPEC: .claude/SPEC.md
+
+set -uo pipefail  # Não usar set -e — queremos controlar erros
+
+LOG_FILE=".claude/logs/validate-commit.log"
+mkdir -p "$(dirname "$LOG_FILE")"
+
+# Logging com timestamp
+log() {
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] validate-commit: $*" >> "$LOG_FILE"
+}
+
+# Fail-open: em qualquer erro inesperado, aprovar
+fail_open() {
+  log "WARN: $* — fail-open, aprovando"
+  exit 0
+}
+
+log "Hook iniciado — PID: $$"
+
+# Lê o payload JSON do stdin
+PAYLOAD=$(cat) || fail_open "Falha ao ler stdin"
+
+# Verifica se jq está disponível
+if ! command -v jq &>/dev/null; then
+  fail_open "jq não encontrado"
+fi
+
+# Extrai ferramenta e comando
+TOOL_NAME=$(echo "$PAYLOAD" | jq -r '.tool.name // empty' 2>/dev/null) || fail_open "jq falhou ao parsear tool.name"
+COMMAND=$(echo "$PAYLOAD" | jq -r '.tool.input.command // empty' 2>/dev/null) || fail_open "jq falhou ao parsear command"
+
+log "Ferramenta: $TOOL_NAME"
+
+# Só processa chamadas ao Bash
+[ "$TOOL_NAME" = "Bash" ] || { log "Não é Bash — aprovando"; exit 0; }
+
+# Só processa git commit
+echo "$COMMAND" | grep -q 'git commit' || { log "Não é git commit — aprovando"; exit 0; }
+
+log "Analisando: $COMMAND"
+
+# Exceções: --amend, --no-edit
+if echo "$COMMAND" | grep -qE -- '--amend|--no-edit'; then
+  log "Exceção --amend/--no-edit — aprovando"
+  exit 0
+fi
+
+# Extrai a mensagem de commit (flag -m ou --message)
+MSG=""
+if echo "$COMMAND" | grep -qE -- '-m\s+|--message=|--message\s+'; then
+  # Tenta extrair a mensagem das aspas após -m
+  MSG=$(echo "$COMMAND" | grep -oP '(?<=-m\s)["\x27]?\K[^"'\'']+(?=["\x27]?)' | head -1)
+  # Fallback: grep mais simples
+  if [ -z "$MSG" ]; then
+    MSG=$(echo "$COMMAND" | sed -nE "s/.*-m ['\"]([^'\"]+)['\"].*/\1/p")
+  fi
+fi
+
+# Se não encontrou mensagem (ex: commit sem -m, abrirá editor)
+if [ -z "$MSG" ]; then
+  log "Mensagem não extraída — pode ser editor interativo — aprovando"
+  exit 0
+fi
+
+log "Mensagem extraída: '$MSG'"
+
+# Exceções: merge e revert automático
+if echo "$MSG" | grep -qE '^(Merge |Revert )'; then
+  log "Merge/Revert commit — aprovando"
+  exit 0
+fi
+
+# Validação 1: comprimento mínimo
+MSG_LEN=${#MSG}
+if [ "$MSG_LEN" -lt 20 ]; then
+  log "BLOQUEADO: mensagem muito curta ($MSG_LEN chars)"
+  echo "HOOK DE QUALIDADE: Mensagem de commit muito curta ($MSG_LEN caracteres).
+
+Mínimo: 20 caracteres
+Sua mensagem: '$MSG'
+
+Exemplos de mensagens boas:
+  'feat: adiciona autenticação por OAuth2'
+  'fix: corrige cálculo de desconto no checkout'
+  'refactor: extrai lógica de validação para módulo separado'" >&2
+  exit 1
+fi
+
+# Validação 2: termos genéricos
+GENERIC_TERMS="^(fix|update|changes|wip|temp|test|misc|stuff)$"
+MSG_LOWER=$(echo "$MSG" | tr '[:upper:]' '[:lower:]' | tr -d ' ')
+if echo "$MSG_LOWER" | grep -qiE "$GENERIC_TERMS"; then
+  log "BLOQUEADO: mensagem genérica '$MSG'"
+  echo "HOOK DE QUALIDADE: Mensagem de commit genérica.
+
+Sua mensagem: '$MSG'
+
+Mensagens genéricas como 'fix', 'update', 'wip' não descrevem
+o que foi alterado. Use uma mensagem específica.
+
+Exemplos:
+  'fix: corrige NullPointerException no módulo de usuários'
+  'update: atualiza dependências para versão LTS'" >&2
+  exit 1
+fi
+
+log "Aprovado: '$MSG' ($MSG_LEN chars)"
+exit 0</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🧪 Testando o fail-open</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Antes de ativar o hook em produção, <strong class="text-emerald-400">teste deliberadamente os cenários de falha</strong>. Você precisa ter confiança de que o hook não vai travar o Claude Code quando algo der errado.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🧪</span> Suite de testes completa</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">#!/bin/bash
+# .claude/tests/test-validate-commit.sh
+
+HOOK=".claude/hooks/validate-commit.sh"
+PASS=0; FAIL=0
+
+t() {
+  local name="$1" input="$2" expected_exit="$3"
+  actual=$(echo "$input" | bash "$HOOK" 2>/dev/null; echo $?)
+  actual_exit=$(echo "$input" | bash "$HOOK" > /dev/null 2>&1; echo $?)
+  if [ "$actual_exit" = "$expected_exit" ]; then
+    echo "  ✓ $name"; PASS=$((PASS + 1))
+  else
+    echo "  ✗ $name (esperado $expected_exit, obteve $actual_exit)"; FAIL=$((FAIL + 1))
+  fi
+}
+
+BASE='{"tool":{"name":"Bash","input":{"command":'
+
+echo "=== Bloqueios esperados ==="
+t "mensagem curta" "${BASE}\"git commit -m 'fix'\"}}" 1
+t "mensagem genérica update" "${BASE}\"git commit -m 'update'\"}}" 1
+t "mensagem genérica wip" "${BASE}\"git commit -m 'wip'\"}}" 1
+
+echo "=== Aprovações esperadas ==="
+t "mensagem boa" "${BASE}\"git commit -m 'feat: adiciona autenticação OAuth2'\"}}" 0
+t "amend" "${BASE}\"git commit --amend --no-edit\"}}" 0
+t "no-edit" "${BASE}\"git commit --no-edit\"}}" 0
+t "merge commit" "${BASE}\"git commit -m 'Merge branch main'\"}}" 0
+t "não é bash" '{"tool":{"name":"Read","input":{"file":"test"}}}' 0
+t "não é git commit" "${BASE}\"git status\"}}" 0
+
+echo "=== Fail-open ==="
+t "payload vazio" '{}' 0
+t "payload inválido" 'invalid json' 0
+
+echo ""
+echo "Resultado: $PASS passou, $FAIL falhou"
+[ "$FAIL" = "0" ] && exit 0 || exit 1</code></pre>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Testando sem jq instalado</h3>
+        <p class="text-neutral-300">Para simular jq ausente: <code class="bg-dark-700 px-1 rounded">PATH="" echo '{"tool":{"name":"Bash"...}}' | .claude/hooks/validate-commit.sh</code>. O hook deve retornar exit 0 (fail-open) mesmo sem jq no PATH.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🔗 Integrando com settings.json</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com o hook testado, o último passo é <strong class="text-emerald-400">registrá-lo no settings.json</strong> e verificar que o Claude Code o executa corretamente em um teste end-to-end real.
+      </p>
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-3">Dar permissão de execução</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">chmod +x .claude/hooks/validate-commit.sh
+# Verifica: ls -la .claude/hooks/validate-commit.sh
+# Deve mostrar: -rwxr-xr-x</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-3">Registrar no .claude/settings.json</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/validate-commit.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-3">Teste end-to-end no Claude Code</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># Inicia o Claude Code no diretório do projeto
+claude
+
+# Teste de bloqueio — deve falhar com mensagem do hook:
+"Execute: git commit -m 'fix'"
+
+# Teste de aprovação — deve funcionar:
+"Execute: git commit -m 'test: verifica que hook está funcionando'"
+
+# Verifica o log:
+"Mostre o conteúdo de .claude/logs/validate-commit.log"</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🔄 Iteração incremental — melhorando o hook</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O hook está funcional. Agora iteramos — <strong class="text-emerald-400">cada melhoria é um commit separado</strong>, mantendo o histórico claro de por que cada feature foi adicionada.
+      </p>
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-emerald-400 mb-3">Iteração 1: Modo DRY_RUN</h4>
+          <p class="text-neutral-300 text-sm mb-3">Adiciona variável de ambiente para testar sem bloquear de verdade.</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># Adicionar antes do exit 1 nos bloqueios:
+if [ "${VALIDATE_COMMIT_DRY_RUN:-}" = "1" ]; then
+  log "DRY_RUN: teria bloqueado — $MSG"
+  exit 0
+fi
+
+# Uso: VALIDATE_COMMIT_DRY_RUN=1 claude</code></pre>
+          <p class="text-neutral-400 text-xs mt-2">Commit: <code>hook(validate-commit): adiciona modo DRY_RUN para testes não-destrutivos</code></p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-emerald-400 mb-3">Iteração 2: Estatísticas de uso</h4>
+          <p class="text-neutral-300 text-sm mb-3">Conta quantos commits foram bloqueados vs aprovados.</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">STATS_FILE=".claude/state/commit-stats.json"
+
+update_stats() {
+  local action="$1"  # "blocked" ou "approved"
+  local current=$(cat "$STATS_FILE" 2>/dev/null || echo '{"blocked":0,"approved":0}')
+  local new=$(echo "$current" | jq ".$action += 1 | .last_action = \"$action\" | .last_at = \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"")
+  local tmp=$(mktemp "$(dirname "$STATS_FILE")/stats.XXXXXX.json")
+  echo "$new" > "$tmp" && mv "$tmp" "$STATS_FILE"
+}
+
+# Chamar antes de cada exit:
+update_stats "blocked" && exit 1
+update_stats "approved" && exit 0</code></pre>
+          <p class="text-neutral-400 text-xs mt-2">Commit: <code>hook(validate-commit): adiciona estatísticas de bloqueios em JSON</code></p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-emerald-400 mb-3">Iteração 3: Sugestão de mensagem melhorada</h4>
+          <p class="text-neutral-300 text-sm mb-3">A mensagem de erro sugere o que o usuário deveria ter escrito.</p>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># Na mensagem de bloqueio por comprimento, adicionar:
+echo "Sua mensagem foi: '$MSG'
+Que tal tentar algo como:
+  'feat: descreva aqui o que a mudança adiciona'
+  'fix: explique aqui o bug que foi corrigido'
+  'refactor: descreva o que foi reestruturado'" >&2</code></pre>
+          <p class="text-neutral-400 text-xs mt-2">Commit: <code>hook(validate-commit): melhora mensagem de erro com exemplos de formato</code></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL DA TRILHA -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🏆</span> Parabéns! Você concluiu a Trilha 1</h2>
+
+        <p class="text-neutral-300 mb-6 leading-relaxed">Você agora tem um hook de validação funcional e todo o conhecimento da base para construir sistemas mais complexos. Estes são os fundamentos que tornam possível tudo que vem na Trilha 2.</p>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Módulo 1.1:</strong><span class="text-neutral-400"> Claude Code como agente — Bash, Read, Edit, Write, settings.json, CLAUDE.md</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Módulo 1.2:</strong><span class="text-neutral-400"> Hooks — 4 tipos, protocolo stdin/stdout, exit codes, fail-open</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Módulo 1.3:</strong><span class="text-neutral-400"> Slash commands e skills — escopo local/global, $args, regra dos 3 usos</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Módulo 1.4:</strong><span class="text-neutral-400"> Estado persistente — YAML/JSON, escrita atômica, CAS, lockfiles</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Módulo 1.5:</strong><span class="text-neutral-400"> Ambiente — estrutura de repo, testes isolados, logs, SPEC.md, jq/yq/shellcheck</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Módulo 1.6:</strong><span class="text-neutral-400"> Projeto prático — do SPEC ao código, testes de fail-open, iteração incremental</span></div></div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próxima Trilha:</h3>
+          <p class="text-neutral-300">Trilha 2 — Construindo com Claude Code — como o Claudex foi construído do zero usando 7 prompts incrementais verificados</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Trilha 1
+          </a>
+          <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Trilha 2: Construindo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia com Claude Code &mdash; Módulo 1.6 &mdash; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

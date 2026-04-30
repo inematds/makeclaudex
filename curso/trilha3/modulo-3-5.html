@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.5 — Relatório de Revisão | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 3.5</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        MÓDULO 3.5
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Relatório de Revisão: <span class="text-blue-400">Formato, Severidade e Integração</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">45</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🔧</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Prático</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Formato do Relatório</h2>
+          <p class="text-neutral-400 text-sm mt-1">Markdown estruturado legível por humanos e por CI/CD</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O relatório tem dois públicos: o <strong class="text-blue-400">desenvolvedor</strong> que precisa entender o que consertar e o <strong class="text-blue-400">sistema de CI/CD</strong> que precisa decidir se permite o merge. Isso significa que o formato precisa ser legível por humanos e parseável por scripts ao mesmo tempo — e Markdown com headers consistentes atende ambos.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Exemplo de relatório gerado (.claudex/reviews/PR-123.md)</p>
+        <pre class="text-xs text-neutral-300"><code>---
+pr_number: 123
+pr_title: "Add JWT authentication to API"
+review_date: "2026-04-29T10:45:00Z"
+total_findings: 6
+critical: 1
+high: 2
+medium: 2
+low: 1
+info: 0
+reviewer_verdict: "CHANGES_REQUIRED"
+---
+
+# Revisão de PR #123: Add JWT authentication to API
+
+## Sumário Executivo
+
+O PR implementa autenticação JWT mas apresenta **3 vulnerabilidades de segurança
+encadeadas** que juntas permitem bypass completo do sistema de autenticação.
+O problema central é a validação insuficiente de tokens em múltiplos pontos.
+
+**Veredicto:** ❌ CHANGES REQUIRED — 1 finding CRITICAL, 2 findings HIGH
+
+---
+
+## Findings Críticos
+
+### 🔴 CRITICAL — src/auth/middleware.ts:45
+**Tipo:** missing-authz | **Persona:** Security
+```
+JWT token não é validado para operações de admin. A verificação verifica
+apenas se o token está presente, não se tem a role 'admin'.
+```
+**Impacto:** Qualquer usuário com token válido pode executar operações admin.
+**Sugestão:** Adicionar check de role após validação de token.
+
+---
+
+## Findings de Alta Severidade
+
+### 🟠 HIGH — src/auth/jwt.ts:78
+...
+
+## Métricas
+
+| Métrica | Valor |
+|---------|-------|
+| Linhas no diff | 342 |
+| Arquivos modificados | 8 |
+| Rodadas de análise | 3 |
+| Personas usadas | Author, Reviewer, Security |</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O Frontmatter YAML</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O bloco <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">---</code> no topo é YAML frontmatter. Sistemas de CI/CD podem parsear apenas esse bloco com <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">python-frontmatter</code> ou <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">yq</code> para verificar <code>critical > 0</code> sem precisar ler o relatório completo. Humanos ignoram o frontmatter e leem o Markdown normalmente.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Severidade dos Achados</h2>
+          <p class="text-neutral-400 text-sm mt-1">CRITICAL, HIGH, MEDIUM, LOW, INFO — critérios e exemplos</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Severidade sem critérios claros é subjetiva — e subjetividade cria inconsistência entre revisões. Com critérios explícitos, qualquer persona em qualquer rodada classifica o mesmo problema da mesma forma, tornando os relatórios comparáveis ao longo do tempo.
+      </p>
+
+      <!-- Tabela de severidade -->
+      <div class="space-y-3 mb-5">
+        <div class="flex gap-4 bg-dark-700 border border-red-900/50 rounded-xl p-4">
+          <div class="flex-shrink-0">
+            <span class="inline-block px-2 py-1 rounded text-xs font-bold bg-red-900/50 text-red-400">CRITICAL</span>
+          </div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm mb-1">Bloqueia merge — deve ser resolvido antes de qualquer deploy</p>
+            <p class="text-neutral-400 text-xs">Exemplos: bypass de autenticação, SQL injection, exposição de credenciais, possibilidade de execução remota de código, perda de dados irrecuperável.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-orange-900/50 rounded-xl p-4">
+          <div class="flex-shrink-0">
+            <span class="inline-block px-2 py-1 rounded text-xs font-bold bg-orange-900/50 text-orange-400">HIGH</span>
+          </div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm mb-1">Deve ser resolvido antes de deploy para produção</p>
+            <p class="text-neutral-400 text-xs">Exemplos: validação faltando em input público, privilege escalation parcial, dados sensíveis em logs, race condition que corrompe estado.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-yellow-900/50 rounded-xl p-4">
+          <div class="flex-shrink-0">
+            <span class="inline-block px-2 py-1 rounded text-xs font-bold bg-yellow-900/50 text-yellow-400">MEDIUM</span>
+          </div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm mb-1">Recomendado resolver — pode ser em PR de follow-up</p>
+            <p class="text-neutral-400 text-xs">Exemplos: tratamento de erro incompleto, cobertura de teste insuficiente em paths críticos, performance degradada sob carga, falta de rate limiting.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-blue-900/50 rounded-xl p-4">
+          <div class="flex-shrink-0">
+            <span class="inline-block px-2 py-1 rounded text-xs font-bold bg-blue-900/50 text-blue-400">LOW</span>
+          </div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm mb-1">Sugestão de melhoria — resolve quando conveniente</p>
+            <p class="text-neutral-400 text-xs">Exemplos: código duplicado, naming confuso, documentação desatualizada, oportunidade de simplificação.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0">
+            <span class="inline-block px-2 py-1 rounded text-xs font-bold bg-dark-600 text-neutral-400">INFO</span>
+          </div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm mb-1">Observação informativa — não requer ação</p>
+            <p class="text-neutral-400 text-xs">Exemplos: abordagem alternativa que poderia ter sido usada, contexto técnico relevante, inconsistência com padrão do time que pode ser intencional.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Configure <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">blocking_severity: "HIGH"</code> no review-config.yaml para que o CI/CD bloqueie merge apenas em CRITICAL e HIGH. Isso evita paralisia por findings de baixa severidade enquanto garante que problemas sérios não chegam a produção.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Agrupamento por Arquivo e Tipo</h2>
+          <p class="text-neutral-400 text-sm mt-1">Organizando achados de múltiplas rodadas para triagem eficiente</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Findings listados em ordem cronológica de análise (rodada 1, rodada 2...) forçam o desenvolvedor a pular de um arquivo para outro durante a triagem. <strong class="text-blue-400">Agrupamento por arquivo</strong> permite abrir cada arquivo uma vez e resolver todos os problemas juntos.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">report.sh — função de agrupamento e ordenação</p>
+        <pre class="text-xs text-neutral-300"><code>generate_grouped_report() {
+  local findings_file="$1"
+
+  # Extrai todos os findings de todas as rodadas
+  # Ordena por: severidade (CRITICAL primeiro) depois por arquivo
+  local all_findings
+  all_findings=$(jq -r '
+    [.rounds[].findings[]] |
+    sort_by(
+      (if .severity == "CRITICAL" then 0
+       elif .severity == "HIGH" then 1
+       elif .severity == "MEDIUM" then 2
+       elif .severity == "LOW" then 3
+       else 4 end),
+      .file,
+      .line
+    )
+  ' "${findings_file}")
+
+  # Gera seção por arquivo
+  local current_file=""
+  echo "${all_findings}" | jq -c '.[]' | while read -r finding; do
+    local file
+    file=$(echo "${finding}" | jq -r '.file')
+
+    if [[ "${file}" != "${current_file}" ]]; then
+      current_file="${file}"
+      echo ""
+      echo "### 📄 ${file}"
+      echo ""
+    fi
+
+    # Formata finding individual
+    format_finding "${finding}"
+  done
+}</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Ordem de severity</p>
+          <div class="space-y-1 text-xs text-neutral-400">
+            <div class="flex gap-2"><span class="text-red-400">1.</span><span>CRITICAL — precisa de ação imediata</span></div>
+            <div class="flex gap-2"><span class="text-orange-400">2.</span><span>HIGH — bloqueia deploy</span></div>
+            <div class="flex gap-2"><span class="text-yellow-400">3.</span><span>MEDIUM — próximo sprint</span></div>
+            <div class="flex gap-2"><span class="text-blue-400">4.</span><span>LOW — quando conveniente</span></div>
+            <div class="flex gap-2"><span class="text-neutral-400">5.</span><span>INFO — para contexto</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Agrupamento secundário</p>
+          <div class="space-y-1 text-xs text-neutral-400">
+            <div class="flex gap-2"><span class="text-blue-400">→</span><span>Por arquivo (path completo)</span></div>
+            <div class="flex gap-2"><span class="text-blue-400">→</span><span>Por número de linha dentro do arquivo</span></div>
+            <div class="flex gap-2"><span class="text-blue-400">→</span><span>Opcionalmente: por tipo de issue</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Por que agrupamento importa</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Um PR com 6 findings em 4 arquivos gera 6 contextos de "abrir arquivo, localizar linha, entender, fechar". Com agrupamento, cada arquivo é aberto uma única vez. Para PRs com 20+ findings, a diferença em produtividade de triagem é de 3-4x.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Relatório como Artefato Persistente</h2>
+          <p class="text-neutral-400 text-sm mt-1">Salvando em .claudex/reviews/PR-NNN.md para histórico auditável</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Relatórios persistidos criam um <strong class="text-blue-400">histórico auditável</strong> de revisões. Quando um PR passa por múltiplas iterações (desenvolvedor corrige, cria nova versão, revisão nova), você pode comparar os relatórios para verificar se os findings foram realmente resolvidos.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Convenção de nomenclatura e salvamento</p>
+        <pre class="text-xs text-neutral-300"><code># Estrutura de diretório de relatórios
+.claudex/
+└── reviews/
+    ├── PR-123-v1-20260429.md    # Primeira revisão do PR #123
+    ├── PR-123-v2-20260501.md    # Segunda revisão (após correções)
+    ├── PR-124-v1-20260430.md
+    └── index.yaml               # Índice de todos os relatórios
+
+# Geração com versionamento
+save_review_report() {
+  local pr_number="$1"
+  local report_content="$2"
+
+  # Versão = quantas revisões do mesmo PR já existem + 1
+  local version
+  version=$(ls .claudex/reviews/PR-${pr_number}-v*.md 2>/dev/null | wc -l)
+  version=$(( version + 1 ))
+
+  local report_file=".claudex/reviews/PR-${pr_number}-v${version}-$(date +%Y%m%d).md"
+
+  # Salva o relatório
+  echo "${report_content}" > "${report_file}"
+
+  # Atualiza índice
+  yq e ".reviews += [{\"pr\": ${pr_number}, \"version\": ${version}, \"file\": \"${report_file}\", \"date\": \"$(date -I)\"}]" \
+    .claudex/reviews/index.yaml -i
+
+  echo "${report_file}"
+}</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Usos do histórico</p>
+          <ul class="text-neutral-400 text-xs space-y-1">
+            <li>• Comparar v1 vs v2 após correções</li>
+            <li>• Auditar que CRITICAL foi resolvido</li>
+            <li>• Medir qualidade de revisão ao longo do tempo</li>
+            <li>• Detectar regressões (finding reaparece)</li>
+          </ul>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">O relatório no git</p>
+          <ul class="text-neutral-400 text-xs space-y-1">
+            <li>• Commitar .claudex/reviews/ no repositório</li>
+            <li>• Histórico de revisões vira parte do repo</li>
+            <li>• git blame no relatório mostra quando finding foi introduzido</li>
+            <li>• PR de "resolução" pode referenciar o finding original</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Integração com GitHub</h2>
+          <p class="text-neutral-400 text-sm mt-1">Comentários automáticos via gh pr comment</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Um relatório que fica só em arquivo local tem impacto zero. A integração com GitHub coloca os findings <strong class="text-blue-400">onde o desenvolvedor já está</strong> — na thread do PR — sem que ele precise procurar o arquivo de relatório.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Postando o comentário no PR</p>
+        <pre class="text-xs text-neutral-300"><code>post_review_comment() {
+  local pr_number="$1"
+  local report_file="$2"
+
+  # Verifica se já existe comentário de revisão anterior no PR
+  local existing_comment_id
+  existing_comment_id=$(gh pr view "${pr_number}" \
+    --json comments \
+    --jq '.comments[] | select(.body | startswith("<!-- claude-review -->")) | .id' \
+    2>/dev/null | head -1)
+
+  if [[ -n "${existing_comment_id}" ]]; then
+    # Atualiza comentário existente em vez de criar novo
+    gh api \
+      --method PATCH \
+      "/repos/{owner}/{repo}/issues/comments/${existing_comment_id}" \
+      --field body="<!-- claude-review -->$(cat "${report_file}")"
+    echo "Updated existing review comment ${existing_comment_id}"
+  else
+    # Cria novo comentário
+    gh pr comment "${pr_number}" \
+      --body "<!-- claude-review -->$(cat "${report_file}")"
+    echo "Created new review comment"
+  fi
+}</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O Marcador HTML Oculto</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O comentário HTML <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">&lt;!-- claude-review --&gt;</code> é invisível no GitHub mas permite que o script identifique comentários criados pelo revisor automático. Isso evita criar múltiplos comentários em revisões repetidas — o segundo run atualiza o comentário existente.
+        </p>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">gh pr review --request-changes</code> em vez de apenas comentar quando há findings CRITICAL ou HIGH. Isso coloca o PR em estado "Changes Requested" no GitHub, prevenindo merge acidental por outro membro do time antes dos problemas serem resolvidos.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Métricas de Revisão</h2>
+          <p class="text-neutral-400 text-sm mt-1">Linhas analisadas, achados por rodada e cobertura de diff</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Métricas de revisão servem dois propósitos: <strong class="text-blue-400">transparência</strong> (o desenvolvedor vê o escopo da análise) e <strong class="text-blue-400">calibração</strong> (você pode ajustar MAX_ROUNDS baseado em dados reais de cobertura).
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Coleta de métricas durante a revisão</p>
+        <pre class="text-xs text-neutral-300"><code>collect_review_metrics() {
+  local pr_number="$1"
+  local worktree_path="$2"
+  local findings_file="$3"
+
+  # Linhas no diff
+  local diff_lines
+  diff_lines=$(gh pr diff "${pr_number}" | grep -c '^[+-]' 2>/dev/null || echo 0)
+
+  # Arquivos modificados
+  local files_changed
+  files_changed=$(gh pr diff "${pr_number}" --name-only | wc -l)
+
+  # Arquivos com pelo menos um finding
+  local files_with_findings
+  files_with_findings=$(jq -r '[.rounds[].findings[].file] | unique | length' \
+    "${findings_file}")
+
+  # Cobertura = % de arquivos modificados que têm findings
+  local coverage=0
+  if (( files_changed > 0 )); then
+    coverage=$(( files_with_findings * 100 / files_changed ))
+  fi
+
+  # Findings por rodada
+  local per_round
+  per_round=$(jq -r '.rounds[] | "\(.round) (\(.persona)): \(.findings | length) findings"' \
+    "${findings_file}")
+
+  cat <<EOF
+## Métricas de Revisão
+
+| Métrica | Valor |
+|---------|-------|
+| Linhas analisadas (diff) | ${diff_lines} |
+| Arquivos modificados | ${files_changed} |
+| Arquivos com findings | ${files_with_findings} |
+| Cobertura de diff | ${coverage}% |
+| Rodadas executadas | $(jq '.rounds | length' "${findings_file}") |
+
+### Findings por Rodada
+${per_round}
+EOF
+}</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-blue-400">80%+</p>
+          <p class="text-sm text-neutral-300 mt-1">Cobertura saudável</p>
+          <p class="text-neutral-400 text-xs mt-1">Maioria dos arquivos analisados</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-blue-400">&lt;50%</p>
+          <p class="text-sm text-neutral-300 mt-1">Adicione rodadas</p>
+          <p class="text-neutral-400 text-xs mt-1">Análise incompleta — aumente MAX_ROUNDS</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-blue-400">100%</p>
+          <p class="text-sm text-neutral-300 mt-1">Pode significar</p>
+          <p class="text-neutral-400 text-xs mt-1">Findings em todos os arquivos OU PR muito pequeno</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 3.5
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Formato do relatório</strong><span class="text-neutral-400"> — YAML frontmatter + Markdown: legível por humanos, parseável por CI/CD</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">5 níveis de severidade</strong><span class="text-neutral-400"> — CRITICAL/HIGH (bloqueiam), MEDIUM/LOW/INFO (recomendações) com critérios explícitos</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Agrupamento por arquivo</strong><span class="text-neutral-400"> — triagem 3-4x mais eficiente que ordem cronológica de análise</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Histórico auditável</strong><span class="text-neutral-400"> — versionamento por PR permite comparar revisões e verificar resoluções</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Integração GitHub</strong><span class="text-neutral-400"> — gh pr comment com marcador oculto permite atualizar sem duplicar</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.6 — Produção e Próximos Passos</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-4.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 3.4
+          </a>
+          <a href="modulo-3-6.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code — Módulo 3.5 · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

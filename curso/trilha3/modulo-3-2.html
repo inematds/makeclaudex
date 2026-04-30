@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.2 — Git Worktree | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 3.2</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        MÓDULO 3.2
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      Isolamento de Branch com <span class="text-blue-400">Git Worktree</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">50</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🔧</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Prático</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O que é um Git Worktree</h2>
+          <p class="text-neutral-400 text-sm mt-1">Múltiplos checkouts do mesmo repositório simultaneamente</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Git worktree é um recurso que permite ter <strong class="text-blue-400">múltiplos diretórios de trabalho</strong> vinculados ao mesmo repositório. Cada worktree tem seu próprio HEAD, seu próprio estado de arquivos e pode estar em uma branch diferente — tudo ao mesmo tempo. Para o revisor de PRs, isso significa que enquanto você trabalha na sua branch em <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">~/projeto</code>, o sistema pode analisar o PR em <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">/tmp/review-PR123</code> sem qualquer interferência.
+      </p>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal</span>
+        </div>
+        <p class="text-neutral-200 font-semibold mb-2">Um repositório, múltiplos diretórios de trabalho, zero interferência</p>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O Git mantém um único <code>.git/</code> compartilhado, mas cada worktree tem seu próprio arquivo HEAD, índice de staging e working tree. Modificar arquivos no worktree de revisão não afeta o índice do worktree principal. É como ter dois terminais abertos em diretórios completamente independentes do mesmo repo.
+        </p>
+      </div>
+
+      <!-- Diagrama conceitual -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Anatomia do Git Worktree</p>
+        <pre class="text-xs text-neutral-300"><code>~/meu-projeto/          ← worktree principal
+├── .git/               ← repositório compartilhado
+│   ├── HEAD → main
+│   └── worktrees/
+│       └── review-PR123/
+│           └── HEAD → feature/novo-auth
+└── src/
+
+/tmp/review-PR123/      ← worktree de revisão (linked)
+├── .git               ← arquivo (não diretório!) apontando para .git/worktrees/review-PR123
+└── src/               ← estado da branch feature/novo-auth</code></pre>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">git worktree list</code> no seu repositório para ver todos os worktrees ativos. Se encontrar worktrees de revisões antigas que não foram limpos, use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">git worktree prune</code> para remover referências órfãs.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Criando Worktrees Temporários</h2>
+          <p class="text-neutral-400 text-sm mt-1">git worktree add com path dinâmico e branch remota</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        A criação de um worktree de revisão segue um padrão fixo: fetch da branch remota, criação do worktree em path temporário, e registro do path no estado YAML. O path usa o número do PR para garantir unicidade mesmo em execuções paralelas.
+      </p>
+
+      <!-- Script de criação -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">worktree.sh — função create_worktree()</p>
+        <pre class="text-xs text-neutral-300"><code>create_worktree() {
+  local pr_number="$1"
+  local branch_name="$2"
+  local worktree_path="/tmp/review-PR${pr_number}-$(date +%s)"
+
+  # 1. Fetch da branch remota
+  git fetch origin "${branch_name}" 2>/dev/null || {
+    echo "ERROR: branch '${branch_name}' not found on origin" >&2
+    return 1
+  }
+
+  # 2. Cria worktree vinculado à branch do PR
+  git worktree add "${worktree_path}" "origin/${branch_name}" 2>/dev/null || {
+    echo "ERROR: failed to create worktree at ${worktree_path}" >&2
+    return 1
+  }
+
+  # 3. Registra no estado YAML
+  update_state worktree_path "${worktree_path}"
+  update_state worktree_branch "${branch_name}"
+  update_state status "REVIEWING"
+
+  echo "${worktree_path}"
+}</code></pre>
+      </div>
+
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Detalhes do Comando</span>
+        </div>
+        <div class="space-y-3 text-sm text-neutral-300">
+          <div class="flex gap-3">
+            <code class="text-blue-400 font-mono font-bold shrink-0">git worktree add</code>
+            <span>Cria o linked worktree no path especificado</span>
+          </div>
+          <div class="flex gap-3">
+            <code class="text-blue-400 font-mono font-bold shrink-0">/tmp/review-PR123</code>
+            <span>Path fora do projeto — garante isolamento de filesystem</span>
+          </div>
+          <div class="flex gap-3">
+            <code class="text-blue-400 font-mono font-bold shrink-0">origin/feature-branch</code>
+            <span>Branch remota do PR — não cria branch local que precisaria ser limpa</span>
+          </div>
+          <div class="flex gap-3">
+            <code class="text-blue-400 font-mono font-bold shrink-0">$(date +%s)</code>
+            <span>Timestamp garante unicidade se mesmo PR for revisado duas vezes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Use <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">origin/branch-name</code> (remota) em vez de <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">branch-name</code> (local) no worktree add. Isso evita criar uma branch local que precisaria ser deletada manualmente após a revisão. O worktree fica em modo "detached HEAD" rastreando a remota.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Limpeza Garantida</h2>
+          <p class="text-neutral-400 text-sm mt-1">O hook que remove o worktree em qualquer saída</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Um worktree esquecido ocupa espaço em disco e pode causar conflitos em revisões futuras do mesmo PR. O cleanup precisa acontecer em <strong class="text-blue-400">qualquer forma de saída</strong>: sucesso normal, erro do script, SIGTERM do sistema ou SIGINT (Ctrl+C). Isso é implementado com o trap de shell que cobre todos os casos.
+      </p>
+
+      <!-- Cleanup script -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">cleanup-hook.sh — limpeza garantida via trap</p>
+        <pre class="text-xs text-neutral-300"><code>#!/usr/bin/env bash
+
+# Handler de cleanup — chamado em qualquer saída
+cleanup_worktree() {
+  local worktree_path
+  worktree_path=$(read_state worktree_path 2>/dev/null)
+
+  if [[ -n "${worktree_path}" && -d "${worktree_path}" ]]; then
+    # Remove o worktree (--force ignora arquivos modificados no worktree)
+    git worktree remove --force "${worktree_path}" 2>/dev/null
+
+    # Remove o diretório se git worktree remove falhar
+    rm -rf "${worktree_path}" 2>/dev/null
+
+    # Prune referências órfãs no .git/worktrees/
+    git worktree prune 2>/dev/null
+  fi
+
+  # Marca estado como DONE ou FAILED
+  update_state status "${1:-DONE}" 2>/dev/null
+}
+
+# Registra o handler para TODOS os tipos de saída
+trap 'cleanup_worktree DONE'    EXIT
+trap 'cleanup_worktree FAILED'  ERR
+trap 'cleanup_worktree FAILED'  SIGTERM
+trap 'cleanup_worktree FAILED'  SIGINT</code></pre>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4 mb-5">
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <p class="text-emerald-400 font-semibold text-sm uppercase tracking-wide mb-3">O que o trap cobre</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>EXIT — saída normal ou por exit code</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>ERR — qualquer comando que falha</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>SIGTERM — kill do processo pelo OS</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>SIGINT — Ctrl+C do usuário</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <p class="text-red-400 font-semibold text-sm uppercase tracking-wide mb-3">O que não é coberto</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>SIGKILL (kill -9) — impossível interceptar</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Power failure / kernel panic</span></li>
+          </ul>
+          <p class="text-neutral-400 text-xs mt-3">Para esses casos: o orphan detector no início de cada revisão limpa worktrees antigos.</p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Por que --force no remove</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Se Claude modificou arquivos dentro do worktree durante a análise (esperado — é um sandbox), <code>git worktree remove</code> sem <code>--force</code> vai falhar dizendo que há modificações não commitadas. O <code>--force</code> remove mesmo assim. Isso é intencional: o worktree é descartável, qualquer modificação nele é lixo por design.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Estado do Worktree em YAML</h2>
+          <p class="text-neutral-400 text-sm mt-1">Paths, branch name, PR number, status — persistidos atomicamente</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O arquivo de estado do worktree persiste todas as informações necessárias para cleanup e retomada. Em caso de falha catastrófica (processo morto, reboot da máquina), o sistema consegue identificar e remover o worktree órfão na próxima execução usando apenas o arquivo de estado.
+      </p>
+
+      <!-- YAML de estado -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">.claudex/state/review-PR123.yaml</p>
+        <pre class="text-xs text-neutral-300"><code># Estado da revisão em andamento
+version: 2                          # CAS — incrementado a cada transição
+pr_number: 123
+pr_branch: "feature/novo-auth"
+pr_title: "Add JWT authentication to API"
+
+# Worktree
+worktree_path: "/tmp/review-PR123-1735000000"
+worktree_created_at: "2026-04-29T10:30:00Z"
+
+# Máquina de estados
+status: "REVIEWING"                 # SETUP | REVIEWING | SUMMARIZING | DONE | FAILED
+current_round: 2
+max_rounds: 3
+current_persona: "Reviewer"
+
+# Findings acumulados
+findings_count: 4
+findings_file: ".claudex/state/findings-PR123.json"
+
+# Metadados
+started_at: "2026-04-29T10:29:55Z"
+last_updated: "2026-04-29T10:35:12Z"</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Escrita Atômica do Estado</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed mb-3">
+          Nunca escreva diretamente no arquivo de estado. Escreva em arquivo temporário e renomeie atomicamente — o rename em sistemas POSIX é atômico e garante que o arquivo de estado nunca é lido em estado parcial:
+        </p>
+        <pre class="text-xs text-neutral-300"><code>update_state() {
+  local key="$1" value="$2"
+  local state_file=".claudex/state/review-PR${PR_NUMBER}.yaml"
+  local tmp_file="${state_file}.tmp.$$"
+
+  # Escreve novo estado no tmp
+  yq e ".${key} = \"${value}\"" "${state_file}" > "${tmp_file}"
+
+  # Rename atômico — nunca há arquivo corrompido
+  mv "${tmp_file}" "${state_file}"
+}</code></pre>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          O campo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">worktree_path</code> no estado é a fonte de verdade para cleanup. O script de cleanup deve sempre ler este campo do estado, nunca construir o path dinamicamente — o path inclui timestamp e pode ser diferente de execução para execução.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Fail-Safe de Existência</h2>
+          <p class="text-neutral-400 text-sm mt-1">Conflitos de lock e worktrees duplicados</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Antes de criar um novo worktree, o sistema verifica se já existe um worktree de revisão anterior que não foi limpo — seja do mesmo PR ou de outro. Esse <strong class="text-blue-400">orphan detector</strong> previne conflitos de path e evita consumo crescente de espaço em disco.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Orphan detection e resolução</p>
+        <pre class="text-xs text-neutral-300"><code>detect_and_clean_orphans() {
+  # Verifica worktrees do git que apontam para /tmp/review-*
+  while IFS= read -r line; do
+    local worktree_dir
+    worktree_dir=$(echo "${line}" | awk '{print $1}')
+
+    if [[ "${worktree_dir}" =~ ^/tmp/review- ]]; then
+      local state_file
+      state_file=$(find .claudex/state -name "*.yaml" \
+        -exec grep -l "worktree_path: ${worktree_dir}" {} \;)
+
+      if [[ -z "${state_file}" ]]; then
+        # Worktree sem estado = órfão — remove
+        echo "WARN: orphan worktree found at ${worktree_dir}, cleaning..." >&2
+        git worktree remove --force "${worktree_dir}" 2>/dev/null
+        rm -rf "${worktree_dir}" 2>/dev/null
+      fi
+    fi
+  done < <(git worktree list --porcelain | grep "^worktree ")
+}
+
+# Chama antes de criar novo worktree
+detect_and_clean_orphans
+WORKTREE_PATH=$(create_worktree "${PR_NUMBER}" "${BRANCH_NAME}")</code></pre>
+      </div>
+
+      <!-- Cenários de conflito -->
+      <div class="space-y-3">
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">A</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Worktree órfão sem estado (processo morto por SIGKILL)</p>
+            <p class="text-neutral-400 text-xs mt-1">Solução: orphan detector encontra worktrees sem entrada no estado YAML e os remove antes de criar o novo.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">B</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Revisão paralela do mesmo PR</p>
+            <p class="text-neutral-400 text-xs mt-1">Solução: timestamp no path garante unicidade. Duas revisões do PR #123 ficam em /tmp/review-PR123-1735000001 e /tmp/review-PR123-1735000099.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">C</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Lock file do git worktree</p>
+            <p class="text-neutral-400 text-xs mt-1">Solução: se git detecta que o worktree está "locked" (outra operação em andamento), o sistema aguarda 5s e tenta novamente antes de abortar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Testando o Isolamento</h2>
+          <p class="text-neutral-400 text-sm mt-1">Verificando que modificações no worktree não afetam a branch ativa</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O isolamento deve ser testado explicitamente antes de usar o sistema em repositórios de produção. O teste é simples: criar o worktree, modificar um arquivo dentro dele e verificar que a branch principal permanece intacta.
+      </p>
+
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
+        <p class="text-blue-400 font-semibold text-sm mb-3">Smoke test de isolamento</p>
+        <pre class="text-xs text-neutral-300"><code>#!/usr/bin/env bash
+# test-isolation.sh
+
+set -euo pipefail
+
+REPO_DIR="$(pwd)"
+WORKTREE_PATH="/tmp/test-isolation-$(date +%s)"
+
+echo "=== Teste de Isolamento de Worktree ==="
+
+# 1. Estado inicial da branch principal
+echo "Branch principal: $(git branch --show-current)"
+echo "Status inicial:"
+git status --short
+
+# 2. Cria worktree de teste
+git worktree add "${WORKTREE_PATH}" HEAD
+echo -e "\nWorktree criado em: ${WORKTREE_PATH}"
+
+# 3. Modifica arquivo NO WORKTREE
+echo "MODIFICATION" >> "${WORKTREE_PATH}/README.md"
+echo "test-artifact.tmp" > "${WORKTREE_PATH}/test-artifact.tmp"
+
+echo -e "\nStatus no worktree (deve mostrar modificações):"
+git -C "${WORKTREE_PATH}" status --short
+
+echo -e "\nStatus na branch principal (deve estar LIMPO):"
+git -C "${REPO_DIR}" status --short
+
+# Verifica que está limpo
+if git -C "${REPO_DIR}" status --short | grep -q .; then
+  echo "FAIL: branch principal foi contaminada!" >&2
+  exit 1
+fi
+
+echo "PASS: branch principal permanece limpa"
+
+# 4. Cleanup
+git worktree remove --force "${WORKTREE_PATH}"
+echo "Worktree removido. Teste completo."</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O que o teste confirma</span>
+        </div>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>Arquivos modificados no worktree não aparecem no status da branch principal</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>Arquivos criados no worktree não aparecem no working tree principal</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>Após remoção do worktree, nenhum rastro permanece no repositório principal</span></li>
+          <li class="flex gap-2"><span class="text-blue-400 mt-0.5">•</span><span>git worktree list não mostra mais o worktree removido</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 3.2
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Git worktree</strong><span class="text-neutral-400"> — múltiplos checkouts simultâneos, HEADs e estados independentes</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Criação com path dinâmico</strong><span class="text-neutral-400"> — timestamp garante unicidade, origin/branch evita criação de branch local</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Cleanup via trap</strong><span class="text-neutral-400"> — EXIT, ERR, SIGTERM e SIGINT cobertos com --force para arquivos modificados</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Estado YAML atômico</strong><span class="text-neutral-400"> — worktree_path persistido permite cleanup mesmo após falha catastrófica</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Orphan detector</strong><span class="text-neutral-400"> — verifica e remove worktrees anteriores antes de criar novo</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.3 — O Loop de Revisão</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 3.1
+          </a>
+          <a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code — Módulo 3.2 · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

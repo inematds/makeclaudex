@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.1 — O que é o Claude Code | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .bg-emerald-600 { background-color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500:hover { background-color: #047857; }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400 font-medium">Módulo 1.1</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+        MÓDULO 1.1
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      🤖 O que é o Claude Code: <span class="text-emerald-400">Ferramenta de Engenharia</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">40</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Iniciante</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🧠</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Conceitual</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🤖 Claude Code como ferramenta de engenharia</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code não é um chatbot com interface bonita. É um <strong class="text-emerald-400">CLI que executa o modelo Claude diretamente no seu terminal</strong>, com acesso completo ao sistema de arquivos, processos e ferramentas do seu ambiente de desenvolvimento. A diferença é fundamental: enquanto um chat responde em texto, o Claude Code age.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">⚡</span> A diferença que muda tudo</h3>
+        <p class="text-neutral-300 mb-4">Quando você pede ao Claude Code para "adicionar testes ao módulo de pagamentos", ele não descreve como fazer — ele <strong class="text-emerald-400">lê os arquivos existentes</strong>, entende a estrutura, escreve o código e salva os arquivos. Tudo no mesmo prompt.</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Chat tradicional:</strong> "Aqui está como você poderia adicionar testes..." → você implementa</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Claude Code:</strong> Lê os arquivos → escreve os testes → salva → roda os testes → reporta resultado</span></li>
+        </ul>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que o Claude Code FAZ</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Lê, cria e edita arquivos no seu filesystem</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Executa comandos bash (git, npm, tests)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Encadeia múltiplas ações em sequência</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Verifica resultados e ajusta conforme necessário</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que ele NÃO é</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Não é um REPL interativo (sem persistência por padrão)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Não tem interface gráfica nativa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Não aprende entre sessões automaticamente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Não executa código arbitrário sem permissão</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Prática</h3>
+        <p class="text-neutral-300">Quando você formular um prompt, pense em termos de <strong class="text-primary">resultados observáveis</strong>: "Crie o arquivo X com o conteúdo Y" é mais eficaz que "me ajude a criar X". O Claude Code prefere instruções que pode verificar.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">🔄 O loop de conversa — turnos e ferramentas</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code opera em um <strong class="text-emerald-400">loop de turnos síncronos</strong>. Em cada turno: recebe input, decide quais ferramentas chamar, aguarda os resultados e decide o próximo passo. Esse loop continua até o Claude determinar que a tarefa está concluída — ou até ser interrompido.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🔄</span> O loop em detalhes</h3>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <div><strong class="text-emerald-400">Input:</strong><span class="text-neutral-300"> Seu prompt é inserido no context window junto com o histórico da sessão e o conteúdo dos arquivos referenciados</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <div><strong class="text-emerald-400">Decisão:</strong><span class="text-neutral-300"> O modelo decide se responde em texto ou chama uma ferramenta (Bash, Read, Edit, Write)</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <div><strong class="text-emerald-400">Execução:</strong><span class="text-neutral-300"> A ferramenta executa (aqui os hooks são disparados) e o resultado vai de volta para o context window</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <div><strong class="text-emerald-400">Iteração:</strong><span class="text-neutral-300"> O modelo processa o resultado e decide o próximo passo — ou finaliza se a tarefa estiver completa</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Por que isso importa para hooks</h3>
+        <p class="text-neutral-300 mb-3">Hooks são executados no momento exato da etapa 3 — <strong>antes ou depois da execução da ferramenta</strong>. Entender o loop explica:</p>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li>• Por que PreToolUse pode bloquear uma ação (a ferramenta ainda não rodou)</li>
+          <li>• Por que PostToolUse não pode desfazer (a ferramenta já rodou)</li>
+          <li>• Por que o hook recebe context window no payload do evento</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🛠️ Ferramentas nativas: Bash, Read, Edit, Write</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code tem <strong class="text-emerald-400">quatro ferramentas fundamentais</strong> que são as primitivas de toda ação que ele executa. Cada hook que você escrever vai interceptar o uso de uma ou mais dessas ferramentas — por isso é essencial saber o que cada uma faz.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-bold text-emerald-400 mb-3">🖥️ Bash</h4>
+          <p class="text-neutral-300 text-sm mb-3">Executa comandos shell. O mais poderoso e o mais arriscado — pode fazer qualquer coisa que você pode fazer no terminal.</p>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <code class="text-xs text-neutral-300">git commit -m "feat: add tests"<br>npm run test<br>find . -name "*.ts" -type f</code>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-bold text-emerald-400 mb-3">📖 Read</h4>
+          <p class="text-neutral-300 text-sm mb-3">Lê o conteúdo de arquivos. Usado para entender o contexto antes de editar ou antes de tomar decisões.</p>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <code class="text-xs text-neutral-300">Read("/src/components/Button.tsx")<br>Read("/package.json")<br>Read("./CLAUDE.md")</code>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-bold text-emerald-400 mb-3">✏️ Edit</h4>
+          <p class="text-neutral-300 text-sm mb-3">Modifica partes específicas de arquivos existentes. Usa old_string/new_string para edições precisas e cirúrgicas.</p>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <code class="text-xs text-neutral-300">Edit(file, old_string, new_string)<br># Substitui exatamente um trecho<br># Falha se old_string não for único</code>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-bold text-emerald-400 mb-3">📝 Write</h4>
+          <p class="text-neutral-300 text-sm mb-3">Cria ou sobrescreve arquivos completos. Usado para novos arquivos ou rewrites totais de conteúdo.</p>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <code class="text-xs text-neutral-300">Write("/path/to/file.ts", content)<br># Cria se não existe<br># Sobrescreve se existe</code>
+          </div>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Hookando pelo nome da ferramenta</h3>
+        <p class="text-neutral-300">No settings.json, você registra hooks com um <strong class="text-primary">matcher de nome de ferramenta</strong>. Por exemplo, um hook de PreToolUse com matcher "Bash" intercepta todas as execuções de shell — você pode então inspecionar o comando e decidir se bloqueia.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">⚙️ Arquivos de configuração: settings.json e CLAUDE.md</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Toda a personalização do Claude Code passa por dois arquivos: <strong class="text-emerald-400">settings.json</strong> para configurações estruturadas (hooks, comandos, permissões) e <strong class="text-emerald-400">CLAUDE.md</strong> para instruções em texto natural injetadas no contexto de cada sessão.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📄</span> Estrutura do settings.json</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/validate-commit.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": ["Bash(git *)", "Bash(npm *)"],
+    "deny": ["Bash(rm -rf *)"]
+  }
+}</code></pre>
+      </div>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📋</span> Exemplo de CLAUDE.md</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300"># Projeto: Sistema de Pagamentos
+
+## Ao iniciar qualquer sessão
+Leia `.memory/MEMORY.md` antes de responder qualquer coisa.
+
+## Regras de código
+- TypeScript estrito — nunca use `any`
+- Testes obrigatórios para toda nova função pública
+- Commits sempre em inglês, formato Conventional Commits
+
+## Estrutura do projeto
+- `src/` — código fonte
+- `tests/` — testes unitários e de integração
+- `.claude/hooks/` — hooks do Claude Code</code></pre>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Local vs Global</h3>
+        <p class="text-neutral-300">Existem dois settings.json: <strong class="text-primary">.claude/settings.json</strong> (específico do projeto, commitado no repo) e <strong class="text-primary">~/.claude/settings.json</strong> (global, para todas as sessões). O CLAUDE.md também pode existir em múltiplos níveis — o Claude Code os concatena todos.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">📁 O contexto de projeto — por que o Claude sabe onde está</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando você inicia o Claude Code em um diretório, ele usa esse diretório como <strong class="text-emerald-400">âncora de contexto</strong>. Lê os arquivos de configuração locais, passa o cwd para cada ferramenta executada e prioriza arquivos próximos ao diretório de trabalho nas buscas de contexto.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🗂️</span> Hierarquia de configuração</h3>
+        <div class="space-y-3 text-sm text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">1.</span>
+            <span><strong class="text-emerald-400">~/.claude/settings.json</strong> — configuração global do usuário (carregado sempre)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">2.</span>
+            <span><strong class="text-emerald-400">.claude/settings.json</strong> — configuração do projeto (sobrescreve global)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">3.</span>
+            <span><strong class="text-emerald-400">CLAUDE.md</strong> — instruções em texto (concatenados, não sobrescritos)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">4.</span>
+            <span><strong class="text-emerald-400">CLAUDE.md em subdiretórios</strong> — instruções específicas de módulo/área</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Cuidado com o contexto errado</h3>
+        <p class="text-neutral-300">Se você iniciar o Claude Code no diretório home (<code class="bg-dark-700 px-1 rounded">~</code>) em vez do diretório do projeto, ele não vai carregar o settings.json do projeto — os hooks e comandos registrados localmente não estarão disponíveis. <strong>Sempre inicie no diretório raiz do projeto.</strong></p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🚀 Primeiros passos — instalação e primeiro prompt técnico</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Instalar o Claude Code requer Node.js 18+ e uma chave de API da Anthropic. A instalação é via npm global, e a autenticação é feita por variável de ambiente ou pelo comando de login interativo.
+      </p>
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-2">Instalar</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">npm install -g @anthropic-ai/claude-code
+claude --version  # Verifica a instalação</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-2">Autenticar</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># Opção 1: Variável de ambiente
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Opção 2: Login interativo
+claude login</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-2">Primeiro prompt técnico</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># No diretório do seu projeto:
+claude
+
+# Prompt de teste:
+"Leia o package.json e me diga quais
+dependências de produção estão declaradas"</code></pre>
+            <p class="text-neutral-400 text-sm mt-2">O Claude vai usar a ferramenta Read no package.json e retornar uma análise real das dependências.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Primeiro prompt ideal para testar hooks</h3>
+        <p class="text-neutral-300">Para verificar que hooks estão funcionando, use um prompt que acione a ferramenta que o hook intercepta: <code class="bg-dark-700 px-1 rounded">"Execute: echo 'hook test'"</code>. Se o hook de PreToolUse Bash estiver ativo, ele rodará antes do echo.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 1.1</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Claude Code é um agente, não um chat</strong><span class="text-neutral-400"> — ele age no filesystem com ferramentas reais</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">O loop de turnos</strong><span class="text-neutral-400"> — input → decisão → execução → iteração → finalização</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Quatro ferramentas fundamentais</strong><span class="text-neutral-400"> — Bash, Read, Edit, Write são os blocos de construção</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">settings.json + CLAUDE.md</strong><span class="text-neutral-400"> — os dois arquivos que controlam comportamento e instruções</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Contexto de projeto</strong><span class="text-neutral-400"> — sempre inicie no diretório raiz para carregar as configurações corretas</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Instalação e autenticação</strong><span class="text-neutral-400"> — npm global + ANTHROPIC_API_KEY são os requisitos mínimos</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.2 — Hooks: o Sistema de Eventos — como interceptar ações do Claude Code com scripts externos</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Voltar para Trilha 1
+          </a>
+          <a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Próximo: Hooks →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia com Claude Code &mdash; Módulo 1.1 &mdash; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

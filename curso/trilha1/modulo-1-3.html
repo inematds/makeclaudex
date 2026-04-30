@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.3 — Slash Commands e Skills | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .bg-emerald-600 { background-color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500:hover { background-color: #047857; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400 font-medium">Módulo 1.3</span>
+    </nav>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+        MÓDULO 1.3
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      ⚡ Slash Commands e Skills: <span class="text-emerald-400">Automações Reutilizáveis</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">40</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Iniciante</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-emerald-400 text-lg">🔧</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Prático</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">⚡ O que é um slash command</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um slash command é um <strong class="text-emerald-400">atalho nomeado para um arquivo de instruções</strong>. Ao digitar <code class="bg-dark-700 px-1 rounded">/meu-comando</code> no Claude Code, o modelo carrega o arquivo de skill associado e o executa no contexto atual — como se você tivesse colado todo o conteúdo do arquivo manualmente.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">⚡</span> Como funciona internamente</h3>
+        <div class="space-y-3 text-sm text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">1.</span><span>Você digita <code class="bg-dark-700 px-1 rounded">/revisar-pr</code> no Claude Code</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">2.</span><span>Claude Code busca o comando no settings.json (local primeiro, depois global)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">3.</span><span>Encontra o arquivo de skill associado (ex: <code class="bg-dark-700 px-1 rounded">.claude/skills/revisar-pr.md</code>)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">4.</span><span>Injeta o conteúdo do arquivo como prompt, junto com o contexto atual e os <code class="bg-dark-700 px-1 rounded">$args</code> passados</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 font-bold">5.</span><span>Claude executa as instruções da skill como se fosse um prompt normal</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> A diferença entre prompt e skill</h3>
+        <p class="text-neutral-300">Um prompt você digita toda vez, diferente a cada sessão. Uma skill é <strong class="text-primary">codificada, versionada e consistente</strong> — mesmas instruções toda vez. Use skills para processos que precisam ser repetíveis e auditáveis.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">📍 Comandos locais vs globais</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O escopo de um slash command determina onde ele está disponível. <strong class="text-emerald-400">Comandos locais</strong> vivem no repo e são para aquele projeto. <strong class="text-emerald-400">Comandos globais</strong> ficam na home e estão disponíveis em qualquer sessão Claude Code.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">📁 Comandos Locais (projeto)</h4>
+          <p class="text-neutral-300 text-sm mb-3">Arquivo: <code class="bg-dark-700 px-1 rounded">.claude/settings.json</code></p>
+          <p class="text-neutral-400 text-sm mb-3">Commitado no repo — todos os devs do projeto têm acesso aos mesmos comandos.</p>
+          <ul class="space-y-1 text-neutral-300 text-sm">
+            <li>✓ Comandos específicos do domínio do projeto</li>
+            <li>✓ Compartilhados com o time via git</li>
+            <li>✓ Podem referenciar arquivos do repo</li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-neutral-400 mb-4">🏠 Comandos Globais (usuário)</h4>
+          <p class="text-neutral-300 text-sm mb-3">Arquivo: <code class="bg-dark-700 px-1 rounded">~/.claude/settings.json</code></p>
+          <p class="text-neutral-400 text-sm mb-3">Personal — apenas você tem acesso, em todos os seus projetos.</p>
+          <ul class="space-y-1 text-neutral-300 text-sm">
+            <li>✓ Fluxos pessoais de trabalho</li>
+            <li>✓ Preferências de estilo de código</li>
+            <li>✓ Comandos que você usa em todo projeto</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📊</span> Exemplo de configuração de ambos</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">// .claude/settings.json (local - para o projeto)
+{
+  "commands": {
+    "revisar-pr": {
+      "description": "Revisa um PR seguindo os padrões do projeto",
+      "file": ".claude/skills/revisar-pr.md"
+    },
+    "gerar-migration": {
+      "description": "Gera SQL de migration para nova tabela",
+      "file": ".claude/skills/gerar-migration.md"
+    }
+  }
+}
+
+// ~/.claude/settings.json (global - para o usuário)
+{
+  "commands": {
+    "commit-msg": {
+      "description": "Gera mensagem de commit Conventional Commits",
+      "file": "~/.claude/skills/commit-msg.md"
+    }
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">📜 O que é uma skill</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma skill é um <strong class="text-emerald-400">arquivo Markdown com instruções detalhadas</strong> sobre como executar uma tarefa específica. É o "manual de execução" que o Claude recebe quando você aciona um slash command — pode ter contexto, exemplos, regras, checklists e referências.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📝</span> Exemplo de skill completa</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300"># Skill: Revisar Pull Request
+
+## Objetivo
+Revisar o PR atual seguindo os padrões de qualidade do projeto.
+
+## Passos obrigatórios
+
+1. Leia o diff completo com `git diff main...HEAD`
+2. Para cada arquivo modificado:
+   - Verifique nomenclatura (camelCase para funções, PascalCase para classes)
+   - Verifique que funções públicas têm testes correspondentes
+   - Verifique que não há `console.log` ou `debugger` residuais
+3. Verifique cobertura de testes: `npm run test:coverage`
+4. Liste os problemas encontrados por prioridade: CRÍTICO, MAIOR, MENOR
+
+## Formato do relatório
+
+```
+## Revisão do PR
+
+### Problemas Críticos (bloqueiam merge)
+- [ ] ...
+
+### Problemas Maiores (devem ser corrigidos)
+- [ ] ...
+
+### Sugestões (opcional)
+- ...
+```
+
+## Referências
+- Leia `docs/CONTRIBUTING.md` para padrões detalhados</code></pre>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Skills são código, não texto</h3>
+        <p class="text-neutral-300">Trate skills como você trata código: <strong class="text-primary">versione no git, escreva mensagens de commit descritivas, revise antes de commitar</strong>. Uma skill mal escrita é como um bug — produz resultados inconsistentes sem avisar.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🔨 Criando um comando personalizado do zero</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Criar um slash command envolve três etapas: <strong class="text-emerald-400">escrever o arquivo de skill</strong>, <strong class="text-emerald-400">registrar no settings.json</strong> e <strong class="text-emerald-400">testar no Claude Code</strong>. Vamos criar um comando <code class="bg-dark-700 px-1 rounded">/analisar-deps</code> que analisa dependências desatualizadas.
+      </p>
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-3">Criar o arquivo de skill</h4>
+            <p class="text-neutral-400 text-sm mb-3">Arquivo: <code class="bg-dark-700 px-1 rounded">.claude/skills/analisar-deps.md</code></p>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># Skill: Analisar Dependências
+
+Execute `npm outdated --json` e analise o resultado.
+Para cada dependência desatualizada:
+1. Identifique o tipo: patch, minor ou major
+2. Verifique o CHANGELOG no npm registry
+3. Classifique o risco: BAIXO (patch), MÉDIO (minor), ALTO (major)
+
+Apresente um relatório organizado por risco.</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-3">Registrar no settings.json</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">{
+  "commands": {
+    "analisar-deps": {
+      "description": "Analisa dependências desatualizadas por risco",
+      "file": ".claude/skills/analisar-deps.md"
+    }
+  }
+}</code></pre>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold mb-3">Testar no Claude Code</h4>
+            <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300"># No terminal, dentro do projeto:
+claude
+
+# No Claude Code:
+/analisar-deps</code></pre>
+            <p class="text-neutral-400 text-sm mt-2">O Claude vai carregar a skill e executar npm outdated automaticamente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">📨 Passando argumentos para comandos</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Ao digitar <code class="bg-dark-700 px-1 rounded">/meu-comando argumento extra</code>, o texto após o nome do comando fica disponível na skill como <strong class="text-emerald-400">$args</strong>. Isso permite criar skills genéricas que se adaptam conforme o contexto de uso.
+      </p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📝</span> Skill com $args</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300"># Skill: Gerar Componente React
+# Uso: /gerar-componente NomeDoComponente
+
+Crie um componente React chamado **$args**.
+
+Requisitos:
+- TypeScript com tipos explícitos
+- Props interface com nome `${args}Props`
+- Arquivo: `src/components/$args/$args.tsx`
+- Story: `src/components/$args/$args.stories.tsx`
+- Teste: `src/components/$args/$args.test.tsx`
+
+Siga os padrões em `src/components/Button/` como referência.</code></pre>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-3">✓ Uso correto</h4>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">/gerar-componente UserAvatar
+# $args = "UserAvatar"
+# Cria UserAvatar.tsx, stories, test</code></pre>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-neutral-400 mb-3">ℹ️ Argumentos múltiplos</h4>
+          <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-neutral-300">/gerar-componente UserAvatar large
+# $args = "UserAvatar large"
+# Tudo após o comando é $args</code></pre>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Validar argumentos na skill</h3>
+        <p class="text-neutral-300">Inclua instrução de validação na skill: <em>"Se $args estiver vazio, pergunte ao usuário qual nome usar antes de prosseguir"</em>. O Claude Code não valida argumentos — é responsabilidade da skill lidar com input ausente ou inválido.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">✅ Boas práticas — quando criar vs quando não criar</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Criar um slash command tem custo: você precisa escrever a skill, mantê-la atualizada e garantir que ela funciona em diferentes contextos. <strong class="text-emerald-400">Nem tudo precisa ser um comando</strong> — saber quando não criar é tão importante quanto saber como criar.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ CRIE um comando quando</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>A tarefa é repetida 3+ vezes por semana</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>As instruções têm mais de 5 linhas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Consistência entre execuções é crítica</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Múltiplas pessoas precisam da mesma tarefa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>O processo envolve checklist ou múltiplos passos</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ NÃO crie quando</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A tarefa é única ou raramente repetida</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Um prompt de 2 linhas já resolve</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>As instruções mudam muito a cada uso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>É apenas preferência pessoal não-crítica</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Você não vai manter atualizado</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Regra dos 3 usos</h3>
+        <p class="text-neutral-300">Uma heurística simples: se você usa um prompt similar <strong>3 vezes</strong>, escreva a skill na 4ª vez. Isso evita o overhead de criar skills que você vai usar uma vez só e garante que as skills criadas realmente valem o investimento.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo 1.3</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Slash commands = atalhos para skills</strong><span class="text-neutral-400"> — /nome carrega e executa um arquivo .md de instruções</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Local vs global</strong><span class="text-neutral-400"> — .claude/ para o projeto, ~/.claude/ para o usuário</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Skills são Markdown versionado</strong><span class="text-neutral-400"> — trate como código, com commits e revisão</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">$args passa parâmetros</strong><span class="text-neutral-400"> — tudo após o nome do comando fica disponível como $args</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Regra dos 3 usos</strong><span class="text-neutral-400"> — crie a skill na 4ª vez que usar o mesmo prompt</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.4 — Estado e Persistência — como manter dados entre sessões usando arquivos e técnicas de concorrência segura</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 1.2</a>
+          <a href="modulo-1-4.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Próximo: Estado e Persistência →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia com Claude Code &mdash; Módulo 1.3 &mdash; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

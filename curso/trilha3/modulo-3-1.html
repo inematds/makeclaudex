@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.1 — O Projeto | Engenharia com Claude Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🏗️</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Construindo</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avançado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <span>/</span>
+      <span class="text-blue-400 font-medium">Módulo 3.1</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-4">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        MÓDULO 3.1
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
+      O Projeto: <span class="text-blue-400">Revisor de PRs com Claude Code</span>
+    </h1>
+    <div class="flex flex-wrap gap-4">
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">📚</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">⏱️</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">40</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🎯</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
+      </div>
+      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+        <span class="text-blue-400 text-lg">🧠</span>
+        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Conceitual</p></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+
+    <!-- TÓPICO 1 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">1</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Visão Geral do Plugin</h2>
+          <p class="text-neutral-400 text-sm mt-1">O que o revisor de PRs faz e o que o torna diferente</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        O Revisor de PRs com Claude Code é um plugin que automatiza a análise completa de um Pull Request: ele isola o código da branch via <strong class="text-blue-400">git worktree</strong>, executa múltiplas rodadas de análise com personas especializadas e entrega um relatório estruturado diretamente no GitHub. Diferente de um linter ou ferramenta de análise estática, ele entende <em>intenção</em> — a descrição do PR, os commits e o contexto da branch fazem parte da análise.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal</span>
+        </div>
+        <p class="text-neutral-200 font-semibold mb-2">Um revisor que entende por que o código existe, não apenas o que ele faz</p>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Ferramentas de análise estática verificam sintaxe e padrões. Este plugin verifica se a implementação atende à intenção declarada no PR. Um código tecnicamente correto que não resolve o problema descrito é um achado de revisão — e só um revisor com contexto consegue identificar isso.
+        </p>
+      </div>
+
+      <!-- O que o plugin entrega -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-5">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Isolamento</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Worktree temporário em /tmp — sem toque na branch de trabalho. Cleanup garantido.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Análise Multi-perspectiva</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">3 rodadas com personas Author, Reviewer e Security. Findings incrementais sem repetição.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <p class="text-blue-400 font-semibold text-sm mb-2">Relatório Integrado</p>
+          <p class="text-neutral-400 text-xs leading-relaxed">Markdown estruturado em .claudex/reviews/ e comentário automático via gh pr comment.</p>
+        </div>
+      </div>
+
+      <!-- Dica Prática -->
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Inicie sempre com <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">/review-pr 123</code> para um PR pequeno (menos de 200 linhas de diff) na primeira execução. PRs grandes são válidos, mas o custo e o tempo de análise aumentam proporcionalmente ao tamanho do diff.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">2</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Por que Revisão de PR é Mais Complexa</h2>
+          <p class="text-neutral-400 text-sm mt-1">Múltiplos arquivos, contexto de branch, histórico de commits</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Revisar um único arquivo em isolamento é simples. Revisar um PR envolve entender como <strong class="text-blue-400">múltiplos arquivos se relacionam</strong> entre si, qual é a intenção declarada nos commits, o que foi discutido anteriormente no PR e como a mudança se encaixa no contexto da codebase. Essa complexidade multidimensional é o que justifica a arquitetura em camadas do plugin.
+      </p>
+
+      <!-- Dimensões de complexidade -->
+      <div class="space-y-3 mb-6">
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">1</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Diff multi-arquivo</p>
+            <p class="text-neutral-400 text-xs mt-1">Um PR típico modifica 3-20 arquivos. Problemas frequentemente surgem das interações entre arquivos, não de arquivos individuais.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">2</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Histórico de commits</p>
+            <p class="text-neutral-400 text-xs mt-1">Commits individuais revelam a ordem de raciocínio do autor. Um commit que reverte uma decisão anterior é um sinal de alerta que o diff final esconde.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">3</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Contexto da branch de base</p>
+            <p class="text-neutral-400 text-xs mt-1">O PR não existe no vácuo. Arquivos não modificados podem conter código que interaje com as mudanças e precisam ser considerados.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">4</div>
+          <div>
+            <p class="font-semibold text-neutral-100 text-sm">Intenção declarada vs implementação real</p>
+            <p class="text-neutral-400 text-xs mt-1">A descrição do PR afirma o objetivo. A revisão deve verificar se a implementação realmente atinge aquele objetivo — o gap é frequentemente onde os bugs vivem.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerta -->
+      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-400 text-lg">⚠️</span>
+          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Atenção</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Uma ferramenta que analisa apenas o diff sem contexto de branch encontra no máximo 60% dos problemas de um PR. Os outros 40% requerem entendimento de como o código novo interage com o código existente. Por isso o worktree fornece acesso completo à codebase, não apenas ao diff.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">3</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O Desafio do Isolamento</h2>
+          <p class="text-neutral-400 text-sm mt-1">Por que não revisar na branch ativa</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Quando Claude Code analisa código, ele pode — e frequentemente o faz — fazer modificações para entender melhor o sistema: executar scripts, criar arquivos temporários, instalar dependências. Se isso acontece na sua branch de trabalho durante uma revisão, você tem <strong class="text-blue-400">contaminação silenciosa</strong>: o código que você vai commitar pode estar diferente do que você escreveu.
+      </p>
+
+      <div class="grid sm:grid-cols-2 gap-4 mb-6">
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+          <p class="text-red-400 font-semibold text-sm uppercase tracking-wide mb-3">Sem Isolamento</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Claude pode modificar arquivos durante análise</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Scripts de teste podem alterar estado do banco local</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>Arquivos temporários ficam no seu working tree</span></li>
+            <li class="flex gap-2"><span class="text-red-400 mt-0.5">✗</span><span>git status fica poluído após a revisão</span></li>
+          </ul>
+        </div>
+        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+          <p class="text-emerald-400 font-semibold text-sm uppercase tracking-wide mb-3">Com Worktree</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Sandbox completamente isolado em /tmp</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Branch de trabalho nunca é tocada</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>Worktree removido automaticamente após uso</span></li>
+            <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">✓</span><span>git status limpo garantido após revisão</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">💡</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Conceito Principal</span>
+        </div>
+        <p class="text-neutral-200 font-semibold mb-2">O isolamento é uma garantia estrutural, não uma convenção</p>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Convenções dependem de disciplina — e sob pressão, disciplina falha. O worktree torna fisicamente impossível que a revisão afete a branch de trabalho: são diretórios diferentes no sistema de arquivos. Não importa o que Claude faça dentro do worktree, sua branch permanece intacta.
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">4</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Arquitetura em 3 Camadas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Isolamento → Análise multi-perspectiva → Relatório estruturado</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        A arquitetura em 3 camadas garante que cada responsabilidade é tratada por um componente dedicado, com interfaces limpas entre eles. Uma falha na camada de relatório não impede a análise; uma falha na camada de isolamento aborta tudo antes de qualquer análise ser feita. Essa separação é o que torna o sistema <strong class="text-blue-400">seguro por default</strong>.
+      </p>
+
+      <!-- As 3 camadas -->
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-blue-400 mb-1">Camada de Isolamento</h4>
+            <p class="text-xs text-neutral-400 mb-2">Componentes: worktree manager, state YAML, cleanup hook</p>
+            <p class="text-neutral-300 text-sm">Responsável por criar o ambiente seguro de análise. Persiste estado suficiente para cleanup garantido mesmo em falha catastrófica. Ponto de entrada e saída do sistema.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-blue-400 mb-1">Camada de Análise</h4>
+            <p class="text-xs text-neutral-400 mb-2">Componentes: Stop Hook, runner script, persona engine, findings accumulator</p>
+            <p class="text-neutral-300 text-sm">O loop de revisão multi-rodada. Cada rodada usa uma persona diferente e acumula findings sem repetir análises anteriores. Controlada pela máquina de estados.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-blue-400 mb-1">Camada de Relatório</h4>
+            <p class="text-xs text-neutral-400 mb-2">Componentes: synthesis persona, markdown formatter, gh pr comment</p>
+            <p class="text-neutral-300 text-sm">Transforma findings brutos de múltiplas rodadas num relatório coeso, priorizando por severidade e postando no GitHub. Executada na fase SUMMARIZING.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-blue-400 text-lg">📊</span>
+          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Separação de Responsabilidades</span>
+        </div>
+        <p class="text-neutral-300 text-sm">Cada camada só conhece sua própria responsabilidade. A camada de análise não sabe como o relatório será formatado. A camada de relatório não sabe quantas rodadas houve. Isso é possível porque o estado YAML é o único canal de comunicação entre camadas.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">5</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">Comparando com o Claudex</h2>
+          <p class="text-neutral-400 text-sm mt-1">O que é idêntico e o que é diferente</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Se você concluiu a Trilha 2, boa parte desta trilha será reconhecimento de padrões. A <strong class="text-blue-400">máquina de estados</strong>, o <strong class="text-blue-400">Stop Hook como motor de loop</strong> e o conceito de <strong class="text-blue-400">personas rotativas</strong> são idênticos ao Claudex. O que muda é o contexto de operação: em vez de um arquivo de código em revisão, temos uma branch inteira de PR.
+      </p>
+
+      <div class="grid sm:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <p class="text-blue-400 font-semibold text-sm uppercase tracking-wide mb-3">Idêntico ao Claudex</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">≡</span><span>Máquina de estados com fases explícitas</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">≡</span><span>Stop Hook com BLOCK/APPROVE</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">≡</span><span>Rotação de personas por rodada</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">≡</span><span>Estado YAML com escrita atômica</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">≡</span><span>Fase SUMMARIZING que consolida findings</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">≡</span><span>Primitivas de safety: fail-open, cleanup</span></li>
+          </ul>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+          <p class="text-blue-400 font-semibold text-sm uppercase tracking-wide mb-3">Novo neste projeto</p>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">+</span><span>Git worktree para isolamento de branch</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">+</span><span>gh CLI para contexto de PR (diff, commits)</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">+</span><span>Personas Author/Reviewer/Security (vs Eng/Sec/SRE)</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">+</span><span>Relatório persistido por número de PR</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">+</span><span>Comentário automático no GitHub</span></li>
+            <li class="flex gap-2"><span class="text-blue-400 mt-0.5">+</span><span>review-config.yaml por repositório</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-primary text-lg">⚡</span>
+          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
+        </div>
+        <p class="text-neutral-300 text-sm leading-relaxed">
+          Se você construiu o Claudex da Trilha 2, pode reusar o hook de Stop, a lógica de máquina de estados e o sistema de personas com mínimas adaptações. O delta real de trabalho novo está na camada de isolamento (worktree) e integração com GitHub (gh CLI).
+        </p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+          <span class="text-blue-400 font-bold text-lg">6</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-neutral-100">O SPEC do Projeto</h2>
+          <p class="text-neutral-400 text-sm mt-1">As 8 garantias de segurança e o blueprint de arquivos</p>
+        </div>
+      </div>
+
+      <p class="text-neutral-300 leading-relaxed mb-6">
+        Antes de qualquer código, o SPEC deste projeto define <strong class="text-blue-400">8 garantias de segurança</strong> que devem ser verdadeiras em qualquer estado do sistema. Quatro são herdadas do Claudex (fail-open, estado atômico, CAS, cleanup garantido); quatro são novas e específicas para o contexto de revisão de PRs em repositórios de produção.
+      </p>
+
+      <!-- As 8 garantias -->
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Herdada 1</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Fail-open</p>
+          <p class="text-neutral-400 text-xs mt-1">Qualquer falha no plugin libera Claude Code para continuar trabalhando normalmente.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Herdada 2</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Estado Atômico</p>
+          <p class="text-neutral-400 text-xs mt-1">O arquivo de estado nunca fica em estado corrompido ou parcialmente escrito.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Herdada 3</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">CAS (Compare-and-Swap)</p>
+          <p class="text-neutral-400 text-xs mt-1">Transições de estado verificam a versão atual antes de escrever a nova.</p>
+        </div>
+        <div class="bg-dark-700 border border-dark-600 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Herdada 4</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Cleanup Garantido</p>
+          <p class="text-neutral-400 text-xs mt-1">Recursos temporários são removidos em qualquer saída, incluindo SIGTERM.</p>
+        </div>
+        <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Nova 5</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Branch Intocada</p>
+          <p class="text-neutral-400 text-xs mt-1">A branch de trabalho do desenvolvedor nunca é modificada durante a revisão.</p>
+        </div>
+        <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Nova 6</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Relatório Sempre Gerado</p>
+          <p class="text-neutral-400 text-xs mt-1">Mesmo em falha parcial, um relatório mínimo com o que foi encontrado é gerado e salvo.</p>
+        </div>
+        <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Nova 7</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Worktree Orphan Prevention</p>
+          <p class="text-neutral-400 text-xs mt-1">Sistema detecta e remove worktrees órfãos de revisões anteriores antes de criar novo.</p>
+        </div>
+        <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-blue-400 text-xs font-bold uppercase">Nova 8</span>
+          </div>
+          <p class="font-semibold text-neutral-100 text-sm">Terminação Garantida</p>
+          <p class="text-neutral-400 text-xs mt-1">MAX_ROUNDS garante que nenhuma revisão corre indefinidamente, independente do estado.</p>
+        </div>
+      </div>
+
+      <!-- Blueprint de arquivos -->
+      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-wide mb-3">Blueprint de Arquivos</p>
+        <pre class="text-xs text-neutral-300"><code>.claude/
+├── commands/
+│   └── review-pr.md        # Slash command de entrada
+├── hooks/
+│   ├── stop-hook.sh         # Motor do loop (BLOCK/APPROVE)
+│   └── cleanup-hook.sh      # Cleanup garantido de worktree
+├── lib/
+│   ├── worktree.sh          # Criação e remoção de worktrees
+│   ├── state.sh             # Leitura/escrita atômica de estado
+│   ├── runner.sh            # Invoca claude --print por rodada
+│   └── report.sh            # Gera e posta relatório
+└── review-config.yaml       # Configuração por repositório
+
+.claudex/
+└── reviews/
+    ├── PR-123.md            # Relatório persistido por PR
+    └── PR-124.md</code></pre>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 3.1
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Visão geral</strong><span class="text-neutral-400"> — Plugin de revisão que entende intenção de PR via contexto de branch, commits e descrição</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Complexidade de PR</strong><span class="text-neutral-400"> — Múltiplos arquivos, histórico de commits e interação com codebase existente</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Isolamento via worktree</strong><span class="text-neutral-400"> — Garantia estrutural que a branch de trabalho nunca é tocada durante revisão</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Arquitetura em 3 camadas</strong><span class="text-neutral-400"> — Isolamento, Análise e Relatório com responsabilidades separadas</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">8 garantias de segurança</strong><span class="text-neutral-400"> — 4 herdadas do Claudex + 4 novas para contexto de produção</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.2 — Isolamento de Branch com Git Worktree</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Voltar para Trilha 3
+          </a>
+          <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia Claude Code — Módulo 3.1 · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
