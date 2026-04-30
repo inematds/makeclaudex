@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Módulo 3.6 — Produção e Próximos Passos | Engenharia com Claude Code</title>
+  <title>Módulo 3.6 — Do Zero ao SPEC | Engenharia com Claude Code</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,9 +22,6 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    pre { overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.85rem; }
-
     html:not(.dark) body { background-color: #f8fafc; }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
     html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
@@ -36,14 +33,13 @@
     html:not(.dark) .text-neutral-500 { color: #9ca3af; }
     html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
     html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
-    html:not(.dark) .text-blue-400 { color: #2563eb; }
-    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
-    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
-    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
-    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
-    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
-    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
-    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .bg-amber-600 { background-color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500:hover { background-color: #78350f; }
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
     html:not(.dark) .text-primary { color: #a16207; }
     html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
@@ -57,6 +53,8 @@
     html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
     html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
     html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -79,8 +77,11 @@
           <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
             <span class="sm:hidden">T2</span><span class="hidden sm:inline">Construindo</span>
           </a>
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
-            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">O Método</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span>
           </a>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -93,554 +94,332 @@
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
     <nav class="flex items-center space-x-2 text-sm text-neutral-500">
-      <a href="../../index.html" class="hover:text-blue-400 transition-colors">Início</a>
+      <a href="../../index.html" class="hover:text-amber-400 transition-colors">Início</a>
       <span>/</span>
-      <a href="index.html" class="hover:text-blue-400 transition-colors">Trilha 3</a>
+      <a href="index.html" class="hover:text-amber-400 transition-colors">Trilha 3</a>
       <span>/</span>
-      <span class="text-blue-400 font-medium">Módulo 3.6</span>
+      <span class="text-amber-400 font-medium">Módulo 3.6</span>
     </nav>
   </div>
 
-  <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <div class="mb-4">
-      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">
-        MÓDULO 3.6
-      </span>
-    </div>
-    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-6 leading-tight">
-      Produção e <span class="text-blue-400">Próximos Passos</span>
-    </h1>
-    <div class="flex flex-wrap gap-4">
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">📚</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-10 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-4">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/20 text-amber-400 border border-amber-500/30">MÓDULO 3.6</span>
       </div>
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">⏱️</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">50</p></div>
-      </div>
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">🎯</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Nível</p><p class="text-sm font-bold text-neutral-100">Avançado</p></div>
-      </div>
-      <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
-        <span class="text-blue-400 text-lg">🏭</span>
-        <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Produção</p></div>
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-100 mb-4 leading-tight">
+        🚀 Do Zero ao SPEC — <span class="text-amber-400">Seu Próximo Projeto</span>
+      </h1>
+      <p class="text-lg text-neutral-400 max-w-3xl mb-6">Exercício guiado completo: do projeto escolhido ao SPEC escrito, sequência de prompts definida e checklist de pré-build preenchido.</p>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+          <span class="text-amber-400 text-lg">📚</span>
+          <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tópicos</p><p class="text-sm font-bold text-neutral-100">6</p></div>
+        </div>
+        <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+          <span class="text-amber-400 text-lg">⏱️</span>
+          <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Minutos</p><p class="text-sm font-bold text-neutral-100">50</p></div>
+        </div>
+        <div class="flex items-center space-x-2 bg-dark-800 border border-dark-600 rounded-lg px-4 py-2">
+          <span class="text-amber-400 text-lg">✏️</span>
+          <div><p class="text-xs text-neutral-500 uppercase tracking-wide">Tipo</p><p class="text-sm font-bold text-neutral-100">Exercício Prático</p></div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- TÓPICO 1 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">1</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">O Safety Pass do Plugin de Revisão</h2>
-          <p class="text-neutral-400 text-sm mt-1">As 6 primitivas aplicadas ao novo contexto</p>
-        </div>
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🎯 Escolhendo o projeto certo</h2>
       </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        As 6 primitivas de segurança que você aprendeu na Trilha 2 são universais — mas seus <strong class="text-blue-400">pontos de aplicação</strong> mudam conforme o sistema. O safety pass consiste em percorrer cada primitiva e verificar onde ela se aplica no revisor de PRs, garantindo que nenhuma foi esquecida.
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O primeiro projeto onde você aplica o método determina se vai querer usá-lo novamente. Escolha um projeto onde a metodologia possa brilhar — não um onde a complexidade do domínio vai obscurecer o que está aprendendo sobre o método.
       </p>
-
-      <!-- Mapeamento das 6 primitivas -->
-      <div class="space-y-3 mb-6">
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">1</div>
-          <div class="flex-1">
-            <p class="font-semibold text-neutral-100 text-sm">Fail-Open</p>
-            <p class="text-neutral-400 text-xs mt-1"><strong class="text-blue-400">Novo ponto:</strong> O hook de Stop deve retornar exit 0 (APPROVE) em caso de erro ao ler o estado, não exit 2 (BLOCK). Um revisor que bloqueia Claude indefinidamente é pior que não existir.</p>
-          </div>
-        </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">2</div>
-          <div class="flex-1">
-            <p class="font-semibold text-neutral-100 text-sm">Estado Atômico</p>
-            <p class="text-neutral-400 text-xs mt-1"><strong class="text-blue-400">Novo ponto:</strong> Dois arquivos de estado agora (review YAML + findings JSON). Ambos devem usar escrita atômica via arquivo temp + rename. O worktree_path no YAML é especialmente crítico.</p>
-          </div>
-        </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">3</div>
-          <div class="flex-1">
-            <p class="font-semibold text-neutral-100 text-sm">Compare-and-Swap (CAS)</p>
-            <p class="text-neutral-400 text-xs mt-1"><strong class="text-blue-400">Novo ponto:</strong> O campo version no YAML deve ser incrementado em cada transição de estado. Antes de escrever, verificar se version == expected_version para evitar escritas concorrentes.</p>
-          </div>
-        </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">4</div>
-          <div class="flex-1">
-            <p class="font-semibold text-neutral-100 text-sm">Cleanup Garantido</p>
-            <p class="text-neutral-400 text-xs mt-1"><strong class="text-blue-400">Novo ponto:</strong> Dois recursos para limpar: worktree em /tmp E lockfile de revisão. O trap deve remover ambos. A ordem importa: remover worktree antes de limpar estado (estado é prova de o que limpar).</p>
-          </div>
-        </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">5</div>
-          <div class="flex-1">
-            <p class="font-semibold text-neutral-100 text-sm">Idempotência</p>
-            <p class="text-neutral-400 text-xs mt-1"><strong class="text-blue-400">Novo ponto:</strong> Rodar /review-pr 123 duas vezes não deve criar dois comentários no PR. O marcador <!-- claude-review --> garante upsert de comentário. A criação de worktree deve verificar existência primeiro.</p>
-          </div>
-        </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">6</div>
-          <div class="flex-1">
-            <p class="font-semibold text-neutral-100 text-sm">Timeout</p>
-            <p class="text-neutral-400 text-xs mt-1"><strong class="text-blue-400">Novo ponto:</strong> Cada chamada ao claude --print deve ter timeout explícito (ex: 120s). Uma chamada que não termina bloqueia o loop indefinidamente. Use timeout(1) do sistema ou --timeout flag do CLI.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">💡</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">A Checklist do Safety Pass</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          Faça o safety pass como o último passo antes de declarar o sistema pronto para produção. Para cada primitiva, responda: <em>"Onde no código esta primitiva é aplicada? Existe um teste que verifica que ela funciona?"</em> Se a resposta para qualquer primitiva for "não sei" ou "não", o sistema não está pronto.
-        </p>
-      </div>
-    </section>
-
-    <!-- TÓPICO 2 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">2</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Testando com PRs Reais</h2>
-          <p class="text-neutral-400 text-sm mt-1">E2E sintético com um PR de teste com issues conhecidas</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        Antes de usar o sistema em PRs de produção, valide-o com um <strong class="text-blue-400">PR sintético</strong> que contém issues intencionais: um bug, uma vulnerabilidade de segurança e um problema de performance — um para cada persona. Se o sistema encontrar todos os três, as personas estão funcionando corretamente.
-      </p>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">PR sintético de teste — código com issues plantadas</p>
-        <pre class="text-xs text-neutral-300"><code>// test-pr/vulnerable-api.ts
-// Issues plantadas para validação do revisor
-
-import { db } from './db';
-
-// ISSUE 1 (Author/MEDIUM): Função promete retornar User mas pode retornar null
-// sem indicar isso no tipo de retorno
-export async function getUser(userId: string) {
-  const user = await db.query(
-    // ISSUE 2 (Security/CRITICAL): SQL Injection — userId não sanitizado
-    `SELECT * FROM users WHERE id = '${userId}'`
-  );
-  return user;
-}
-
-export async function getAllUsers() {
-  // ISSUE 3 (Reviewer/HIGH): Sem paginação — pode retornar milhões de registros
-  // Também: sem autenticação/autorização verificada
-  const users = await db.query('SELECT * FROM users');
-  return users;
-}
-
-// Descrição do PR (test): "Add user lookup endpoints"
-// O PR não menciona as issues — Author vai encontrar o gap de intenção</code></pre>
-      </div>
-
-      <div class="space-y-3">
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">1</div>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Critérios para um bom primeiro projeto</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p class="font-semibold text-neutral-100 text-sm">Cria o PR sintético no GitHub</p>
-            <p class="text-neutral-400 text-xs mt-1">Use <code>gh pr create</code> com branch de teste. O PR deve ter descrição realista mas sem mencionar as issues plantadas.</p>
+            <h4 class="font-semibold text-emerald-400 mb-2 text-sm">✓ Bom candidato</h4>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li>• Escopo em 1-2 páginas de SPEC</li>
+              <li>• Um único ponto de integração</li>
+              <li>• Resultado verificável em minutos</li>
+              <li>• Sem dependências externas complexas</li>
+              <li>• Você consegue descrever em uma frase</li>
+            </ul>
           </div>
-        </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">2</div>
           <div>
-            <p class="font-semibold text-neutral-100 text-sm">Executa /review-pr [número]</p>
-            <p class="text-neutral-400 text-xs mt-1">Roda o sistema completo: 3 rodadas + SUMMARIZING. Verifica que cada fase completa sem erros e que o worktree é criado/destruído corretamente.</p>
+            <h4 class="font-semibold text-red-400 mb-2 text-sm">✗ Mau candidato</h4>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li>• Integra com 3+ serviços externos</li>
+              <li>• Requer autenticação e autorização</li>
+              <li>• Domínio que você não conhece bem</li>
+              <li>• Prazo apertado sem margem para aprendizado</li>
+              <li>• Resultado depende de dados externos</li>
+            </ul>
           </div>
         </div>
-        <div class="flex gap-4 bg-dark-700 border border-dark-600 rounded-xl p-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">3</div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Exemplos de bons primeiros projetos</h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-amber-400">•</span><span>Hook de PreToolUse que loga operações de arquivo em JSON</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400">•</span><span>Plugin que exibe um resumo do contexto atual antes de cada commit</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400">•</span><span>Stop Hook que envia notificação quando uma sessão longa termina</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400">•</span><span>Plugin que mantém um log de todas as ferramentas usadas na sessão</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">📋 Escrevendo o SPEC do seu projeto</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Exercício prático: 30 minutos para preencher o template de SPEC para o projeto que você escolheu. O objetivo não é o SPEC perfeito — é descobrir onde as perguntas são difíceis.
+      </p>
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Exercício: preencha agora (30 min)</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-amber-400 font-semibold text-sm mb-2">1. Objetivo (2 min)</p>
+            <p class="text-neutral-400 text-sm italic">Em uma frase: "Este plugin X para que Y possa Z"</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-amber-400 font-semibold text-sm mb-2">2. Componentes (5 min)</p>
+            <p class="text-neutral-400 text-sm italic">Liste 2-5 componentes. Para cada um: nome, responsabilidade única, o que NÃO é responsabilidade dele</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-amber-400 font-semibold text-sm mb-2">3. Invariantes (8 min)</p>
+            <p class="text-neutral-400 text-sm italic">Complete: "O sistema NUNCA pode ___". Mínimo 3 invariantes. Inclua fail-open obrigatoriamente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-amber-400 font-semibold text-sm mb-2">4. Interface pública (5 min)</p>
+            <p class="text-neutral-400 text-sm italic">Como invocar o sistema, que parâmetros recebe, o que retorna em sucesso e em falha</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-amber-400 font-semibold text-sm mb-2">5. Sequência de build (5 min)</p>
+            <p class="text-neutral-400 text-sm italic">Liste 4-6 camadas na ordem: scaffold → estado → lógica → segurança</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-amber-400 font-semibold text-sm mb-2">6. Critérios de aceitação (5 min)</p>
+            <p class="text-neutral-400 text-sm italic">Para cada camada da sequência: "a camada está completa quando ___"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🔢 Quebrando em prompts</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com o SPEC completo, o próximo passo é transformar a sequência de build em prompts concretos. Para cada camada, definir: o que já existe (pré-condições), o que este prompt cria (entrega) e como verificar (critério).
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Exemplo: plugin de logging</h3>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3 bg-dark-700/50 rounded-lg p-3">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">P1</span>
+            <div>
+              <p class="text-white font-semibold text-sm">Scaffold</p>
+              <p class="text-neutral-400 text-xs">Cria hooks/pre_tool_use.sh com fail-open. Aceita: nada. Verifica: arquivo existe, invocável, exit 0 sempre.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 bg-dark-700/50 rounded-lg p-3">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">P2</span>
+            <div>
+              <p class="text-white font-semibold text-sm">Estado</p>
+              <p class="text-neutral-400 text-xs">Cria log.json com schema {entries:[]}. Aceita: P1 verificado. Verifica: inicializa, lê, adiciona entrada sem corrupção.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 bg-dark-700/50 rounded-lg p-3">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">P3</span>
+            <div>
+              <p class="text-white font-semibold text-sm">Lógica</p>
+              <p class="text-neutral-400 text-xs">Hook lê stdin JSON, extrai ferramenta e input, adiciona ao log. Aceita: P2 verificado. Verifica: entry correta no log após invocação.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 bg-dark-700/50 rounded-lg p-3">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">P4</span>
+            <div>
+              <p class="text-white font-semibold text-sm">Segurança</p>
+              <p class="text-neutral-400 text-xs">Write atômico, ERR trap, lockfile. Aceita: P3 verificado. Verifica: kill durante write não corrompe, 2 instâncias concorrentes ok.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">⚡ Identificando as primitivas de segurança do seu projeto</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nem todo projeto precisa das seis primitivas com a mesma intensidade. A análise de primitivas relevantes identifica quais são críticas para o seu projeto específico — evitando over-engineering e garantindo que as críticas não sejam esquecidas.
+      </p>
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Perguntas para cada primitiva</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-amber-400 font-bold w-24 flex-shrink-0">Fail-open</span>
+            <span class="text-neutral-300">Este plugin é invocado por um hook? Se sim, fail-open é obrigatório. Sem exceção.</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-amber-400 font-bold w-24 flex-shrink-0">Atômica</span>
+            <span class="text-neutral-300">O plugin escreve estado persistente? Se sim, escrita atômica é obrigatória.</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-amber-400 font-bold w-24 flex-shrink-0">CAS</span>
+            <span class="text-neutral-300">Múltiplas instâncias podem executar simultaneamente? Se sim, CAS é necessário.</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-amber-400 font-bold w-24 flex-shrink-0">Lockfile</span>
+            <span class="text-neutral-300">Existe seção crítica que não pode ser executada em paralelo? Se sim, lockfile é necessário.</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-amber-400 font-bold w-24 flex-shrink-0">ERR trap</span>
+            <span class="text-neutral-300">O plugin usa shell script? Se sim, set -euo pipefail e ERR trap são obrigatórios.</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-amber-400 font-bold w-24 flex-shrink-0">Idempotência</span>
+            <span class="text-neutral-300">Re-executar o mesmo hook pode causar efeitos indesejados? Se sim, idempotência é necessária.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🧪 Definindo as verificações entre prompts</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para cada prompt da sua sequência, defina os critérios de aceitação <strong class="text-amber-400">antes de executar o prompt</strong>. Critérios definidos antes são objetivos — critérios definidos depois tendem a se ajustar ao que foi entregue.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Formato de critério de aceitação</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 space-y-3">
           <div>
-            <p class="font-semibold text-neutral-100 text-sm">Verifica cobertura das issues plantadas</p>
-            <p class="text-neutral-400 text-xs mt-1">O relatório final deve conter: SQL Injection (Security), falta de paginação (Reviewer), e gap de tipo de retorno (Author). Se alguma faltar, a persona correspondente precisa de ajuste no prompt.</p>
+            <p class="text-amber-400 font-semibold text-sm">Prompt N está completo quando:</p>
+          </div>
+          <div class="pl-3 border-l-2 border-amber-500/30">
+            <p class="text-neutral-300 text-sm">1. [arquivo ou artefato esperado] existe e é válido</p>
+            <p class="text-neutral-300 text-sm">2. Executar [comando concreto] produz [resultado concreto]</p>
+            <p class="text-neutral-300 text-sm">3. Forçar [falha específica] resulta em [comportamento esperado]</p>
+            <p class="text-neutral-300 text-sm">4. Regressão: todos os testes de camadas anteriores ainda passam</p>
           </div>
         </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> O sinal de critério ruim</h3>
+        <p class="text-neutral-300">Se você não consegue escrever o critério antes de ver o código, o requisito está ambíguo. A dificuldade de escrever o critério é informação valiosa — indica que você não sabe o que quer, e o modelo vai ter a mesma dificuldade.</p>
       </div>
     </section>
 
-    <!-- TÓPICO 3 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">3</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Rate Limiting e Custo</h2>
-          <p class="text-neutral-400 text-sm mt-1">Controlando chamadas ao Claude, estimativa por PR</p>
-        </div>
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🚀 Checklist de pré-build</h2>
       </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        Um plugin sem controle de custo pode gerar faturas inesperadas em repositórios com muitos PRs. O modelo de custo é previsível: <strong class="text-blue-400">custo por PR = (tokens de contexto + tokens de diff) × número de rodadas × preço por token</strong>. Configurações de controle transformam isso de surpresa em decisão.
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <strong class="text-amber-400">checklist de pré-build</strong> é a última verificação antes de enviar o primeiro prompt. Confirmar cada item garante que você está planejando um build, não uma série de tentativas.
       </p>
-
-      <!-- Modelo de custo -->
-      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-5">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">📊</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Estimativa de Custo por PR</span>
-        </div>
-        <div class="space-y-2 text-sm text-neutral-300">
-          <div class="flex justify-between">
-            <span>PR pequeno (100 linhas de diff)</span>
-            <span class="text-blue-400">~500 tokens/rodada × 3 rodadas</span>
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Checklist completo</h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <div class="w-5 h-5 border-2 border-amber-500/50 rounded flex-shrink-0"></div>
+            <span class="text-neutral-300 text-sm">SPEC completo: objetivo, componentes, invariantes, interface, sequência, critérios</span>
           </div>
-          <div class="flex justify-between">
-            <span>PR médio (500 linhas de diff)</span>
-            <span class="text-blue-400">~2000 tokens/rodada × 3 rodadas</span>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <div class="w-5 h-5 border-2 border-amber-500/50 rounded flex-shrink-0"></div>
+            <span class="text-neutral-300 text-sm">Sequência de prompts definida: 4-8 prompts com dependências explícitas</span>
           </div>
-          <div class="flex justify-between">
-            <span>PR grande (2000 linhas de diff)</span>
-            <span class="text-blue-400">~8000 tokens/rodada × 3 rodadas</span>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <div class="w-5 h-5 border-2 border-amber-500/50 rounded flex-shrink-0"></div>
+            <span class="text-neutral-300 text-sm">Primitivas de segurança mapeadas: quais são necessárias e em qual camada</span>
           </div>
-        </div>
-        <p class="text-neutral-400 text-xs mt-3">* Estimativas incluem contexto do PR + instrução de persona + findings anteriores. Preço depende do modelo escolhido.</p>
-      </div>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">Controles de custo em review-config.yaml</p>
-        <pre class="text-xs text-neutral-300"><code># .claude/review-config.yaml
-
-# Controle de custo
-max_diff_lines: 2000          # PRs maiores são revisados por amostragem
-max_tokens_per_round: 4096    # Limita output do modelo por rodada
-max_rounds: 3                 # Terminação garantida
-
-# Rate limiting
-max_reviews_per_hour: 10      # Evita explosão de custo em repos de alto volume
-review_throttle_seconds: 30   # Pausa entre revisões consecutivas
-
-# Amostragem para PRs grandes
-sample_large_prs: true
-sample_strategy: "changed_files_priority"  # Prioriza arquivos mais modificados</code></pre>
-      </div>
-
-      <div class="bg-primary/10 border border-primary/40 rounded-xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-primary text-lg">⚡</span>
-          <span class="text-primary font-semibold text-sm uppercase tracking-wide">Dica Prática</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          Adicione um campo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">estimated_cost_usd</code> ao frontmatter do relatório. Depois de um mês, some os custos por repositório para ter dados reais que justificam (ou ajustam) o investimento em revisão automatizada.
-        </p>
-      </div>
-    </section>
-
-    <!-- TÓPICO 4 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">4</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Configuração por Repositório</h2>
-          <p class="text-neutral-400 text-sm mt-1">.claude/review-config.yaml com thresholds e personas</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        Cada repositório tem perfil de risco diferente. Um serviço financeiro precisa de Security como primeira persona e MAX_ROUNDS=5. Um repositório de documentação precisa de Reviewer básico com MAX_ROUNDS=1. A configuração por repositório permite adaptar o sistema sem modificar código.
-      </p>
-
-      <div class="grid sm:grid-cols-2 gap-5 mb-5">
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
-          <p class="text-blue-400 font-semibold text-sm mb-2">Repo de serviço financeiro</p>
-          <pre class="text-xs text-neutral-300"><code>max_rounds: 5
-personas:
-  - round: 1
-    name: "Security"
-  - round: 2
-    name: "Author"
-  - round: 3
-    name: "Reviewer"
-  - round: 4
-    name: "Security"   # Segunda passagem
-  - round: 5
-    name: "SRE"
-
-blocking_severity: "MEDIUM"  # Mais restritivo</code></pre>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
-          <p class="text-blue-400 font-semibold text-sm mb-2">Repo de frontend/design</p>
-          <pre class="text-xs text-neutral-300"><code>max_rounds: 2
-personas:
-  - round: 1
-    name: "Author"
-  - round: 2
-    name: "Reviewer"
-
-blocking_severity: "HIGH"    # Padrão
-
-# Ignora arquivos não-código
-exclude_patterns:
-  - "*.svg"
-  - "*.png"
-  - "*.json"
-  - "*.lock"</code></pre>
-        </div>
-      </div>
-
-      <div class="bg-dark-700 border border-dark-600 rounded-xl p-5 mb-5">
-        <p class="text-blue-400 font-semibold text-sm mb-3">Carregando configuração no runner</p>
-        <pre class="text-xs text-neutral-300"><code>load_config() {
-  local config_file=".claude/review-config.yaml"
-
-  # Se não existe config, usa defaults
-  if [[ ! -f "${config_file}" ]]; then
-    MAX_ROUNDS=3
-    BLOCKING_SEVERITY="HIGH"
-    return
-  fi
-
-  MAX_ROUNDS=$(yq e '.max_rounds // 3' "${config_file}")
-  BLOCKING_SEVERITY=$(yq e '.blocking_severity // "HIGH"' "${config_file}")
-  MAX_DIFF_LINES=$(yq e '.max_diff_lines // 2000' "${config_file}")
-
-  # Lê personas em ordem de round
-  PERSONAS=()
-  while IFS= read -r persona; do
-    PERSONAS+=("${persona}")
-  done < <(yq e '.personas[].name' "${config_file}")
-}</code></pre>
-      </div>
-
-      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">💡</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">Defaults sensatos</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          O sistema deve ter defaults sensatos que funcionam sem configuração. Um novo repositório sem <code>.claude/review-config.yaml</code> deve ter a revisão padrão (3 rodadas, Author+Reviewer+Security, HIGH como blocking) funcionando imediatamente. Configuração é para ajuste fino, não para funcionamento básico.
-        </p>
-      </div>
-    </section>
-
-    <!-- TÓPICO 5 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">5</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">O que Separa Hobby de Produção</h2>
-          <p class="text-neutral-400 text-sm mt-1">Observabilidade, rollback e alertas</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        Um sistema funcional 95% do tempo que falha silenciosamente no resto é <strong class="text-blue-400">mais perigoso que não existir</strong>. Em produção, você precisa saber quando o sistema falhou, ser capaz de desfazer suas ações e ter alertas proativos antes que o problema afete desenvolvedores.
-      </p>
-
-      <div class="space-y-4 mb-6">
-        <div class="flex items-start space-x-4">
-          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
-            <span class="text-blue-400 font-bold text-sm">OB</span>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <div class="w-5 h-5 border-2 border-amber-500/50 rounded flex-shrink-0"></div>
+            <span class="text-neutral-300 text-sm">Critérios de aceitação escritos: para cada prompt, antes de executar</span>
           </div>
-          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
-            <h4 class="font-semibold text-blue-400 mb-2">Observabilidade — Logs Estruturados</h4>
-            <p class="text-neutral-300 text-sm mb-3">Cada evento do ciclo de vida deve ser logado em JSON com timestamp, PR number, status e duração. Isso permite queries como "todas revisões que demoraram mais de 5 minutos" ou "PRs onde o cleanup falhou".</p>
-            <pre class="text-xs text-neutral-400"><code>{"ts":"2026-04-29T10:30:00Z","event":"review.started","pr":123,"worktree":"/tmp/review-PR123-1735000000"}
-{"ts":"2026-04-29T10:35:12Z","event":"review.round.completed","pr":123,"round":1,"persona":"Author","findings":2}
-{"ts":"2026-04-29T10:45:33Z","event":"review.completed","pr":123,"duration_s":930,"total_findings":6}</code></pre>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <div class="w-5 h-5 border-2 border-amber-500/50 rounded flex-shrink-0"></div>
+            <span class="text-neutral-300 text-sm">Platform tests preparados: ambiente verificado para o que o plugin vai fazer</span>
           </div>
-        </div>
-        <div class="flex items-start space-x-4">
-          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
-            <span class="text-blue-400 font-bold text-sm">RB</span>
-          </div>
-          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
-            <h4 class="font-semibold text-blue-400 mb-2">Rollback — Desfazendo Comentário Postado</h4>
-            <p class="text-neutral-300 text-sm mb-3">Um relatório com findings falsos positivos pode causar ruído ou bloquear merge indevidamente. O rollback remove o comentário do GitHub e restaura o PR ao estado "sem revisão".</p>
-            <pre class="text-xs text-neutral-400"><code>rollback_review() {
-  local pr_number="$1"
-  # Encontra e deleta o comentário de revisão
-  local comment_id
-  comment_id=$(gh api "/repos/{owner}/{repo}/issues/${pr_number}/comments" \
-    --jq '.[] | select(.body | startswith("<!-- claude-review -->")) | .id')
-  [[ -n "${comment_id}" ]] && gh api --method DELETE \
-    "/repos/{owner}/{repo}/issues/comments/${comment_id}"
-}</code></pre>
-          </div>
-        </div>
-        <div class="flex items-start space-x-4">
-          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
-            <span class="text-blue-400 font-bold text-sm">AL</span>
-          </div>
-          <div class="flex-1 bg-dark-700 rounded-xl p-5 border border-dark-600">
-            <h4 class="font-semibold text-blue-400 mb-2">Alertas — Detectando Falhas Silenciosas</h4>
-            <p class="text-neutral-300 text-sm">Verifique periodicamente: PRs abertos há mais de X horas sem revisão (revisor falhou silenciosamente), worktrees órfãos acumulando (cleanup não funcionou), custo diário acima do threshold.</p>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <div class="w-5 h-5 border-2 border-amber-500/50 rounded flex-shrink-0"></div>
+            <span class="text-neutral-300 text-sm">Template de prompt preparado: as 5 seções preenchidas para o Prompt 1</span>
           </div>
         </div>
       </div>
-
-      <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-red-400 text-lg">⚠️</span>
-          <span class="text-red-400 font-semibold text-sm uppercase tracking-wide">Teste de Falha Silenciosa</span>
-        </div>
-        <p class="text-neutral-300 text-sm leading-relaxed">
-          Antes de declarar o sistema em produção, faça um teste de falha silenciosa: mate o processo de revisão com SIGKILL durante a análise e verifique que: 1) o worktree foi limpo na próxima execução, 2) o estado ficou em FAILED (não em REVIEWING), 3) um alerta foi gerado. Se qualquer um falhar, você tem uma falha silenciosa.
-        </p>
-      </div>
-    </section>
-
-    <!-- TÓPICO 6 -->
-    <section class="bg-dark-800 border border-dark-600 rounded-2xl p-8">
-      <div class="flex items-start gap-5 mb-6">
-        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-          <span class="text-blue-400 font-bold text-lg">6</span>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-neutral-100">Próximos Passos</h2>
-          <p class="text-neutral-400 text-sm mt-1">Integração com CI, revisão multi-model e auto-apply de fixes</p>
-        </div>
-      </div>
-
-      <p class="text-neutral-300 leading-relaxed mb-6">
-        O sistema atual é manual — iniciado pelo desenvolvedor via <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">/review-pr</code>. As três extensões naturais o tornam <strong class="text-blue-400">proativo e totalmente integrado</strong> ao workflow de engenharia sem exigir ação humana.
-      </p>
-
-      <!-- 3 extensões -->
-      <div class="grid sm:grid-cols-3 gap-5 mb-6">
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
-          <div class="text-2xl mb-3">🤖</div>
-          <p class="text-blue-400 font-semibold text-sm mb-2">CI Integration</p>
-          <p class="text-neutral-400 text-xs leading-relaxed mb-3">GitHub Action que roda /review-pr automaticamente na abertura de PR ou em push para branches de feature.</p>
-          <pre class="text-xs text-neutral-400"><code>on:
-  pull_request:
-    types: [opened, synchronize]
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: /review-pr ${{ github.event.pull_request.number }}</code></pre>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
-          <div class="text-2xl mb-3">🔄</div>
-          <p class="text-blue-400 font-semibold text-sm mb-2">Revisão Multi-model</p>
-          <p class="text-neutral-400 text-xs leading-relaxed mb-3">Usar modelos diferentes por persona: claude-opus para Security (mais profundo), claude-haiku para Author (mais rápido, mais barato para contexto).</p>
-          <pre class="text-xs text-neutral-400"><code>personas:
-  - round: 1
-    name: "Author"
-    model: "claude-haiku-4-5"
-  - round: 2
-    name: "Reviewer"
-    model: "claude-sonnet-4-6"
-  - round: 3
-    name: "Security"
-    model: "claude-opus-4-5"</code></pre>
-        </div>
-        <div class="bg-dark-700 border border-dark-600 rounded-xl p-5">
-          <div class="text-2xl mb-3">🔧</div>
-          <p class="text-blue-400 font-semibold text-sm mb-2">Auto-apply de Fixes</p>
-          <p class="text-neutral-400 text-xs leading-relaxed mb-3">Para findings LOW e INFO, aplicar automaticamente as correções sugeridas via patch, criando um commit de "automated-fixes" no PR.</p>
-          <pre class="text-xs text-neutral-400"><code>auto_apply:
-  enabled: true
-  max_severity: "LOW"
-  require_review: true  # Claude cria commit,
-                        # humano aprova</code></pre>
-        </div>
-      </div>
-
-      <div class="bg-gradient-to-r from-blue-900/30 to-blue-800/10 border border-blue-500/30 rounded-xl p-6">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="text-blue-400 text-lg">🚀</span>
-          <span class="text-blue-400 font-semibold text-sm uppercase tracking-wide">O Caminho do Hobby para a Produção</span>
-        </div>
-        <div class="space-y-2 text-sm text-neutral-300">
-          <div class="flex gap-3">
-            <span class="text-blue-400 font-mono font-bold shrink-0">Semana 1</span>
-            <span>Sistema funcionando localmente com teste sintético validado</span>
-          </div>
-          <div class="flex gap-3">
-            <span class="text-blue-400 font-mono font-bold shrink-0">Semana 2</span>
-            <span>Primeira revisão em PR real (PR do próprio plugin para dogfooding)</span>
-          </div>
-          <div class="flex gap-3">
-            <span class="text-blue-400 font-mono font-bold shrink-0">Semana 3</span>
-            <span>Observabilidade completa: logs, métricas de custo, alertas de falha</span>
-          </div>
-          <div class="flex gap-3">
-            <span class="text-blue-400 font-mono font-bold shrink-0">Semana 4</span>
-            <span>CI integration: revisão automática em todos os novos PRs do time</span>
-          </div>
-          <div class="flex gap-3">
-            <span class="text-blue-400 font-mono font-bold shrink-0">Mês 2+</span>
-            <span>Multi-model e auto-apply baseados em dados reais de custo e qualidade</span>
-          </div>
-        </div>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-3">Quando você está pronto</h3>
+        <p class="text-neutral-300 mb-4">Se todos os seis itens do checklist estão confirmados, você tem um plano. Não uma lista de desejos, não uma vaga ideia — um plano com critérios objetivos de sucesso. Execute o Prompt 1, verifique, avance.</p>
+        <p class="text-neutral-300 font-semibold">Isso é O Método.</p>
       </div>
     </section>
 
     <!-- RESUMO FINAL DA TRILHA -->
     <section class="mb-12">
-      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
-        <h2 class="text-2xl font-bold mb-2 flex items-center">
-          <span class="mr-3">🎓</span> Trilha 3 Concluída
-        </h2>
-        <p class="text-neutral-400 mb-8">Você completou todos os 6 módulos da Trilha Avançada. Aqui está o que construiu:</p>
-
-        <div class="grid sm:grid-cols-2 gap-4 mb-8">
-          <div class="bg-dark-800/50 rounded-lg p-4">
-            <p class="text-blue-400 font-semibold text-sm mb-2">Sistema Completo</p>
-            <ul class="space-y-1 text-xs text-neutral-400">
-              <li>• Revisor de PRs com isolamento via git worktree</li>
-              <li>• Loop de revisão com máquina de estados</li>
-              <li>• 3 personas rotativas com prompt engineering</li>
-              <li>• Relatório markdown com integração GitHub</li>
-              <li>• 8 garantias de segurança verificadas</li>
-            </ul>
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Trilha 3 Concluída</h2>
+        <p class="text-neutral-300 mb-6">Você agora tem o método completo. Os seis módulos cobriram os princípios que tornam o Claudex e qualquer plugin bem-construído possível:</p>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">3.1:</strong><span class="text-neutral-400"> SPEC como contrato escrito antes do código</span></div>
           </div>
-          <div class="bg-dark-800/50 rounded-lg p-4">
-            <p class="text-blue-400 font-semibold text-sm mb-2">Habilidades Desenvolvidas</p>
-            <ul class="space-y-1 text-xs text-neutral-400">
-              <li>• git worktree para isolamento de ambiente</li>
-              <li>• gh CLI para integração com GitHub</li>
-              <li>• Prompt engineering avançado para personas</li>
-              <li>• Observabilidade e operação em produção</li>
-              <li>• Arquitetura em camadas com interfaces limpas</li>
-            </ul>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">3.2:</strong><span class="text-neutral-400"> Sequência scaffold → estado → lógica → segurança</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">3.3:</strong><span class="text-neutral-400"> Seis primitivas de segurança como checklist mecânico</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">3.4:</strong><span class="text-neutral-400"> Prompts atômicos com template de cinco seções</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">3.5:</strong><span class="text-neutral-400"> Testes por camada: platform, smoke, E2E sintético, regressão</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">3.6:</strong><span class="text-neutral-400"> Do projeto escolhido ao primeiro prompt — com checklist completo</span></div>
           </div>
         </div>
-
         <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-          <h3 class="font-semibold text-blue-400 mb-2">O que vem a seguir:</h3>
-          <p class="text-neutral-300 text-sm">Continue com a <strong>Trilha 4</strong> quando disponível, ou aprofunde o que construiu: adicione CI integration, experimente multi-model com diferentes modelos por persona, e meça o impacto real em PRs do seu time.</p>
+          <h3 class="font-semibold text-amber-400 mb-2">Próxima Trilha:</h3>
+          <p class="text-neutral-300">Trilha 4 — Avançado: padrões complexos, otimizações e casos edge</p>
         </div>
-
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="modulo-3-5.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
-            ← Módulo 3.5
-          </a>
-          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
-            Ver Trilha 3 Completa →
-          </a>
+          <a href="modulo-3-5.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo 3.5</a>
+          <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">Trilha 4: Avançado →</a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="border-t border-dark-600 py-8 mt-8">
+  <footer class="border-t border-dark-600 py-8 mt-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>Engenharia Claude Code — Módulo 3.6 · 2026</p>
+      <p>Engenharia Claude Code — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
     </div>
   </footer>
 
