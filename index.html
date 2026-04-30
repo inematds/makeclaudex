@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Make Claudex — Engenharia com Claude Code | INEMA.CLUB</title>
+  <title>Engenharia com Claude Code — Do Prompt ao Plugin de Produção | INEMA.CLUB</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -42,19 +42,25 @@
     html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
     html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
     html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:bg-emerald-500\/20:hover { background-color: rgba(5, 150, 105, 0.12); }
     html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:border-emerald-500\/40:hover { border-color: rgba(5, 150, 105, 0.30); }
     html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-600 { background-color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500:hover { background-color: #047857; }
 
     /* Light mode - Purple (T2 - Construindo) */
     html:not(.dark) .text-purple-400 { color: #7c3aed; }
     html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
     html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
     html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
-    html:not(.dark) .hover\:bg-purple-500\/20:hover { background-color: rgba(124, 58, 237, 0.12); }
     html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
-    html:not(.dark) .hover\:border-purple-500\/40:hover { border-color: rgba(124, 58, 237, 0.30); }
+    html:not(.dark) .hover\:bg-purple-500\/20:hover { background-color: rgba(124, 58, 237, 0.12); }
     html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:border-purple-500\/40:hover { border-color: rgba(124, 58, 237, 0.30); }
     html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-600 { background-color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500:hover { background-color: #6d28d9; }
 
     /* Light mode - Blue (T3 - Avançado) */
     html:not(.dark) .text-blue-400 { color: #2563eb; }
@@ -62,24 +68,20 @@
     html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
     html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
     html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/20:hover { background-color: rgba(37, 99, 235, 0.12); }
     html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:border-blue-500\/40:hover { border-color: rgba(37, 99, 235, 0.30); }
     html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #1d4ed8; }
 
-    /* Light mode - Teal (curso-claudex) */
-    html:not(.dark) .text-teal-400 { color: #0d9488; }
-    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
-    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
-    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
-    html:not(.dark) .hover\:bg-teal-500\/20:hover { background-color: rgba(13, 148, 136, 0.12); }
-    html:not(.dark) .hover\:border-teal-500\/40:hover { border-color: rgba(13, 148, 136, 0.30); }
-    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
-    html:not(.dark) .group:hover .group-hover\:text-teal-400 { color: #0d9488; }
-
-    /* Light mode - remove gradients */
+    /* Light mode - remove gradientes */
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
 
     /* Light mode - cores especiais */
     html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
     html:not(.dark) .text-sky-400 { color: #0369a1; }
     html:not(.dark) .text-yellow-400 { color: #a16207; }
     html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
@@ -96,23 +98,23 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-14">
       <div class="flex items-center space-x-4">
-        <a href="#" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-          <span class="text-2xl">🔧</span>
-          <span class="font-bold text-lg hidden sm:inline">Make Claudex</span>
+        <a href="index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🏗️</span>
+          <span class="font-bold text-lg hidden sm:inline">Engenharia Claude Code</span>
         </a>
         <span class="text-neutral-600">|</span>
         <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
       </div>
       <div class="flex items-center space-x-1 sm:space-x-2">
-        <a href="curso/trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+        <a href="curso/trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
           <span class="sm:hidden">T1</span>
           <span class="hidden sm:inline">Fundamentos</span>
         </a>
-        <a href="curso/trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 hover:bg-purple-500/10 transition-colors">
+        <a href="curso/trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
           <span class="sm:hidden">T2</span>
           <span class="hidden sm:inline">Construindo</span>
         </a>
-        <a href="curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 hover:bg-blue-500/10 transition-colors">
+        <a href="curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
           <span class="sm:hidden">T3</span>
           <span class="hidden sm:inline">Avançado</span>
         </a>
@@ -130,21 +132,42 @@
 </nav>
 
 <!-- HERO -->
-<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
+<header class="bg-gradient-to-br from-purple-900/20 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
-      OPEN SOURCE — INEMA.CLUB
+    <span class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4 border border-primary/40">
+      INEMA.CLUB — OPEN SOURCE
     </span>
-    <h1 class="text-3xl sm:text-5xl font-bold mb-4">🔧 Make Claudex</h1>
+    <h1 class="text-4xl sm:text-5xl font-bold mb-4">🏗️ Engenharia com Claude Code</h1>
     <p class="text-lg text-neutral-400 max-w-2xl mb-8">
-      Como construímos o Claudex — do SPEC ao plugin de produção, um prompt de cada vez. Os 7 build prompts, o material de referência e o curso completo.
+      Do prompt ao plugin de produção. Aprenda como o Claudex foi construído — a metodologia, as decisões de arquitetura e como aplicar o mesmo processo em qualquer projeto.
     </p>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mb-8">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-2xl font-bold text-primary">3</div>
+        <div class="text-xs text-neutral-400">Trilhas</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-2xl font-bold text-primary">18</div>
+        <div class="text-xs text-neutral-400">Módulos</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-2xl font-bold text-primary">108</div>
+        <div class="text-xs text-neutral-400">Tópicos</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-2xl font-bold text-primary">~14h</div>
+        <div class="text-xs text-neutral-400">Conteúdo</div>
+      </div>
+    </div>
+
     <div class="flex flex-col sm:flex-row gap-3">
-      <a href="curso/trilha2/index.html" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold transition-colors text-center">
-        📖 Ver o Curso
+      <a href="curso/trilha1/index.html" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold transition-colors text-center">
+        🚀 Começar pela Trilha 1
       </a>
-      <a href="build_prompts/README.md" class="px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg font-semibold transition-colors text-center">
-        📂 Ver os Build Prompts
+      <a href="curso/trilha2/index.html" class="px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg font-semibold transition-colors text-center">
+        🏗️ Ir direto para Construindo
       </a>
     </div>
   </div>
@@ -153,50 +176,140 @@
 <!-- CONTEÚDO -->
 <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-  <!-- O QUE É ESTE REPO -->
-  <section class="mb-12">
-    <h2 class="text-xl font-bold mb-6 text-neutral-300">O que está aqui</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- TRILHAS -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-2 text-neutral-300">As 3 Trilhas do Curso</h2>
+    <p class="text-neutral-500 text-sm mb-8">Cada trilha é independente — entre pela que faz mais sentido para o seu nível.</p>
 
-      <div class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
-        <div class="text-2xl mb-3">📂</div>
-        <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">Build Prompts</h3>
-        <p class="text-neutral-500 text-sm">Os 7 prompts incrementais usados para construir o Claudex, do scaffold ao safety pass. Com SPEC.md de referência.</p>
-        <div class="mt-3 space-y-1">
-          <div class="text-xs text-neutral-500 font-mono">build_prompts/README.md</div>
-          <div class="text-xs text-neutral-500 font-mono">build_prompts/SPEC.md</div>
-          <div class="text-xs text-neutral-500 font-mono">build_prompts/01–07.md</div>
+    <div class="space-y-6">
+
+      <!-- T1 Fundamentos -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 hover:bg-dark-700/50 transition-all group">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center space-x-3">
+              <span class="inline-block px-2.5 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRILHA 1</span>
+              <span class="text-xs text-neutral-500">Iniciante</span>
+            </div>
+            <span class="text-xs text-neutral-500">~4h30min</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">🌱 Fundamentos</h3>
+          <p class="text-neutral-400 text-sm mb-4">Base zero do Claude Code. O que são hooks, slash commands, estado persistente e como montar o ambiente para construir plugins. Ideal para quem ainda não escreveu um hook.</p>
+          <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-emerald-400">6</div>
+              <div class="text-xs text-neutral-500">Módulos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-emerald-400">36</div>
+              <div class="text-xs text-neutral-500">Tópicos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-emerald-400">~4h30</div>
+              <div class="text-xs text-neutral-500">Duração</div>
+            </div>
+          </div>
+          <div class="text-xs text-neutral-500 mb-5 space-y-1">
+            <div class="flex items-center space-x-2"><span class="text-emerald-400">•</span><span>O que é o Claude Code e como ele executa ferramentas</span></div>
+            <div class="flex items-center space-x-2"><span class="text-emerald-400">•</span><span>Hooks: PreToolUse, PostToolUse, Stop, Notification</span></div>
+            <div class="flex items-center space-x-2"><span class="text-emerald-400">•</span><span>Slash commands, skills e estado persistente em YAML</span></div>
+            <div class="flex items-center space-x-2"><span class="text-emerald-400">•</span><span>Projeto guiado: hook de validação de commits</span></div>
+          </div>
+          <div class="flex justify-start">
+            <a href="curso/trilha1/index.html" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold transition-colors text-sm">
+              Acessar Trilha 1 →
+            </a>
+          </div>
         </div>
       </div>
 
-      <div class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-purple-500/30 hover:bg-dark-700 transition-all group">
-        <div class="text-2xl mb-3">🎓</div>
-        <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">Curso — Construindo</h3>
-        <p class="text-neutral-500 text-sm">6 módulos, 38 tópicos, ~5h. Cada prompt explicado em PT-BR com o raciocínio por trás de cada decisão de arquitetura.</p>
-        <div class="mt-3">
-          <a href="curso/trilha2/index.html" class="text-xs text-purple-400 hover:text-purple-300 font-medium transition-colors">
-            Acessar o curso →
-          </a>
+      <!-- T2 Construindo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 hover:bg-dark-700/50 transition-all group">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center space-x-3">
+              <span class="inline-block px-2.5 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRILHA 2</span>
+              <span class="text-xs text-neutral-500">Intermediário</span>
+            </div>
+            <span class="text-xs text-neutral-500">~5h</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-purple-400 transition-colors">🏗️ Construindo</h3>
+          <p class="text-neutral-400 text-sm mb-4">Como construímos o Claudex do zero. Os 7 build prompts explicados em PT-BR — cada decisão de arquitetura, da ERR trap ao safety pass. O caso de estudo real de um plugin de produção.</p>
+          <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-purple-400">6</div>
+              <div class="text-xs text-neutral-500">Módulos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-purple-400">36</div>
+              <div class="text-xs text-neutral-500">Tópicos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-purple-400">~5h</div>
+              <div class="text-xs text-neutral-500">Duração</div>
+            </div>
+          </div>
+          <div class="text-xs text-neutral-500 mb-5 space-y-1">
+            <div class="flex items-center space-x-2"><span class="text-purple-400">•</span><span>O SPEC.md como blueprint antes de qualquer código</span></div>
+            <div class="flex items-center space-x-2"><span class="text-purple-400">•</span><span>Stop Hook lifecycle, personas e extração de findings</span></div>
+            <div class="flex items-center space-x-2"><span class="text-purple-400">•</span><span>Escrita atômica, CAS, lockfiles e safety pass</span></div>
+            <div class="flex items-center space-x-2"><span class="text-purple-400">•</span><span>A metodologia de build incremental aplicada</span></div>
+          </div>
+          <div class="flex justify-start">
+            <a href="curso/trilha2/index.html" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold transition-colors text-sm">
+              Acessar Trilha 2 →
+            </a>
+          </div>
         </div>
       </div>
 
-      <div class="bg-dark-800 rounded-xl border border-dark-600 p-5 hover:border-teal-500/30 hover:bg-dark-700 transition-all group">
-        <div class="text-2xl mb-3">🤖</div>
-        <h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">Curso — Usando o Claudex</h3>
-        <p class="text-neutral-500 text-sm">Aprenda a usar o Claudex no dia a dia: entrevista de planejamento, comandos, exemplos reais e o ciclo Claude + Codex.</p>
-        <div class="mt-3">
-          <a href="https://github.com/inematds/iclaudex" target="_blank" class="text-xs text-teal-400 hover:text-teal-300 font-medium transition-colors">
-            Ver repositório iclaudex →
-          </a>
+      <!-- T3 Avançado -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 hover:bg-dark-700/50 transition-all group">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center space-x-3">
+              <span class="inline-block px-2.5 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+              <span class="text-xs text-neutral-500">Avançado · Pré-req: Trilha 2</span>
+            </div>
+            <span class="text-xs text-neutral-500">~5h</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">⚡ Avançado</h3>
+          <p class="text-neutral-400 text-sm mb-4">Projeto guiado mais complexo: um Revisor de PRs com isolamento de branch via git worktree. Aplica os mesmos princípios do Claudex numa arquitetura de 3 camadas — isolamento, análise multi-perspectiva e relatório estruturado.</p>
+          <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-blue-400">6</div>
+              <div class="text-xs text-neutral-500">Módulos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-blue-400">36</div>
+              <div class="text-xs text-neutral-500">Tópicos</div>
+            </div>
+            <div class="bg-dark-700/50 rounded-lg p-2.5 text-center border border-dark-600">
+              <div class="text-lg font-bold text-blue-400">~5h</div>
+              <div class="text-xs text-neutral-500">Duração</div>
+            </div>
+          </div>
+          <div class="text-xs text-neutral-500 mb-5 space-y-1">
+            <div class="flex items-center space-x-2"><span class="text-blue-400">•</span><span>Git worktree para isolamento de branch durante a revisão</span></div>
+            <div class="flex items-center space-x-2"><span class="text-blue-400">•</span><span>Loop de revisão com personas Author, Reviewer, Security</span></div>
+            <div class="flex items-center space-x-2"><span class="text-blue-400">•</span><span>Relatório estruturado com severidade e integração gh CLI</span></div>
+            <div class="flex items-center space-x-2"><span class="text-blue-400">•</span><span>Rate limiting, configuração por repo e safety pass</span></div>
+          </div>
+          <div class="flex justify-start">
+            <a href="curso/trilha3/index.html" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-colors text-sm">
+              Acessar Trilha 3 →
+            </a>
+          </div>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- OS 7 PROMPTS -->
-  <section class="mb-12">
-    <h2 class="text-xl font-bold mb-6 text-neutral-300">Os 7 Build Prompts</h2>
+  <!-- OS 7 BUILD PROMPTS -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-2 text-neutral-300">Os 7 Build Prompts</h2>
+    <p class="text-neutral-500 text-sm mb-6">O material-fonte do curso — os prompts reais usados para construir o Claudex, disponíveis para uso direto.</p>
     <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden">
       <div class="divide-y divide-dark-600">
 
@@ -204,7 +317,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
           <div>
             <div class="font-medium text-sm">Scaffold — Esqueleto do plugin e fail-open hook</div>
-            <div class="text-neutral-500 text-xs mt-0.5">Manifestos, 6 comandos, hooks.json, stop-hook.sh com ERR trap. Verificação: plugin carrega no Claude Code.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">Manifestos, 6 comandos, hooks.json, stop-hook.sh com ERR trap.</div>
           </div>
           <a href="build_prompts/01_scaffold.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -213,7 +326,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
           <div>
             <div class="font-medium text-sm">State Machine — Máquina de estados com escritas atômicas e CAS</div>
-            <div class="text-neutral-500 text-xs mt-0.5">state-helpers.sh, start-loop.sh, platform-validation.sh. Verificação: CAS e atomicidade em isolamento.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">state-helpers.sh, start-loop.sh, platform-validation.sh.</div>
           </div>
           <a href="build_prompts/02_state_machine.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -222,7 +335,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
           <div>
             <div class="font-medium text-sm">Stop Hook Lifecycle — O cérebro do loop</div>
-            <div class="text-neutral-500 text-xs mt-0.5">BLOCK vs APPROVE, runner script, mark-done.sh, smoke-test.sh. O hook stub vira o motor de lifecycle.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">BLOCK vs APPROVE, runner script, mark-done.sh, smoke-test.sh.</div>
           </div>
           <a href="build_prompts/03_stop_hook_lifecycle.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -231,7 +344,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
           <div>
             <div class="font-medium text-sm">Findings + Personas — Economia de tokens e revisão por ângulo</div>
-            <div class="text-neutral-500 text-xs mt-0.5">findings-round-N.md, personas.sh, rotação engenheiro→segurança→SRE por rodada.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">findings-round-N.md, personas.sh, rotação engenheiro→segurança→SRE.</div>
           </div>
           <a href="build_prompts/04_findings_and_personas.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -240,7 +353,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">5</span>
           <div>
             <div class="font-medium text-sm">Summary Phase — O loop não pode terminar em silêncio</div>
-            <div class="text-neutral-500 text-xs mt-0.5">Fase summarizing, build_rounds_table, mark-done.sh atualizado. Fechamento sempre visível.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">Fase summarizing, build_rounds_table, mark-done.sh atualizado.</div>
           </div>
           <a href="build_prompts/05_summary_phase.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -249,7 +362,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">6</span>
           <div>
             <div class="font-medium text-sm">Utility Commands — status, doctor, cancel, rollback</div>
-            <div class="text-neutral-500 text-xs mt-0.5">Os quatro comandos que tornam o plugin operável em produção. Entrevista de planejamento antes do loop.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">Os quatro comandos que tornam o plugin operável em produção.</div>
           </div>
           <a href="build_prompts/06_utility_commands.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -258,7 +371,7 @@
           <span class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">7</span>
           <div>
             <div class="font-medium text-sm">Safety Pass — Auditoria das 6 primitivas de segurança</div>
-            <div class="text-neutral-500 text-xs mt-0.5">ERR trap, atomicidade, CAS, lockfile, varredor stale, validação de CWD. synthetic-e2e.sh com Codex real.</div>
+            <div class="text-neutral-500 text-xs mt-0.5">ERR trap, atomicidade, CAS, lockfile, varredor stale, validação de CWD.</div>
           </div>
           <a href="build_prompts/07_safety_pass.md" class="ml-auto text-xs text-purple-400 hover:text-purple-300 whitespace-nowrap flex-shrink-0">ver prompt →</a>
         </div>
@@ -267,46 +380,17 @@
     </div>
   </section>
 
-  <!-- COMO USAR -->
+  <!-- CTA USANDO O CLAUDEX -->
   <section class="mb-12">
-    <h2 class="text-xl font-bold mb-6 text-neutral-300">Como usar os build prompts</h2>
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
-      <ol class="space-y-3 text-neutral-300 text-sm">
-        <li class="flex items-start space-x-3">
-          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
-          <span>Abra o Claude Code numa pasta vazia e adicione o <code class="bg-dark-700 px-1.5 py-0.5 rounded text-xs">SPEC.md</code> — ele é a fonte da verdade para todos os prompts.</span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
-          <span>Cole o conteúdo de <code class="bg-dark-700 px-1.5 py-0.5 rounded text-xs">01_scaffold.md</code> e aguarde o Claude construir o esqueleto.</span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
-          <span>Teste o que foi construído. Confirme que o plugin carrega no Claude Code antes de continuar.</span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
-          <span>Avance para <code class="bg-dark-700 px-1.5 py-0.5 rounded text-xs">02_state_machine.md</code>. Repita: construa, verifique, avance.</span>
-        </li>
-        <li class="flex items-start space-x-3">
-          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">5</span>
-          <span>Cada prompt assume que o anterior foi concluído e testado. Nunca pule etapas.</span>
-        </li>
-      </ol>
-      <div class="mt-4 pt-4 border-t border-dark-600">
-        <p class="text-neutral-500 text-xs">O ponto não é copiar os prompts palavra por palavra. É ver a <strong class="text-neutral-400">ordem</strong>: esqueleto antes do estado, estado antes do lifecycle, lifecycle antes das personas, personas antes do safety pass.</p>
+    <div class="bg-gradient-to-br from-dark-800 via-dark-800 to-dark-800 rounded-xl border border-dark-600 p-6">
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl flex-shrink-0">🤖</div>
+        <div>
+          <h3 class="font-bold mb-1">Quer usar o Claudex no dia a dia?</h3>
+          <p class="text-neutral-400 text-sm mb-3">O curso <strong class="text-neutral-300">iClaudex</strong> ensina a operar o plugin: entrevista de planejamento, comandos, ciclo Claude + Codex e exemplos reais.</p>
+          <a href="https://github.com/inematds/iclaudex" target="_blank" class="text-sm text-sky-400 hover:text-sky-300 font-medium transition-colors">Ver repositório iClaudex →</a>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section>
-    <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8 text-center">
-      <h2 class="text-2xl font-bold mb-3">Quer entender cada decisão de design?</h2>
-      <p class="text-neutral-400 mb-6 max-w-xl mx-auto">O curso explica cada prompt em PT-BR com o raciocínio por trás de cada escolha — da ERR trap ao heredoc com aspas simples.</p>
-      <a href="curso/trilha2/index.html" class="inline-block px-8 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold transition-colors">
-        📖 Acessar o Curso →
-      </a>
     </div>
   </section>
 
@@ -315,7 +399,7 @@
 <!-- FOOTER -->
 <footer class="border-t border-dark-600 py-8 mt-4">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-    <p>Make Claudex · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    <p>Engenharia com Claude Code · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
   </div>
 </footer>
 
